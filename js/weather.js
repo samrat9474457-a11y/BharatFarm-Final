@@ -20,12 +20,8 @@ let userLocation = { lat: 21.0667, lon: 88.0667 };
 let userLocationName = 'Haldia';
 
 async function checkAPIStatus() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/health`);
-        isAPIOnline = response.ok;
-    } catch {
-        isAPIOnline = false;
-    }
+    // Check by key presence instead of hitting /api/health (which doesn't exist on localhost)
+    isAPIOnline = typeof OPENROUTER_API_KEY !== 'undefined' && OPENROUTER_API_KEY.length > 10;
 }
 
 // ── Entry point ─────────────────────────────
@@ -258,39 +254,15 @@ async function getAIWeatherAdvice(location) {
 
 In 2-3 short sentences, give a practical farming advice for today based on this weather. Be specific and helpful for an Indian farmer. Keep it concise.`;
 
-    const models = ['openrouter/free', 'meta-llama/llama-3.3-70b-instruct:free', 'google/gemini-2.0-flash-exp:free'];
-
-    for (const model of models) {
-        try {
-            const res = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Title': 'BharatFarm Weather Advice'
-                },
-                body: JSON.stringify({
-                    model,
-                    messages: [{ role: 'user', content: prompt }],
-                    max_tokens: 200,
-                    temperature: 0.6
-                })
-            });
-
-            if (!res.ok) {
-                if (res.status === 429) continue; // try next model
-                throw new Error(`HTTP ${res.status}`);
-            }
-
-            const data = await res.json();
-            const advice = data?.choices?.[0]?.message?.content?.trim();
-            if (advice) {
-                textDiv.textContent = advice;
-                return;
-            }
-        } catch (err) {
-            console.warn(`[Weather AI] model ${model} failed:`, err.message);
-            continue;
-        }
+    try {
+        const advice = await aiCall({
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 200,
+            temperature: 0.6
+        });
+        if (advice) { textDiv.textContent = advice; return; }
+    } catch (err) {
+        console.warn('[Weather AI] failed:', err.message);
     }
 
     // All failed — show a fallback tip based on the data

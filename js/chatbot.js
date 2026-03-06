@@ -455,23 +455,33 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
 
     for (const model of candidates) {
       try {
-        const url = "/api/chat";
-        console.log(`[KrishiBot] Using proxy for model: ${model}`);
-
-        const res = await fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Title": "BharatFarm KrishiBot",
-          },
-          body: JSON.stringify({
-            model: model,
-            messages: messages,
-            temperature: 0.7,
-            max_tokens: 800,
-            top_p: 0.9,
-          }),
-        });
+        let res;
+        try {
+          // Try proxy first (works on Vercel)
+          res = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-Title": "BharatFarm KrishiBot" },
+            body: JSON.stringify({ model, messages, temperature: 0.7, max_tokens: 800, top_p: 0.9 }),
+          });
+          // If proxy not found (localhost dev), fall back to direct API call
+          if (res.status === 404) {
+            console.log("[KrishiBot] Proxy not found, using direct API");
+            res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${apiKey}`,
+                "HTTP-Referer": window.location.origin,
+                "X-Title": "BharatFarm KrishiBot",
+              },
+              body: JSON.stringify({ model, messages, temperature: 0.7, max_tokens: 800, top_p: 0.9 }),
+            });
+          }
+        } catch (networkErr) {
+          console.warn("[KrishiBot] Network error:", networkErr);
+          lastError = networkErr.message;
+          continue;
+        }
 
         if (!res.ok) {
           const errData = await res.json().catch(() => ({}));

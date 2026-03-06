@@ -5,11 +5,10 @@
 let mobileNetModel = null;
 let isModelLoading = false;
 
-// Initialize Scanner and Load Model
-document.addEventListener('DOMContentLoaded', () => {
-    initScannerDragDrop();
-    loadModel();
-});
+
+// Model is loaded once from the initialization chain
+// (app.js calls initScannerDragDrop, scanner loads model on demand)
+
 
 async function loadModel() {
     try {

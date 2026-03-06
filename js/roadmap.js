@@ -93,25 +93,11 @@ The "type" field must be one of: "prep", "seed", "water", "fertilizer", "harvest
 Include: land prep, sowing/planting, first irrigation, 2-3 fertilizer applications (with specific fertilizer names), pest/disease check, and final harvest.
 Make day numbers realistic for the crop duration. Keep descriptions concise and specific to ${cropName}.`;
 
-    const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Title': 'BharatFarm'
-        },
-        body: JSON.stringify({
-            model: 'google/gemini-2.0-flash-001',
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.3,
-            max_tokens: 1000
-        })
+    const raw = await aiCall({
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1000
     });
-
-    if (!response.ok) throw new Error(`OpenRouter error: ${response.status}`);
-
-    const data = await response.json();
-    const raw = data.choices?.[0]?.message?.content?.trim();
-    if (!raw) throw new Error('Empty AI response');
 
     // Extract JSON from response (handle if AI wraps in markdown code block)
     const jsonMatch = raw.match(/\[[\s\S]*\]/);

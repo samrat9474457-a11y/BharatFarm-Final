@@ -51,6 +51,11 @@ function showSection(sectionId, button) {
             }
         }
     }
+
+    // Initialize marketplace if selected — show role picker first
+    if (sectionId === 'marketplace' && typeof openMarketplace === 'function') {
+        openMarketplace();
+    }
 }
 
 /**
