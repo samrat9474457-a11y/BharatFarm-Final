@@ -41,6 +41,40 @@
     .logo h1 {
         font-size: 1.1rem !important;
         letter-spacing: -0.5px;
+        color: var(--primary) !important;
+        margin-left: 8px !important;
+    }
+
+    #globalLogoIcon {
+        color: var(--govt-gold, #c5a059) !important;
+        font-size: 1.2rem !important;
+    }
+
+    .header-content {
+        height: 100% !important;
+        align-items: center !important;
+        display: flex !important;
+        justify-content: space-between !important;
+    }
+
+    .logo {
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .global-back-btn {
+        background: none !important;
+        border: none !important;
+        color: var(--govt-saffron, #ff9933) !important;
+        font-size: 1.3rem !important;
+        padding: 0 10px 0 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Hide redundant elements in mobile header */
+    .marketplace-btn-header,
+    .language-toggle {
+        display: none !important;
     }
 
     .header-actions {
@@ -54,6 +88,8 @@
         display: flex !important;
         align-items: center;
         justify-content: center;
+        border-radius: 50% !important;
+        padding: 0 !important;
     }
 
     .subscription-btn i, .logout-btn i {
@@ -218,8 +254,13 @@
         max-width: 100% !important;
         height: 100% !important;
         top: 0 !important;
-        right: 0 !important;
         border-radius: 0 !important;
+        right: -100% !important; /* Move off-screen by default */
+        transition: right 0.3s ease-in-out !important;
+    }
+
+    .cart-drawer.open {
+        right: 0 !important;
     }
 
     .cart-header, .checkout-header {
