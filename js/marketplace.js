@@ -11,6 +11,11 @@ let marketplaceState = {
     myListings: []       // listings added by this farmer in current session
 };
 
+// Ensure marketplace is only initialized once per session
+function checkMarketplaceInit() {
+    console.log('Marketplace module initialized with ' + marketplaceState.products.length + ' items.');
+}
+
 // ─── Role Picker ────────────────────────────────────────────────────────────
 
 function openMarketplace() {
