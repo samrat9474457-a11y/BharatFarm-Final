@@ -8,6 +8,10 @@ let cartState = {
 
 // ─── Core Cart Operations ────────────────────────────────────────────────────
 
+function isCartEmpty() {
+    return cartState.items.length === 0;
+}
+
 function addToCart(productId) {
     const product = marketplaceState.products.find(p => p.id === productId);
     if (!product) return;
