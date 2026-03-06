@@ -56,6 +56,15 @@
     /* Transitions */
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
+    /* Premium Govt Theme Additions */
+    --govt-forest: #0b3d1d;
+    --govt-saffron: #ff9933;
+    --govt-gold: #c5a059;
+    --govt-white: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --premium-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
     /* Mobile UI */
     --bottom-nav-height: 70px;
 }

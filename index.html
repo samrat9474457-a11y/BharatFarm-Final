@@ -34,7 +34,12 @@
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/mobile.css">
     <link rel="stylesheet" href="css/chatbot.css">
+    <link rel="stylesheet" href="css/marketplace.css">
+    <link rel="stylesheet" href="css/section-backgrounds.css">
     <script src="js/subscription.js" defer></script>
+    <script src="js/marketplaceData.js" defer></script>
+    <script src="js/marketplace.js" defer></script>
+    <script src="js/cart.js" defer></script>
 </head>
 
 <body>
@@ -438,6 +443,9 @@
                     <button class="language-toggle" onclick="showLanguageModal()" title="Change Language">
                         <i class="fas fa-globe"></i>
                     </button>
+                    <button class="marketplace-btn-header" onclick="showSection('marketplace')" title="Agri-Marketplace" style="background: var(--govt-forest); color: white; border: 1px solid var(--govt-gold);">
+                        <i class="fas fa-store"></i> Marketplace
+                    </button>
                     <button class="subscription-btn" onclick="openSubscription()" title="Go Premium">
                         <i class="fas fa-crown"></i> Premium
                     </button>
@@ -582,6 +590,227 @@
                     </div>
                 </div>
             </section>
+            
+            <!-- ROLE PICKER POPUP -->
+            <div class="role-picker-overlay" id="rolePickerOverlay">
+                <div class="role-picker-card">
+                    <div class="role-picker-badge"><i class="fas fa-landmark"></i> Digital Agri-India Portal</div>
+                    <h2 class="role-picker-title">Welcome to the Marketplace</h2>
+                    <p class="role-picker-sub">Please select your role to continue</p>
+                    <div class="role-picker-options">
+                        <button class="role-option-btn" onclick="selectMarketplaceRole('buyer')">
+                            <div class="role-icon buyer-icon"><i class="fas fa-shopping-basket"></i></div>
+                            <div class="role-label">I am a Buyer</div>
+                            <div class="role-desc">Browse &amp; contact farmers directly</div>
+                        </button>
+                        <button class="role-option-btn" onclick="selectMarketplaceRole('farmer')">
+                            <div class="role-icon farmer-icon"><i class="fas fa-tractor"></i></div>
+                            <div class="role-label">I am a Farmer</div>
+                            <div class="role-desc">List your produce &amp; manage listings</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MARKETPLACE SECTION -->
+            <section id="marketplace">
+                <button class="section-back-btn" onclick="goBack()" title="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+
+                <div class="marketplace-hero">
+                    <div class="marketplace-hero-bg"></div>
+                    <div class="marketplace-hero-overlay"></div>
+                    <div class="marketplace-hero-content">
+                        <div class="gov-branding-badge"><i class="fas fa-landmark"></i> Digital Agri-India Portal</div>
+                        <h2>Agri-Marketplace</h2>
+                        <p>Empowering Indian Farmers with Direct Trade &amp; Premium Market Access</p>
+                    </div>
+                </div>
+
+                <!-- Role Tabs -->
+                <div class="mk-tabs-bar">
+                    <button class="mk-tab active" id="tabBuyer" onclick="switchMkTab('buyer')">
+                        <i class="fas fa-shopping-basket"></i> Browse Market
+                    </button>
+                    <button class="mk-tab" id="tabFarmer" onclick="switchMkTab('farmer')">
+                        <i class="fas fa-tractor"></i> Sell Produce
+                    </button>
+                    <div class="mk-tabs-right">
+                        <button class="cart-icon-btn" onclick="openCartDrawer()" title="View Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-badge" id="cartBadge" style="display:none;">0</span>
+                        </button>
+                        <div class="mk-role-badge" id="mkRoleBadge">
+                            <i class="fas fa-user-circle"></i> <span id="mkRoleLabel">Buyer</span>
+                        </div>
+                        <button class="mk-switch-role-btn" onclick="switchRole()">
+                            <i class="fas fa-exchange-alt"></i> Switch Role
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BUYER TAB -->
+                <div id="buyerTab" class="mk-tab-content active">
+                    <div class="marketplace-sticky-bar">
+                        <div class="marketplace-controls-refined">
+                            <div class="search-wrapper">
+                                <i class="fas fa-search"></i>
+                                <input type="text" id="marketplaceSearch" placeholder="Search crops, farmers or regions..." onkeyup="searchMarketplace(this.value)">
+                            </div>
+                            <div class="category-chips-container" id="marketplaceCategories"></div>
+                        </div>
+                    </div>
+                    <div class="premium-product-grid" id="marketplaceGrid"></div>
+                </div>
+
+                <!-- FARMER TAB -->
+                <div id="farmerTab" class="mk-tab-content">
+                    <div class="farmer-tab-layout">
+                        <div class="farmer-form-panel">
+                            <div class="farmer-form-header">
+                                <i class="fas fa-plus-circle"></i> Add New Listing
+                            </div>
+                            <form id="farmerSellForm" onsubmit="handleSellSubmit(event)" class="farmer-sell-form">
+                                <div class="sell-form-group">
+                                    <label>Product Name</label>
+                                    <input type="text" name="name" placeholder="e.g. Fresh Basmati Rice" required>
+                                </div>
+                                <div class="sell-form-row">
+                                    <div class="sell-form-group">
+                                        <label>Category</label>
+                                        <select name="category" required>
+                                            <option value="vegetables">Vegetables</option>
+                                            <option value="fruits">Fruits</option>
+                                            <option value="grains">Grains &amp; Pulses</option>
+                                            <option value="seeds">Seeds &amp; Fertilizers</option>
+                                            <option value="machinery">Machinery</option>
+                                        </select>
+                                    </div>
+                                    <div class="sell-form-group">
+                                        <label>Price (Rs.)</label>
+                                        <input type="number" name="price" placeholder="e.g. 65" required min="1">
+                                    </div>
+                                </div>
+                                <div class="sell-form-row">
+                                    <div class="sell-form-group">
+                                        <label>Unit</label>
+                                        <select name="unit">
+                                            <option value="kg">Per kg</option>
+                                            <option value="quintal">Per quintal</option>
+                                            <option value="piece">Per piece</option>
+                                            <option value="ton">Per ton</option>
+                                        </select>
+                                    </div>
+                                    <div class="sell-form-group">
+                                        <label>Quantity</label>
+                                        <input type="text" name="quantity" placeholder="e.g. 500 kg" required>
+                                    </div>
+                                </div>
+                                <div class="sell-form-group">
+                                    <label>Location (District, State)</label>
+                                    <input type="text" name="location" placeholder="e.g. Hooghly, WB" required>
+                                </div>
+                                <div class="sell-form-group">
+                                    <label>WhatsApp Number</label>
+                                    <input type="tel" name="contact" placeholder="10-digit number" required pattern="[0-9]{10}" maxlength="10">
+                                </div>
+                                <button type="submit" class="sell-submit-btn">
+                                    <i class="fas fa-check-circle"></i> Publish Listing
+                                </button>
+                            </form>
+                        </div>
+                        <div class="farmer-listings-panel">
+                            <div class="farmer-form-header">
+                                <i class="fas fa-list-alt"></i> My Active Listings
+                            </div>
+                            <div id="farmerActiveListings" class="farmer-active-grid">
+                                <div class="farmer-no-listing">
+                                    <i class="fas fa-seedling"></i>
+                                    <p>Your published listings will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CART OVERLAY -->
+            <div class="cart-overlay" id="cartOverlay" onclick="closeCartDrawer()"></div>
+
+            <!-- CART DRAWER -->
+            <div class="cart-drawer" id="cartDrawer">
+                <div class="cart-header">
+                    <div class="cart-header-left">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>My Cart</h3>
+                    </div>
+                    <button class="cart-close-btn" onclick="closeCartDrawer()"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="cart-body" id="cartBody">
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-basket"></i>
+                        <h3>Your cart is empty</h3>
+                        <p>Add items from the marketplace to begin</p>
+                    </div>
+                </div>
+                <div class="cart-footer" id="cartFooter" style="display:none;">
+                    <div class="cart-total-row">
+                        <span>Total</span>
+                        <span class="cart-total-price" id="cartTotal">&#8377;0</span>
+                    </div>
+                    <button class="cart-checkout-btn" onclick="openCheckout()">
+                        <i class="fas fa-lock"></i> Proceed to Checkout
+                    </button>
+                </div>
+            </div>
+
+            <!-- CHECKOUT MODAL -->
+            <div class="checkout-modal-overlay" id="checkoutModal" style="display:none;">
+                <div class="checkout-modal">
+                    <div class="checkout-header">
+                        <h2><i class="fas fa-lock"></i> Secure Checkout</h2>
+                        <button class="cart-close-btn" onclick="closeCheckout()"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="checkout-body" id="checkoutBody">
+                        <div class="checkout-columns">
+                            <!-- Order Summary -->
+                            <div class="co-summary-panel">
+                                <div class="co-section-title"><i class="fas fa-receipt"></i> Order Summary</div>
+                                <div id="checkoutItems" class="co-items-list"></div>
+                                <div class="co-total-block">
+                                    <div class="co-row"><span>Subtotal</span><span id="coSubtotal">&#8377;0</span></div>
+                                    <div class="co-row"><span>Delivery</span><span class="co-free">Direct from Farmer</span></div>
+                                    <div class="co-row co-row-total"><span>Total</span><span id="coTotal">&#8377;0</span></div>
+                                </div>
+                            </div>
+                            <!-- Buyer Details -->
+                            <div class="co-buyer-panel">
+                                <div class="co-section-title"><i class="fas fa-user"></i> Your Details</div>
+                                <div class="sell-form-group">
+                                    <label>Your Full Name</label>
+                                    <input type="text" id="buyerName" placeholder="e.g. Rohit Sharma" required>
+                                </div>
+                                <div class="sell-form-group">
+                                    <label>Your WhatsApp Number</label>
+                                    <input type="tel" id="buyerPhone" placeholder="10-digit number" maxlength="10" pattern="[0-9]{10}" required>
+                                </div>
+                                <div class="sell-form-group">
+                                    <label>Delivery Address (Optional)</label>
+                                    <input type="text" id="buyerAddress" placeholder="Village / City / Pincode">
+                                </div>
+                                <div class="co-note">
+                                    <i class="fas fa-info-circle"></i>
+                                    Your order will be sent via WhatsApp to each farmer. They will confirm availability and arrange delivery directly.
+                                </div>
+                                <button class="cart-checkout-btn" onclick="placeOrder()">
+                                    <i class="fab fa-whatsapp"></i> Send Order via WhatsApp
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- USER PROFILE SECTION -->
             <section id="profile">
@@ -1132,6 +1361,10 @@
             <i class="fas fa-cloud-sun"></i>
             <span>Weather</span>
         </button>
+        <button onclick="showSection('marketplace')" id="bottomNavMarket">
+            <i class="fas fa-store"></i>
+            <span>Market</span>
+        </button>
         <div class="nav-placeholder"></div> <!-- Space for FAB -->
         <button onclick="showSection('crops')" id="bottomNavCrops">
             <i class="fas fa-seedling"></i>
@@ -1143,10 +1376,6 @@
         </button>
     </nav>
 
-    <!-- Scanner Floating Action Button -->
-    <button class="scanner-fab" onclick="showSection('scanner')" title="Scan Leaf">
-        <i class="fas fa-camera"></i>
-    </button>
 
     <!-- TensorFlow.js and MobileNet -->
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>

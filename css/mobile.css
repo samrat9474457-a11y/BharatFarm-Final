@@ -96,7 +96,7 @@
     }
 
     .scanner-fab {
-        display: flex;
+        display: none !important;
     }
 
     /* Hide standard nav on mobile */

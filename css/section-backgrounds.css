@@ -1,0 +1,162 @@
+/* ============================================================================
+   SECTION BACKGROUNDS — Unique, visible gradient per tab
+   ============================================================================ */
+
+/* Make sure sections can show their backgrounds */
+section {
+    position: relative;
+    min-height: 100vh;
+}
+
+/* ── Dashboard — deep forest (BharatFarm brand) */
+#dashboard {
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(11,61,29,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 80%, rgba(197,160,89,0.14) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(30,58,95,0.10) 0%, transparent 70%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #dashboard {
+    background:
+        radial-gradient(ellipse at 10% 20%, rgba(11,61,29,0.35) 0%, transparent 60%),
+        radial-gradient(ellipse at 90% 80%, rgba(197,160,89,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(30,58,95,0.20) 0%, transparent 70%),
+        var(--bg-primary);
+}
+
+/* ── Marketplace — saffron sunrise (commerce, India flag) */
+#marketplace {
+    background:
+        radial-gradient(ellipse at 0% 0%, rgba(255,153,51,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(11,61,29,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(197,160,89,0.08) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #marketplace {
+    background:
+        radial-gradient(ellipse at 0% 0%, rgba(255,153,51,0.20) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(11,61,29,0.28) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(197,160,89,0.10) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+/* ── Scanner — teal/violet AI theme */
+#scanner {
+    background:
+        radial-gradient(ellipse at 80% 10%, rgba(0,188,212,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 90%, rgba(103,58,183,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 40%, rgba(0,150,136,0.10) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #scanner {
+    background:
+        radial-gradient(ellipse at 80% 10%, rgba(0,188,212,0.28) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 90%, rgba(103,58,183,0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 40%, rgba(0,150,136,0.18) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+/* ── Weather — sky blue atmosphere */
+#weather {
+    background:
+        radial-gradient(ellipse at 30% 0%, rgba(135,206,235,0.24) 0%, transparent 55%),
+        radial-gradient(ellipse at 70% 60%, rgba(100,149,237,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 80%, rgba(176,196,222,0.15) 0%, transparent 45%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #weather {
+    background:
+        radial-gradient(ellipse at 30% 0%, rgba(30,58,95,0.35) 0%, transparent 55%),
+        radial-gradient(ellipse at 70% 60%, rgba(45,90,135,0.28) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 80%, rgba(70,120,180,0.20) 0%, transparent 45%),
+        var(--bg-primary);
+}
+
+/* ── Crops — warm green fields + earth */
+#crops {
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(39,174,96,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(243,156,18,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 10%, rgba(11,61,29,0.12) 0%, transparent 45%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #crops {
+    background:
+        radial-gradient(ellipse at 20% 30%, rgba(39,174,96,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 80% 70%, rgba(243,156,18,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 10%, rgba(11,61,29,0.25) 0%, transparent 45%),
+        var(--bg-primary);
+}
+
+/* ── Calculator — precision blue-indigo */
+#calculator {
+    background:
+        radial-gradient(ellipse at 75% 20%, rgba(63,81,181,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 25% 80%, rgba(30,58,95,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(52,73,94,0.08) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #calculator {
+    background:
+        radial-gradient(ellipse at 75% 20%, rgba(63,81,181,0.28) 0%, transparent 50%),
+        radial-gradient(ellipse at 25% 80%, rgba(30,58,95,0.30) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(52,73,94,0.15) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+/* ── Roadmap — warm amber milestones */
+#roadmap {
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(255,152,0,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 85%, rgba(230,81,0,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(197,160,89,0.10) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #roadmap {
+    background:
+        radial-gradient(ellipse at 15% 15%, rgba(255,152,0,0.24) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 85%, rgba(230,81,0,0.20) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(197,160,89,0.14) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+/* ── Notifications — rose + plum alerts */
+#notifications {
+    background:
+        radial-gradient(ellipse at 90% 10%, rgba(231,76,60,0.16) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 90%, rgba(142,68,173,0.14) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(41,128,185,0.08) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #notifications {
+    background:
+        radial-gradient(ellipse at 90% 10%, rgba(231,76,60,0.24) 0%, transparent 50%),
+        radial-gradient(ellipse at 10% 90%, rgba(142,68,173,0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(41,128,185,0.14) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+/* ── Profile — authority gold + navy */
+#profile {
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(197,160,89,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(30,58,95,0.16) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(11,61,29,0.10) 0%, transparent 60%),
+        var(--bg-primary);
+}
+
+[data-theme="dark"] #profile {
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(197,160,89,0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(30,58,95,0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 50%, rgba(11,61,29,0.20) 0%, transparent 60%),
+        var(--bg-primary);
+}
