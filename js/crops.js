@@ -269,8 +269,11 @@ async function loadCropImage(crop, cardElement) {
 
     try {
         let imageUrl;
-        // Fetch from proxies
-        if (USE_UNSPLASH) {
+
+        // Use hardcoded imageUrl first (no API call needed)
+        if (crop.imageUrl) {
+            imageUrl = crop.imageUrl;
+        } else if (USE_UNSPLASH) {
             imageUrl = await fetchCropImageFromUnsplash(crop.imageKeywords, crop.id);
         } else if (USE_PEXELS) {
             imageUrl = await fetchCropImageFromPexels(crop.imageKeywords, crop.id);
@@ -434,24 +437,11 @@ Guidelines:
 - Include approximate durations where possible.
 - Avoid unnecessary long text.`;
 
-    const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-Title': 'BharatFarm'
-        },
-        body: JSON.stringify({
-            model: 'google/gemini-2.0-flash-001',
-            messages: [{ role: 'user', content: prompt }],
-            temperature: 0.3,
-            max_tokens: 1200
-        })
+    const raw = await aiCall({
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.3,
+        max_tokens: 1200
     });
-
-    if (!response.ok) throw new Error(`API error: ${response.status}`);
-    const data = await response.json();
-    const raw = data.choices?.[0]?.message?.content?.trim();
-    if (!raw) throw new Error('Empty response');
 
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('No JSON found');

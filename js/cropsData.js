@@ -1,11 +1,8 @@
 // ============================================
 // COMPREHENSIVE CROPS DATABASE
 // ============================================
-// Contains real Indian crops with:
-// - Common & scientific names
-// - Category (vegetable, fruit, cereal, pulse, oilseed)
-// - Growing information
-// - Image search keywords (for fetching from APIs)
+// Real Indian crops with hardcoded Unsplash images
+// so they always display (no API call required)
 
 const CROPS_DATABASE = {
     // ═══════════════════════════════════════════
@@ -21,7 +18,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 3-4 times weekly',
         harvesting: 'June to September (Summer harvest)',
         imageKeywords: 'tomato red vegetable garden fresh',
-        imageUrl: null // Will be fetched from API
+        imageUrl: 'https://images.unsplash.com/photo-1546470427-e26264be0b0d?w=400&q=80'
     },
     potato: {
         commonName: 'Potato',
@@ -33,7 +30,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, weekly once',
         harvesting: 'October to March',
         imageKeywords: 'potato vegetable harvest farm',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&q=80'
     },
     onion: {
         commonName: 'Onion',
@@ -45,7 +42,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, once in 2 weeks',
         harvesting: 'March to May',
         imageKeywords: 'onion bulb vegetable market',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1508747703725-719777637510?w=400&q=80'
     },
     carrot: {
         commonName: 'Carrot',
@@ -57,7 +54,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Light irrigation, weekly',
         harvesting: 'October to January',
         imageKeywords: 'carrots harvest root vegetable bunch',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1447175008436-054170c2e979?w=400&q=80'
     },
     cabbage: {
         commonName: 'Cabbage',
@@ -69,7 +66,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 2-3 times weekly',
         harvesting: 'November to February',
         imageKeywords: 'cabbage green vegetable fresh',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1594282486552-05b4d80fbb9f?w=400&q=80'
     },
     spinach: {
         commonName: 'Spinach',
@@ -81,7 +78,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, light watering',
         harvesting: 'October to March',
         imageKeywords: 'spinach fresh green leaves vegetable',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&q=80'
     },
     brinjal: {
         commonName: 'Brinjal (Eggplant)',
@@ -93,7 +90,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 4-5 times weekly',
         harvesting: 'July to December',
         imageKeywords: 'eggplant purple brinjal vegetable',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=400&q=80'
     },
     cauliflower: {
         commonName: 'Cauliflower',
@@ -105,10 +102,10 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 2-3 times weekly',
         harvesting: 'December to February',
         imageKeywords: 'cauliflower white vegetable fresh',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1568584711271-6c929fb49b60?w=400&q=80'
     },
     okra: {
-        commonName: 'Okra (Lady\s Finger)',
+        commonName: "Okra (Lady's Finger)",
         scientificName: 'Abelmoschus esculentus',
         category: 'vegetable',
         climate: 'Warm, 20-30°C',
@@ -117,7 +114,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 3-4 times weekly',
         harvesting: 'June to September',
         imageKeywords: 'okra bhindi pods green vegetable',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1604977042946-1eecc30f269e?w=400&q=80'
     },
     capsicum: {
         commonName: 'Capsicum (Bell Pepper)',
@@ -129,7 +126,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Regular, 2-3 times weekly',
         harvesting: 'September to May',
         imageKeywords: 'bell pepper capsicum red green vegetable',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400&q=80'
     },
 
     // ═══════════════════════════════════════════
@@ -145,7 +142,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, seasonal irrigation',
         harvesting: 'April to June',
         imageKeywords: 'mango fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&q=80'
     },
     banana: {
         commonName: 'Banana',
@@ -157,7 +154,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'High, frequent irrigation',
         harvesting: 'Year-round (5-7 months after planting)',
         imageKeywords: 'banana fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=400&q=80'
     },
     apple: {
         commonName: 'Apple',
@@ -169,7 +166,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, regular irrigation',
         harvesting: 'September to November',
         imageKeywords: 'apple fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&q=80'
     },
     papaya: {
         commonName: 'Papaya',
@@ -181,7 +178,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, regular irrigation',
         harvesting: 'Year-round (peak June-July)',
         imageKeywords: 'papaya fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1526318472351-c75fcf070305?w=400&q=80'
     },
     guava: {
         commonName: 'Guava',
@@ -193,7 +190,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, occasional irrigation',
         harvesting: 'September to November',
         imageKeywords: 'guava fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1536511132770-e5058c7e8c46?w=400&q=80'
     },
     orange: {
         commonName: 'Orange',
@@ -205,7 +202,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, regular irrigation',
         harvesting: 'December to February',
         imageKeywords: 'orange citrus fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=400&q=80'
     },
     grapes: {
         commonName: 'Grapes',
@@ -217,7 +214,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, regular irrigation',
         harvesting: 'April to June',
         imageKeywords: 'grapes fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=400&q=80'
     },
     pomegranate: {
         commonName: 'Pomegranate',
@@ -229,7 +226,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Low to moderate irrigation',
         harvesting: 'September to November',
         imageKeywords: 'pomegranate fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1615485291084-e2f09740e12e?w=400&q=80'
     },
     watermelon: {
         commonName: 'Watermelon',
@@ -241,7 +238,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'High, frequent irrigation',
         harvesting: 'April to June',
         imageKeywords: 'watermelon fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1563114773-84221bd62daa?w=400&q=80'
     },
     pineapple: {
         commonName: 'Pineapple',
@@ -253,7 +250,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, regular irrigation',
         harvesting: 'December to March',
         imageKeywords: 'pineapple fruit',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=400&q=80'
     },
 
     // ═══════════════════════════════════════════
@@ -269,7 +266,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'High, flooded fields',
         harvesting: 'October to November',
         imageKeywords: 'rice paddy grain field harvest',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=400&q=80'
     },
     wheat: {
         commonName: 'Wheat',
@@ -281,7 +278,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, 4-5 irrigations',
         harvesting: 'March to April',
         imageKeywords: 'wheat grain field golden crop',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80'
     },
     maize: {
         commonName: 'Maize (Corn)',
@@ -293,7 +290,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, 4-6 irrigations',
         harvesting: 'September to October',
         imageKeywords: 'corn maize field green crop India',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1601593768799-76f7d35aa27c?w=400&q=80'
     },
     barley: {
         commonName: 'Barley',
@@ -305,7 +302,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Low, 2-3 irrigations',
         harvesting: 'March to April',
         imageKeywords: 'barley grain cereal crop field',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400&q=80'
     },
     oats: {
         commonName: 'Oats',
@@ -317,7 +314,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Low, rainfall dependent',
         harvesting: 'March to April',
         imageKeywords: 'oats cereal grain crop',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1614314107768-6018061b5b72?w=400&q=80'
     },
 
     // ═══════════════════════════════════════════
@@ -333,7 +330,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Low, 2-3 irrigations',
         harvesting: 'February to March',
         imageKeywords: 'mustard yellow flower field oilseed',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1593280359364-5d8b7e245d8f?w=400&q=80'
     },
     soybean: {
         commonName: 'Soybean',
@@ -345,7 +342,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, 4-6 irrigations',
         harvesting: 'October to November',
         imageKeywords: 'soybean pod plant crop oilseed',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=400&q=80'
     },
     sunflower: {
         commonName: 'Sunflower',
@@ -357,7 +354,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, 4-5 irrigations',
         harvesting: 'August to September',
         imageKeywords: 'sunflower yellow bloom flower field',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1470509037663-253d62d56bb7?w=400&q=80'
     },
     groundnut: {
         commonName: 'Groundnut (Peanut)',
@@ -369,7 +366,7 @@ const CROPS_DATABASE = {
         wateringFrequency: 'Moderate, 4-5 irrigations',
         harvesting: 'September to October',
         imageKeywords: 'peanut groundnut crop oilseed',
-        imageUrl: null
+        imageUrl: 'https://images.unsplash.com/photo-1567449303183-ae0d6ed1498e?w=400&q=80'
     }
 };
 
@@ -384,7 +381,7 @@ function getCropsByCategory(category) {
 function searchCrops(query) {
     const q = query.toLowerCase();
     return Object.entries(CROPS_DATABASE)
-        .filter(([key, crop]) => 
+        .filter(([key, crop]) =>
             crop.commonName.toLowerCase().includes(q) ||
             crop.scientificName.toLowerCase().includes(q) ||
             key.toLowerCase().includes(q)
