@@ -74,8 +74,67 @@ function getUserProfile() {
         return currentUser;
     }
 
-    return null;
+    // If we're not logged in, return a default mock user so it always works
+    let mockUser = {
+        username: 'guest_user',
+        name: 'Guest Farmer',
+        phone: '1234567890',
+        profile: {
+            memberSince: new Date().toISOString().split('T')[0],
+            location: 'Guest Location',
+            preferences: { crops: [], landSize: '' },
+            statistics: { totalScans: 0, weatherChecks: 0, calculations: 0, cropsTracked: 0 },
+            profileImage: localStorage.getItem('bharatfarm_custom_profile_image') || ''
+        }
+    };
+
+    return mockUser;
 }
+
+// Handle Profile Image Upload
+function updateProfileImage(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            const imageData = e.target.result;
+            // Save to localStorage
+            localStorage.setItem('bharatfarm_custom_profile_image', imageData);
+
+            // Update all profile images on the UI
+            applyProfileImage(imageData);
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function applyProfileImage(imageData) {
+    if (!imageData) return;
+
+    // Header image
+    const headerImg = document.getElementById('headerProfileImg');
+    const headerIcon = document.getElementById('headerProfileIcon');
+    if (headerImg && headerIcon) {
+        headerImg.src = imageData;
+        headerImg.style.display = 'block';
+        headerIcon.style.display = 'none';
+    }
+
+    // Main profile page image
+    const mainImg = document.getElementById('mainProfileImg');
+    const mainIcon = document.getElementById('mainProfileIcon');
+    if (mainImg && mainIcon) {
+        mainImg.src = imageData;
+        mainImg.style.display = 'block';
+        mainIcon.style.display = 'none';
+    }
+}
+
+// Hook into init to apply custom image on load
+document.addEventListener('DOMContentLoaded', () => {
+    const customImage = localStorage.getItem('bharatfarm_custom_profile_image');
+    if (customImage) applyProfileImage(customImage);
+});
 
 // Update user statistics
 function updateUserStatistic(statKey) {
@@ -152,20 +211,17 @@ function showProfilePage() {
     try {
         // Update profile info
         const profileName = document.getElementById('profileName');
-        const profileEmail = document.getElementById('profileEmail');
-        const profileUsername = document.getElementById('profileUsername');
+        const profilePhone = document.getElementById('profilePhone');
 
-        if (!profileName || !profileEmail || !profileUsername) {
+        if (!profileName || !profilePhone) {
             console.error('Profile elements not found');
             return;
         }
 
         profileName.textContent = user.name || user.username;
-        profileEmail.textContent = user.email || 'Not provided';
-        profileUsername.textContent = '@' + user.username;
+        profilePhone.textContent = user.phone || user.username || 'Not provided';
 
         const profile = user.profile || {};
-        document.getElementById('profileMemberSince').textContent = formatDate(profile.memberSince || new Date().toISOString());
         document.getElementById('profileLocation').textContent = profile.location || 'Not set';
 
         // Update statistics
@@ -298,5 +354,113 @@ window.showProfilePage = showProfilePage;
 window.filterActivities = filterActivities;
 window.logActivity = logActivity;
 window.updateUserStatistic = updateUserStatistic;
+window.exportActivityPDF = exportActivityPDF;
+window.startNameEdit = startNameEdit;
+window.saveNameEdit = saveNameEdit;
+window.cancelNameEdit = cancelNameEdit;
+
+// ==========================================
+// NAME EDITING
+// ==========================================
+function startNameEdit() {
+    const currentName = document.getElementById('profileName').textContent.trim();
+    document.getElementById('nameEditInput').value = currentName;
+    document.getElementById('nameEditRow').style.display = 'flex';
+    document.getElementById('editNameBtn').style.display = 'none';
+    document.getElementById('nameEditInput').focus();
+}
+
+function cancelNameEdit() {
+    document.getElementById('nameEditRow').style.display = 'none';
+    document.getElementById('editNameBtn').style.display = 'flex';
+}
+
+function saveNameEdit() {
+    const newName = document.getElementById('nameEditInput').value.trim();
+    if (!newName) {
+        alert('Name cannot be empty!');
+        return;
+    }
+
+    // Update the visible profile name
+    document.getElementById('profileName').textContent = newName;
+
+    // Persist to localStorage
+    try {
+        const currentUserData = localStorage.getItem('bharatfarm_current_user');
+        if (currentUserData) {
+            const currentUser = JSON.parse(currentUserData);
+            currentUser.name = newName;
+            localStorage.setItem('bharatfarm_current_user', JSON.stringify(currentUser));
+        }
+    } catch (e) {
+        console.error('Error saving name to localStorage:', e);
+    }
+
+    // Update dashboard greeting if it exists on the page
+    const welcomeName = document.getElementById('welcomeName');
+    if (welcomeName) welcomeName.textContent = newName;
+
+    // Exit edit mode
+    cancelNameEdit();
+}
+
+// Request PDF Export
+function exportActivityPDF() {
+    const activityTimeline = document.getElementById('activityTimeline');
+    if (!activityTimeline || activityTimeline.innerText.includes('No activities yet')) {
+        alert('No activities to export!');
+        return;
+    }
+
+    // Temporary styles to ensure full render
+    const oldMaxHeight = activityTimeline.style.maxHeight;
+    const oldOverflow = activityTimeline.style.overflow;
+    activityTimeline.style.maxHeight = 'none';
+    activityTimeline.style.overflow = 'visible';
+
+    // Create a container
+    const pdfContainer = document.createElement('div');
+    pdfContainer.style.padding = '20px';
+    pdfContainer.style.fontFamily = 'Arial, sans-serif';
+    pdfContainer.style.color = '#333';
+
+    const header = document.createElement('h2');
+    header.innerText = 'BharatFarm - My Farming Activity History';
+    header.style.textAlign = 'center';
+    header.style.marginBottom = '10px';
+    header.style.color = '#2e7d32';
+    header.style.borderBottom = '2px solid #eee';
+    header.style.paddingBottom = '10px';
+
+    const dateText = document.createElement('p');
+    dateText.innerText = 'Generated on: ' + new Date().toLocaleString();
+    dateText.style.textAlign = 'center';
+    dateText.style.color = '#666';
+    dateText.style.marginBottom = '30px';
+    dateText.style.fontSize = '0.9rem';
+
+    // Clone the timeline
+    const activitiesClone = activityTimeline.cloneNode(true);
+    activitiesClone.style.background = '#fff';
+
+    pdfContainer.appendChild(header);
+    pdfContainer.appendChild(dateText);
+    pdfContainer.appendChild(activitiesClone);
+
+    const opt = {
+        margin: 10,
+        filename: 'Farming_History.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().from(pdfContainer).set(opt).save().then(() => {
+        // Restore styles
+        activityTimeline.style.maxHeight = oldMaxHeight;
+        activityTimeline.style.overflow = oldOverflow;
+    });
+}
 
 console.log('Profile.js loaded - showProfilePage is available:', typeof showProfilePage);
