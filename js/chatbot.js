@@ -13,18 +13,22 @@
   let isTyping = false;
   let langSelected = false;
   let apiKeyReady = false;
+  let recognition = null;
+  let isListening = false;
+  let autoSpeakActive = false;
 
   // ── System Prompt ──────────────────────────
   const SYSTEM_PROMPT = `You are an AI-powered chat assistant integrated into the BharatFarm platform.
 
-Your purpose is to help users with:
+Your purpose is to STRICTLY help users (who are Farmers or Buyers) with:
 - Farming and agriculture-related queries
 - Crop planning and best practices
-- Weather guidance
+- Market prices, buying and selling crops
 - Leaf disease detection assistance
 - Platform feature explanations
 - Technical troubleshooting
-- General help and support
+
+If a user asks about topics completely unrelated to agriculture, farming, or the BharatFarm marketplace, politely steer the conversation back to assisting them as a Farmer or Buyer.
 
 Language Support (Very Important):
 - The user has selected a language. Continue the ENTIRE conversation in that language.
@@ -150,6 +154,9 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
                         onkeydown="chatbotHandleKey(event)"
                         oninput="chatbotAutoResize(this)"
                     ></textarea>
+                    <button class="chat-header-btn" id="chatVoiceBtn" title="Speak" onclick="chatbotToggleVoice()" style="margin-right: 5px; color: var(--text-secondary);">
+                        <i class="fas fa-microphone"></i>
+                    </button>
                     <button id="chatSendBtn" title="Send message" onclick="chatbotSend()" disabled>
                         <i class="fas fa-paper-plane"></i>
                     </button>
@@ -176,17 +183,9 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
 
   // ── API Key Check ─────────────────────────
   function checkApiKey() {
-    // Check sessionStorage first, then the config constant
-    const sessionKey = sessionStorage.getItem("bf_openrouter_key");
-    const configKey = typeof OPENROUTER_API_KEY !== "undefined" ? OPENROUTER_API_KEY : "";
-
-    if (sessionKey && sessionKey.trim().length > 10) {
-      apiKeyReady = true;
-      document.getElementById("chatBadge").style.display = "flex";
-    } else if (configKey && configKey !== "YOUR_API_KEY_HERE" && configKey.trim().length > 10) {
-      apiKeyReady = true;
-      document.getElementById("chatBadge").style.display = "flex";
-    }
+    // The server handles the Gemini API key, so the frontend is always ready.
+    apiKeyReady = true;
+    document.getElementById("chatBadge").style.display = "flex";
   }
 
   // ── Toggle Chat ────────────────────────────
@@ -200,6 +199,9 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
       panel.classList.remove("chat-hidden");
       btn.style.display = "none"; // Hide toggle button when chat is open
       badge.style.display = "none";
+      
+      const voiceFab = document.querySelector(".voice-fab");
+      if (voiceFab) voiceFab.classList.add("chat-active");
 
       if (document.getElementById("chatbotMessages").children.length === 0) {
         startChat();
@@ -212,6 +214,9 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
       panel.classList.add("chat-hidden");
       btn.style.display = ""; // Show toggle button when chat is closed
       btn.innerHTML = '<i class="fas fa-robot"></i>';
+      
+      const voiceFab = document.querySelector(".voice-fab");
+      if (voiceFab) voiceFab.classList.remove("chat-active");
     }
   }
 
@@ -233,63 +238,23 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
 
   // ── Show API Key Setup ────────────────────
   function showApiKeySetup() {
-    const msgs = document.getElementById("chatbotMessages");
-    const div = document.createElement("div");
-    div.className = "api-setup-card";
-    div.innerHTML = `
-            <strong><i class="fas fa-key"></i> Setup Required</strong>
-            To enable the AI assistant, you need an OpenRouter API key.<br><br>
-            Get yours at <a href="https://openrouter.ai/keys" target="_blank">
-            <i class="fas fa-external-link-alt"></i> OpenRouter</a> — free models available!
-            <div class="api-key-input-row">
-                <input type="password" id="apiKeyField" placeholder="Paste your OpenRouter API key here..." />
-                <button onclick="chatbotSaveApiKey()">Save</button>
-            </div>
-        `;
-    msgs.appendChild(div);
-    scrollToBottom();
+    // No longer needed, server authenticates.
+    startChat();
   }
 
   // ── Save API Key ──────────────────────────
   window.chatbotSaveApiKey = function () {
-    const key = document.getElementById("apiKeyField").value.trim();
-    if (!key || key.length < 10) {
-      alert("Please enter a valid API key.");
-      return;
-    }
-    // Save to sessionStorage for this session
-    sessionStorage.setItem("bf_openrouter_key", key);
-    apiKeyReady = true;
-    workingModel = null; // reset cached model so new key can be tested
-    startChat();
+    // No longer needed
   };
 
   // ── Change API Key (from header) ──────────
   window.chatbotChangeKey = function () {
-    // Reset state so user can enter a new key
-    sessionStorage.removeItem("bf_openrouter_key");
-    apiKeyReady = false;
-    workingModel = null;
-    langSelected = false;
-    selectedLang = null;
-    conversationHistory = [];
-    clearMessages();
-    updateSendBtn();
-    showApiKeySetup();
+    // No longer needed
   };
 
   // ── Get Active API Key ────────────────────
   function getApiKey() {
-    const sessionKey = sessionStorage.getItem("bf_openrouter_key");
-    if (sessionKey) return sessionKey;
-    if (
-      typeof OPENROUTER_API_KEY !== "undefined" &&
-      OPENROUTER_API_KEY !== "YOUR_API_KEY_HERE" &&
-      OPENROUTER_API_KEY.trim().length > 10
-    ) {
-      return OPENROUTER_API_KEY;
-    }
-    return null;
+    return "server-handled";
   }
 
   // ── Show Language Selector ─────────────────
@@ -457,25 +422,26 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
       try {
         let res;
         try {
-          // Try proxy first (works on Vercel)
-          res = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", "X-Title": "BharatFarm KrishiBot" },
-            body: JSON.stringify({ model, messages, temperature: 0.7, max_tokens: 800, top_p: 0.9 }),
-          });
-          // If proxy not found (localhost dev), fall back to direct API call
-          if (res.status === 404) {
-            console.log("[KrishiBot] Proxy not found, using direct API");
-            res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${apiKey}`,
-                "HTTP-Referer": window.location.origin,
-                "X-Title": "BharatFarm KrishiBot",
-              },
-              body: JSON.stringify({ model, messages, temperature: 0.7, max_tokens: 800, top_p: 0.9 }),
-            });
+          // Send directly to our local proxy!
+          let retries = 1;
+          while (retries >= 0) {
+            try {
+              res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  text: userText,
+                  language: selectedLang,
+                  history: conversationHistory
+                }),
+              });
+              break;
+            } catch (err) {
+              if (retries === 0) throw err;
+              console.log("[KrishiBot] Fetch failed, retrying in 2 seconds...");
+              await new Promise(r => setTimeout(r, 2000));
+              retries--;
+            }
           }
         } catch (networkErr) {
           console.warn("[KrishiBot] Network error:", networkErr);
@@ -484,66 +450,19 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
         }
 
         if (!res.ok) {
-          const errData = await res.json().catch(() => ({}));
-          const errMsg = errData?.error?.message || `HTTP ${res.status}`;
-          const errCode = errData?.error?.code || res.status;
-          lastError = `[${errCode}] ${errMsg}`;
-
-          // Invalid API key
-          if (res.status === 401 || res.status === 403) {
-            sessionStorage.removeItem("bf_openrouter_key");
-            apiKeyReady = false;
-            typingEl.remove();
-            isTyping = false;
-            updateSendBtn();
-            appendBotMsg(`⚠️ API key rejected. Please check your OpenRouter key is correct.\n\nDetails: ${errMsg}`, false, true);
-            return;
-          }
-
-          // Quota / rate limit exceeded → try next model after a short delay
-          if (res.status === 429) {
-            console.warn(`[KrishiBot] Rate limited on ${model}, trying next...`);
-            if (workingModel === model) workingModel = null; // clear cached model
-            await delay(1000); // wait 1s before trying next model
-            continue;
-          }
-
-          // Model not found → try next
-          if (res.status === 404 || errMsg.toLowerCase().includes("not found")) {
-            console.warn(`[KrishiBot] Model not found: ${model}, trying next...`);
-            continue;
-          }
-
-          // Other errors → try next model
-          console.warn(`[KrishiBot] Error ${res.status} on ${model}: ${errMsg}, trying next...`);
-          continue;
+          throw new Error("HTTP " + res.status);
         }
 
         // ── Success! ───────────────────────
         const data = await res.json();
-        const choice = data?.choices?.[0];
+        const replyText = data.response;
 
-        if (!choice || !choice.message) {
-          typingEl.remove();
-          isTyping = false;
-          updateSendBtn();
-          appendBotMsg("I couldn't respond to that. Please try rephrasing.", false, true);
-          return;
-        }
-
-        const replyText = choice.message.content || "";
         if (!replyText) {
           typingEl.remove();
           isTyping = false;
           updateSendBtn();
           appendBotMsg("Empty response. Please try again.", false, true);
           return;
-        }
-
-        // Cache the working model for future messages
-        if (!workingModel) {
-          workingModel = model;
-          console.log(`[KrishiBot] ✅ Working model found: ${model}`);
         }
 
         typingEl.remove();
@@ -562,11 +481,11 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
           typingEl.remove();
           isTyping = false;
           updateSendBtn();
-          appendBotMsg("🌐 Network error. Check your internet connection.", false, true);
+          appendBotMsg("🌐 Connecting to KrishiBot... please ensure your terminal shows Server Running.", false, true);
           return;
         }
-        console.warn(`[KrishiBot] Exception for ${model}:`, err.message);
-        continue;
+        console.warn(`[KrishiBot] Exception:`, err.message);
+        continue; // Try next fallback if local fails entirely
       }
     }
 
@@ -575,10 +494,121 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
     isTyping = false;
     updateSendBtn();
     appendBotMsg(
-      `⚠️ All AI models are currently unavailable. Last error: ${lastError}\n\nThis is likely due to rate limits on free models. Please wait 30–60 seconds and try again.`,
+      `⚠️ Network is slow, retrying connection...\n\nAll AI models are currently unavailable. Last error: ${lastError}`,
       false, true
     );
   }
+
+  // ── Voice Assistant (Speech2Text & TTS) ────
+  window.chatbotToggleVoice = function () {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRec) {
+      alert("Voice recognition is not supported in your browser.");
+      return;
+    }
+
+    if (!recognition) {
+      recognition = new SpeechRec();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+
+      recognition.onstart = function () {
+        isListening = true;
+        autoSpeakActive = true; // turn on speech response auto-read if they used mic
+        const btn = document.getElementById("chatVoiceBtn");
+        btn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        btn.style.color = 'var(--danger)';
+      };
+
+      recognition.onresult = function (event) {
+        const transcript = event.results[0][0].transcript;
+        const input = document.getElementById("chatbotInput");
+        input.value += (input.value ? " " : "") + transcript;
+        updateSendBtn();
+        chatbotAutoResize(input);
+
+        // Auto send after they stop speaking
+        if (input.value.trim() !== '') {
+          chatbotSend();
+        }
+      };
+
+      recognition.onerror = function (event) {
+        console.error("Speech recognition error", event.error);
+        stopListening();
+      };
+
+      recognition.onend = function () {
+        stopListening();
+      };
+    }
+
+    if (isListening) {
+      recognition.stop();
+    } else {
+      if (selectedLang === 'hi') recognition.lang = 'hi-IN';
+      else if (selectedLang === 'bn') recognition.lang = 'bn-IN';
+      else recognition.lang = 'en-IN';
+
+      recognition.start();
+    }
+  };
+
+  function stopListening() {
+    isListening = false;
+    const btn = document.getElementById("chatVoiceBtn");
+    if (btn) {
+      btn.innerHTML = '<i class="fas fa-microphone"></i>';
+      btn.style.color = 'var(--text-secondary)';
+    }
+  }
+
+  function speakResponse(text) {
+    if (!('speechSynthesis' in window)) return;
+
+    // Stop any current reading
+    window.speechSynthesis.cancel();
+
+    // Clean markdown before speaking
+    const cleanText = text.replace(/[*_#`]/g, '');
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
+    const voices = window.speechSynthesis.getVoices();
+
+    if (selectedLang === 'hi') {
+      utterance.lang = 'hi-IN';
+      const hindiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang.startsWith('hi'));
+      if (hindiVoice) utterance.voice = hindiVoice;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+    } else if (selectedLang === 'bn') {
+      utterance.lang = 'bn-IN';
+      const bengaliVoice = voices.find(v => v.lang === 'bn-IN' || v.lang === 'bn-BD' || v.lang.startsWith('bn'));
+      if (bengaliVoice) {
+        utterance.voice = bengaliVoice;
+      } else {
+        if (!sessionStorage.getItem('bnVoiceAlertShown')) {
+          alert("A native Bengali voice is not installed on your system. Pronunciation may sound unnatural. For the best experience, please install a Bengali voice pack in your device settings.");
+          sessionStorage.setItem('bnVoiceAlertShown', 'true');
+        }
+      }
+      utterance.rate = 0.9;
+      utterance.pitch = 1.0;
+    } else {
+      utterance.lang = 'en-IN';
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  window.chatbotStopSpeaking = function () {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+    autoSpeakActive = false;
+  };
 
   // ── Append Bot Message ─────────────────────
   function appendBotMsg(text, isGreeting = false, isError = false) {
@@ -594,6 +624,16 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
     bubble.className = "msg-bubble";
     bubble.innerHTML = formatMessage(text);
 
+    // Add speak button contextually
+    if (!isError) {
+      const speakBtn = document.createElement("button");
+      speakBtn.className = "chat-speak-inline-btn";
+      speakBtn.title = "Read aloud";
+      speakBtn.innerHTML = '<i class="fas fa-volume-up" style="font-size: 0.8rem; margin-left: 8px; color: var(--primary); cursor: pointer; opacity: 0.7;"></i>';
+      speakBtn.onclick = () => speakResponse(text);
+      bubble.appendChild(speakBtn);
+    }
+
     const time = document.createElement("div");
     time.className = "msg-time";
     time.textContent = getCurrentTime();
@@ -607,6 +647,10 @@ Goal: Act as a friendly, knowledgeable, and reliable digital farming assistant f
     wrapper.appendChild(inner);
     msgs.appendChild(wrapper);
     scrollToBottom();
+
+    if (autoSpeakActive && !isError) {
+      speakResponse(text);
+    }
   }
 
   // ── Append User Message ────────────────────
