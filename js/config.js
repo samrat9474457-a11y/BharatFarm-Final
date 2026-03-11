@@ -5,7 +5,10 @@
 const API_BASE_URL = '/api';
 
 // ── OpenRouter AI Chat Assistant ─────────────────
-const OPENROUTER_API_KEY = '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';
+const OPENROUTER_API_KEY = '';
+
+// ── WebRTC Voice Assistant ─────────────────
+const OPENAI_API_KEY = '';
 
 // ── Unsplash API Configuration ─────────────────
 const UNSPLASH_API_KEY = '';
@@ -52,8 +55,8 @@ async function aiCall({ messages, model, temperature = 0.7, max_tokens = 800 }) 
             // Try proxy first
             let res = await attempt('/api/chat', { 'X-Title': 'BharatFarm' }, { model: m, messages, temperature, max_tokens });
 
-            // Proxy not found on localhost — fall back to direct call
-            if (res.status === 404 && key) {
+            // Proxy not found or method not allowed on localhost — fall back to direct call
+            if ((res.status === 404 || res.status === 405) && key) {
                 res = await attempt('https://openrouter.ai/api/v1/chat/completions', {
                     'Authorization': `Bearer ${key}`,
                     'HTTP-Referer': window.location.origin,

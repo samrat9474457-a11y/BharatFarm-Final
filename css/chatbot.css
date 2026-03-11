@@ -5,7 +5,7 @@
 /* ── Floating Toggle Button ── */
 #chatbotToggle {
   position: fixed;
-  bottom: 28px;
+  bottom: 100px;
   right: 28px;
   z-index: 9999;
   width: 62px;
@@ -30,6 +30,28 @@
   transform: scale(1.12);
   box-shadow: 0 10px 32px rgba(2, 119, 189, 0.6);
   animation: none;
+}
+
+/* Base style for Talk to AI Button (Desktop) */
+.voice-fab {
+  display: none !important;
+  bottom: 28px !important; 
+  left: 28px !important;
+  right: auto !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  z-index: 9999 !important;
+}
+
+.app-container.active ~ .voice-fab,
+body:has(.app-container.active) .voice-fab {
+  display: flex !important;
+}
+
+/* Hide the Voice FAB on desktop when Chatbot is open to prevent overlap */
+@media (min-width: 769px) {
+  .voice-fab.chat-active {
+    display: none !important;
+  }
 }
 
 #chatbotToggle .chat-badge {
@@ -76,7 +98,7 @@
 /* ── Chat Panel ── */
 #chatbotPanel {
   position: fixed;
-  bottom: 105px;
+  bottom: 115px;
   right: 28px;
   z-index: 9998;
   width: 370px;
@@ -301,6 +323,7 @@
   color: var(--text-primary, #222);
   border-bottom-left-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  box-sizing: border-box !important;
 }
 
 .chat-msg.user .msg-bubble {
@@ -309,6 +332,7 @@
   border-bottom-right-radius: 5px;
   box-shadow: 0 2px 8px rgba(2, 119, 189, 0.3);
   max-width: 100%;
+  box-sizing: border-box !important;
 }
 
 .msg-time {
@@ -647,16 +671,18 @@
     height: 56px;
   }
 
-  #chatbotPanel {
-    bottom: var(--bottom-nav-height);
-    right: 0;
-    left: 0;
-    width: 100%;
-    max-width: 100%;
-    height: 88vh;
-    max-height: 88vh;
-    border-radius: 20px 20px 0 0;
-    transform-origin: bottom center;
+  .voice-fab {
+     z-index: 10000 !important;
+  }
+
+  #chatbotInputArea {
+    padding: 10px 8px; /* Reduce side padding slightly */
+    gap: 6px; /* Decrease gap between buttons to give input more space */
+  }
+
+  #chatbotInput {
+    padding: 8px 12px;
+    font-size: 0.95rem; /* Slightly larger text on mobile to prevent squishing */
   }
 }
 

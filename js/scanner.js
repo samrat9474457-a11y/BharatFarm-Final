@@ -10,58 +10,11 @@ let isModelLoading = false;
 // (app.js calls initScannerDragDrop, scanner loads model on demand)
 
 
-async function loadModel() {
-    try {
-        isModelLoading = true;
-        console.log('Loading MobileNet model...');
-        mobileNetModel = await mobilenet.load();
-        console.log('MobileNet model loaded successfully');
-        isModelLoading = false;
-    } catch (error) {
-        console.error('Error loading model:', error);
-        isModelLoading = false;
-    }
-}
-
-function handleLeafUpload(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (event) {
-            const img = document.getElementById('leafPreviewImg');
-            img.src = event.target.result;
-            // storing original image for canvas processing
-            img.onload = () => {
-                document.getElementById('scannerPreview').style.display = 'block';
-                document.getElementById('analyzeBtn').style.display = 'inline-flex';
-                document.getElementById('scanResult').style.display = 'none';
-
-                // Reset any previous error alerts
-                const existingAlert = document.querySelector('.scanner-alert');
-                if (existingAlert) existingAlert.remove();
-            };
-        };
-        reader.readAsDataURL(file);
-    }
-}
-
-function openCamera() {
-    const input = document.getElementById('leafInput');
-    input.setAttribute('capture', 'environment');
-    input.click();
-}
-
 async function analyzeLeaf() {
-    const img = document.getElementById('leafPreviewImg');
+    const imgElement = document.getElementById('leafPreviewImg');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const loadingEl = document.getElementById('scanLoading');
     const resultEl = document.getElementById('scanResult');
-
-    if (!mobileNetModel) {
-        alert("AI Model is still loading. Please wait a moment and try again.");
-        if (!isModelLoading) loadModel();
-        return;
-    }
 
     analyzeBtn.style.display = 'none';
     loadingEl.classList.remove('hidden');
@@ -72,77 +25,89 @@ async function analyzeLeaf() {
     if (prevDebug) prevDebug.remove();
 
     try {
-        // Step 1: Object Detection
-        const predictions = await mobileNetModel.classify(img);
-        console.log('AI Predictions:', predictions);
+        console.log('Sending image to Gemini API...');
 
-        // --- DEBUGGING: Show user what AI sees ---
-        const topPrediction = predictions[0].className;
-        const debugDiv = document.createElement('div');
-        debugDiv.id = 'scanDebugInfo';
-        debugDiv.style.marginTop = '10px';
-        debugDiv.style.fontSize = '0.9rem';
-        debugDiv.style.color = '#666';
-        debugDiv.innerHTML = `<strong>AI Detected:</strong> ${topPrediction} (${Math.round(predictions[0].probability * 100)}%)`;
-        document.getElementById('scannerPreview').appendChild(debugDiv);
-        // ------------------------------------------
+        // 1. Get Base64 image data from the UI Image Element
+        const base64Image = imgElement.src;
 
-        // ------------------------------------------
-        // STRICT BLOCKLIST (Reject Humans/Objects immediately)
-        // ------------------------------------------
-        const BLOCKLIST = [
-            'person', 'man', 'woman', 'girl', 'boy', 'human', 'people', 'baby', 'child',
-            'face', 'hair', 'hand', 'leg', 'arm', 'foot', 'finger', 'toe', 'skin',
-            'shirt', 't-shirt', 'pants', 'jeans', 'dress', 'skirt', 'jacket', 'coat', 'suit',
-            'tie', 'hat', 'cap', 'glasses', 'sunglasses', 'shoe', 'sock', 'glove', 'mask',
-            'room', 'wall', 'floor', 'ceiling', 'door', 'window', 'furniture', 'chair', 'table',
-            'bed', 'sofa', 'couch', 'lamp', 'light', 'computer', 'phone', 'screen', 'keyboard',
-            'book', 'paper', 'pen', 'pencil', 'cup', 'bottle', 'glass', 'plate', 'dish', 'toy'
-        ];
+        // Extract mimetype and base64 payload
+        const mimeMatch = base64Image.match(/data:(image\/\w+);base64,/);
+        const mimeType = mimeMatch ? mimeMatch[1] : 'image/jpeg';
+        const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, "");
 
-        // Check if ANY of the top 3 predictions match the blocklist
-        const top3 = predictions.slice(0, 3);
-        const blockedMatch = top3.find(p => BLOCKLIST.some(blocked => p.className.toLowerCase().includes(blocked)));
+        // 2. Call our local Gemini endpoint
+        let response;
+        let retries = 1;
+        while (retries >= 0) {
+            try {
+                // Production: Use backend proxy to protect API keys and apply verification logic
+                response = await fetch('/api/analyze-leaf', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ mimeType, base64Image: cleanBase64 })
+                });
+                break;
+            } catch (err) {
+                if (retries === 0) throw err;
+                console.log("Fetch failed, retrying in 2 seconds...");
+                await new Promise(r => setTimeout(r, 2000));
+                retries--;
+            }
+        }
 
-        if (blockedMatch) {
-            showError(`Detected <strong>${blockedMatch.className}</strong>. <br>Please simply scan a <strong>Leaf</strong>.`);
+        if (!response.ok) {
+            throw new Error(`Server returned Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Gemini Predictions:', data);
+
+        if (!data.success) {
+            showError(data.error || "Could not analyze the leaf image.");
             loadingEl.classList.add('hidden');
             analyzeBtn.style.display = 'inline-flex';
             return;
         }
 
-        // ------------------------------------------
-        // COLOR ANALYSIS (RGB -> HSL)
-        // ------------------------------------------
-        const { status, disease, debugStats, greenRatio } = analyzeLeafHealthHSL(img);
+        const result = data.disease;
 
-        // Show Debug Stats in UI for verification
-        debugDiv.innerHTML += `<br><small style="color: #888;">${debugStats}</small>`;
+        // Display Results
+        document.getElementById('scanResult').style.display = 'block';
 
-        // STRICT PLANT CHECK: Must have enough GREEN in HSL space
-        // logic: if it's not a known plant keyword AND green ratio is low -> Reject
-        const plantKeywords = ['leaf', 'plant', 'tree', 'flower', 'vegetable', 'fruit', 'crop', 'agriculture', 'grass', 'herb', 'shrub'];
-        const isAIPlant = top3.some(p => plantKeywords.some(k => p.className.toLowerCase().includes(k)));
+        const statusEl = document.getElementById('diseaseStatus');
+        const isHealthy = result.status === 'healthy';
 
-        // NEW LOGIC: If AI doesn't overtly say "PLANT", we require at least 15% GREEN.
-        // This stops "wok", "jersey", or random objects from passing just because they match "brown/yellow" hues.
-        if (!isAIPlant && greenRatio < 0.15) {
-            showError(`No plant detected. (Green coverage too low: ${Math.round(greenRatio * 100)}%). <br>Please scan a <strong>Leaf</strong> close up.`);
-            loadingEl.classList.add('hidden');
-            analyzeBtn.style.display = 'inline-flex';
-            return;
+        statusEl.textContent = isHealthy ? 'Healthy Plant' : 'Issue Detected';
+        statusEl.className = 'disease-badge ' + (isHealthy ? 'healthy' : 'diseased');
+
+        document.getElementById('diseaseName').textContent = result.name;
+        document.getElementById('diseaseDescription').textContent = result.description;
+
+        const fertList = document.getElementById('fertilizerRecommendations');
+        if (result.fertilizers && Array.isArray(result.fertilizers)) {
+            fertList.innerHTML = result.fertilizers.map(f =>
+                `<div class="recommendation-item"><i class="fas fa-check-circle"></i><span>${f}</span></div>`
+            ).join('');
+        } else {
+            fertList.innerHTML = '';
         }
 
-        // Additional safeguard: If it is a plant, but green is < 1%? Likely a dead leaf or error, but let's allow "Rust" to catch it if heavily diseased.
-        // But if Green ratio is < 5% and we have high confidence it's NOT a plant, we reject.
+        const treatList = document.getElementById('treatmentTips');
+        if (result.treatments && Array.isArray(result.treatments)) {
+            treatList.innerHTML = result.treatments.map(t =>
+                `<div class="recommendation-item"><i class="fas fa-check-circle"></i><span>${t}</span></div>`
+            ).join('');
+        } else {
+            treatList.innerHTML = '';
+        }
 
-        // Step 3: Display Results
-        displayResult(disease);
         loadingEl.classList.add('hidden');
 
     } catch (error) {
         console.error('Analysis error:', error);
-        showError("An error occurred during analysis. Please try again.");
+        showError("⚠️ Network is slow, retrying connection...");
         loadingEl.classList.add('hidden');
         analyzeBtn.style.display = 'inline-flex';
     }
@@ -282,7 +247,9 @@ function displayResult(diseaseKey) {
     // If null passed (e.g. from debug fallback), default to healthy
     if (!diseaseKey) diseaseKey = 'healthy';
 
-    const result = diseaseDatabase[diseaseKey] || diseaseDatabase['healthy'];
+    // If the database has it mapped, use it. If not, use the nutrient_deficiency as a "generic issue" template
+    // because the name itself will be overwritten anyway.
+    const result = diseaseDatabase[diseaseKey] || diseaseDatabase['nutrient_deficiency'];
     const resultSection = document.getElementById('scanResult');
 
     const statusEl = document.getElementById('diseaseStatus');
@@ -326,6 +293,123 @@ function showError(message) {
     preview.appendChild(div);
 }
 
+function handleLeafUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const previewImg = document.getElementById('leafPreviewImg');
+        previewImg.src = e.target.result;
+        document.getElementById('scannerPreview').style.display = 'block';
+        document.getElementById('analyzeBtn').style.display = 'inline-flex';
+
+        // Clear previous results
+        document.getElementById('scanResult').style.display = 'none';
+        const prevDebug = document.getElementById('scanDebugInfo');
+        if (prevDebug) prevDebug.remove();
+        const alert = document.querySelector('.scanner-alert');
+        if (alert) alert.remove();
+    };
+    reader.readAsDataURL(file);
+}
+
+let cameraStream = null;
+
+async function openCamera() {
+    const modal = document.getElementById('cameraModal');
+    const video = document.getElementById('cameraVideo');
+    const canvas = document.getElementById('cameraCanvas');
+    const previewImg = document.getElementById('cameraPreviewImg');
+
+    // Reset UI
+    video.style.display = 'block';
+    canvas.style.display = 'none';
+    previewImg.style.display = 'none';
+    document.getElementById('captureBtn').style.display = 'inline-flex';
+    document.getElementById('retakeBtn').style.display = 'none';
+    document.getElementById('usePhotoBtn').style.display = 'none';
+
+    modal.style.display = 'flex';
+
+    try {
+        cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = cameraStream;
+    } catch (err) {
+        console.error("Camera access denied:", err);
+        alert("Camera access was denied or is not available.");
+        closeCamera();
+    }
+}
+
+function closeCamera() {
+    const modal = document.getElementById('cameraModal');
+    modal.style.display = 'none';
+    if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+        cameraStream = null;
+    }
+}
+
+function capturePhoto() {
+    const video = document.getElementById('cameraVideo');
+    const canvas = document.getElementById('cameraCanvas');
+    const previewImg = document.getElementById('cameraPreviewImg');
+
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+    video.style.display = 'none';
+    previewImg.src = dataUrl;
+    previewImg.style.display = 'block';
+
+    document.getElementById('captureBtn').style.display = 'none';
+    document.getElementById('retakeBtn').style.display = 'inline-flex';
+    document.getElementById('usePhotoBtn').style.display = 'inline-flex';
+
+    if (cameraStream) {
+        video.pause();
+    }
+}
+
+function retakePhoto() {
+    const video = document.getElementById('cameraVideo');
+    const previewImg = document.getElementById('cameraPreviewImg');
+
+    video.style.display = 'block';
+    previewImg.style.display = 'none';
+
+    if (cameraStream) {
+        video.play();
+    }
+
+    document.getElementById('captureBtn').style.display = 'inline-flex';
+    document.getElementById('retakeBtn').style.display = 'none';
+    document.getElementById('usePhotoBtn').style.display = 'none';
+}
+
+function usePhoto() {
+    const previewImg = document.getElementById('cameraPreviewImg');
+    const mainPreviewImg = document.getElementById('leafPreviewImg');
+
+    mainPreviewImg.src = previewImg.src;
+    document.getElementById('scannerPreview').style.display = 'block';
+    document.getElementById('analyzeBtn').style.display = 'inline-flex';
+
+    document.getElementById('scanResult').style.display = 'none';
+    const alert = document.querySelector('.scanner-alert');
+    if (alert) alert.remove();
+    const prevDebug = document.getElementById('scanDebugInfo');
+    if (prevDebug) prevDebug.remove();
+
+    closeCamera();
+}
+
 // Drag and drop setup
 function initScannerDragDrop() {
     const scannerBox = document.getElementById('scannerBox');
@@ -344,7 +428,7 @@ function initScannerDragDrop() {
             scannerBox.classList.remove('dragover');
             const file = e.dataTransfer.files[0];
             if (file && file.type.startsWith('image/')) {
-                document.getElementById('leafInput').files = e.dataTransfer.files;
+                document.getElementById('fileInput').files = e.dataTransfer.files;
                 handleLeafUpload({ target: { files: [file] } });
             }
         });
