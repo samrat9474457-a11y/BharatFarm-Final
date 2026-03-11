@@ -14,12 +14,13 @@
     body {
         font-size: 14px;
         -webkit-tap-highlight-color: transparent;
+        overscroll-behavior-y: none;
     }
 
     /* ─── Layout Structure ─── */
     main {
         padding: var(--spacing-sm) !important;
-        padding-top: calc(var(--header-height) + 10px) !important;
+        padding-top: calc(var(--header-height) + var(--spacing-md)) !important;
         padding-bottom: calc(var(--bottom-nav-height) + 20px) !important;
     }
 
@@ -32,10 +33,9 @@
     header {
         height: var(--header-height);
         padding: 0 var(--spacing-sm);
-        background: rgba(var(--bg-card-rgb, 255, 255, 255), 0.8) !important;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: var(--bg-card) !important;
         border-bottom: 1px solid var(--border-color);
+        z-index: 2000 !important;
     }
 
     .logo h1 {
@@ -55,11 +55,14 @@
         align-items: center !important;
         display: flex !important;
         justify-content: space-between !important;
+        flex-wrap: nowrap !important;
     }
 
     .logo {
         display: flex !important;
         align-items: center !important;
+        flex-shrink: 1 !important;
+        min-width: 0 !important;
     }
 
     .global-back-btn {
@@ -78,40 +81,55 @@
     }
 
     .header-actions {
-        gap: 8px !important;
+        gap: 6px !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        flex-shrink: 0 !important;
     }
 
-    .subscription-btn, .logout-btn {
-        width: 36px !important;
-        height: 36px !important;
+    .theme-toggle, .language-toggle, .subscription-btn, .logout-btn {
+        width: 32px !important;
+        height: 32px !important;
         font-size: 0 !important;
         display: flex !important;
         align-items: center;
         justify-content: center;
         border-radius: 50% !important;
         padding: 0 !important;
+        flex-shrink: 0 !important;
+        background: rgba(30, 58, 95, 0.08) !important;
+        color: var(--primary) !important;
+        border: none !important;
     }
 
-    .subscription-btn i, .logout-btn i {
-        font-size: 1rem !important;
+    .theme-toggle i, .language-toggle i, .subscription-btn i, .logout-btn i {
+        font-size: 0.95rem !important;
         margin: 0 !important;
+        color: var(--primary) !important;
     }
 
     /* ─── Bottom Navigation (Glassmorphism) ─── */
     .mobile-bottom-nav {
+        display: none !important; /* Hidden on login page */
+    }
+    
+    /* Only show bottom nav when app is active (logged in) */
+    .app-container.active .mobile-bottom-nav,
+    body:has(.app-container.active) .mobile-bottom-nav {
         display: flex !important;
-        background: rgba(255, 255, 255, 0.7) !important;
+
+        background: rgba(255, 255, 255, 0.85) !important;
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-top: 1px solid rgba(255, 255, 255, 0.3);
-        height: var(--bottom-nav-height);
-        padding: 0 10px 5px 10px;
-        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+        height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)) !important;
+        padding: 0 10px calc(5px + env(safe-area-inset-bottom)) 10px !important;
+        box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.05) !important;
     }
 
     [data-theme="dark"] .mobile-bottom-nav {
-        background: rgba(30, 41, 59, 0.7) !important;
-        border-top-color: rgba(255, 255, 255, 0.1);
+        background: rgba(30, 41, 59, 0.85) !important;
+        border-top-color: rgba(255, 255, 255, 0.05) !important;
     }
 
     .mobile-bottom-nav button {
@@ -134,10 +152,16 @@
 
     /* ─── Cards & Grids ─── */
     .card {
-        border-radius: var(--border-radius) !important;
-        padding: var(--spacing-sm) !important;
+        border-radius: 16px !important;
+        padding: 12px !important;
         margin-bottom: var(--spacing-sm) !important;
-        border: 1px solid var(--border-color);
+        border: none !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05) !important;
+        transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .card:active, .stat-card:active, .crop-card:active, .product-card:active, .premium-card:active, .feature-item:active {
+        transform: scale(0.96) !important;
     }
 
     /* ─── Dashboard Specifics ─── */
@@ -249,6 +273,16 @@
     }
 
     /* ─── Modals (Full Screen on Mobile) ─── */
+    .modal-overlay {
+        background: rgba(0, 0, 0, 0.45) !important;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+    .modal-content {
+        border-radius: 20px !important;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+    }
+    
     .cart-drawer, .checkout-modal {
         width: 100% !important;
         max-width: 100% !important;
@@ -292,6 +326,77 @@
 
     .section-header p {
         font-size: 0.85rem !important;
+    }
+
+    /* ─── Floating Buttons & Chatbot (Stacked properly) ─── */
+    .voice-fab {
+        display: none !important; /* Hidden on login */
+        bottom: calc(var(--bottom-nav-height) + 85px) !important;
+        right: 15px !important;
+        left: auto !important;
+        width: max-content !important;
+        min-width: auto !important;
+        padding: 8px 16px !important;
+        border-radius: 30px !important;
+        font-size: 0.85rem !important;
+        z-index: 9999 !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    }
+    
+    .app-container.active ~ .voice-fab,
+    body:has(.app-container.active) .voice-fab {
+        display: flex !important;
+    }
+    
+    @media (max-width: 768px) {
+        #chatbotToggle {
+            bottom: calc(var(--bottom-nav-height) + 15px) !important;
+            right: 15px !important;
+            width: 56px !important;
+            height: 56px !important;
+        }
+        
+        #chatbotPanel {
+            bottom: 0 !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-width: none !important;
+            max-height: none !important;
+            transform: none !important;
+            box-sizing: border-box !important;
+            border-radius: 0 !important;
+            z-index: 100000 !important;
+            margin: 0 !important;
+        }
+
+        #chatbotHeader {
+            border-radius: 0 !important;
+            padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important;
+        }
+
+        #chatbotInputArea {
+            padding-bottom: env(safe-area-inset-bottom, 15px) !important; 
+        }
+
+        #chatbotInput {
+            min-height: 48px !important;
+        }
+
+        .voice-fab.chat-active {
+            display: flex !important;
+            bottom: 85px !important;
+            left: 50% !important;
+            right: auto !important;
+            transform: translateX(-50%) !important;
+            width: max-content !important;
+            padding: 10px 24px !important;
+            border-radius: 30px !important;
+            z-index: 100001 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+        }
     }
 
     /* ─── Utility ─── */

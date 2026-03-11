@@ -14,7 +14,7 @@ function updateDashboard() {
         safety.className = 'status safe';
     }
 
-    if (selectedCrop) {
+    if (typeof selectedCrop !== 'undefined' && selectedCrop) {
         const crop = cropData[selectedCrop];
         const nextActivity = (crop && crop.roadmap && crop.roadmap.length > 0) 
             ? crop.roadmap[0].activity 
@@ -22,7 +22,7 @@ function updateDashboard() {
         document.getElementById('dashNextActivity').textContent = nextActivity;
     }
 
-    if (calculatedCosts) {
+    if (typeof calculatedCosts !== 'undefined' && calculatedCosts) {
         document.getElementById('dashTotalCost').textContent = '₹' + calculatedCosts.totalCost.toLocaleString('en-IN');
         document.getElementById('dashRevenue').textContent = '₹' + calculatedCosts.expectedRevenue.toLocaleString('en-IN');
     }

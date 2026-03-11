@@ -1,26 +1,29 @@
 // ============================================
 // WEATHER FUNCTIONS
-// Uses: Open-Meteo (free, no key) for real data 
-//       Nominatim for village-level geocoding
-//       OpenRouter AI for farming advice
 // ============================================
+
+const CONFIG = {
+    WEATHER_API_BASE: 'https://api.open-meteo.com/v1/forecast',
+    GEOCODING_API_BASE: 'https://geocoding-api.open-meteo.com/v1/search',
+    DEFAULT_LOCATION: { lat: 22.6624, lon: 87.734, name: 'Jhargram' } // Default map
+    // Future API keys can be added here securely when moving to a paid plan.
+};
 
 let isAPIOnline = false;
 let currentWeather = {
-    temp: 32,
-    humidity: 45,
-    windSpeed: 12,
+    temp: '--',
+    humidity: '--',
+    windSpeed: '--',
     visibility: 10,
-    rainProbability: 25,
-    condition: 'Clear Sky',
+    rainProbability: 0,
+    condition: 'Loading...',
     icon: 'fa-sun'
 };
 
-let userLocation = { lat: 21.0667, lon: 88.0667 };
-let userLocationName = 'Haldia';
+let userLocation = { lat: CONFIG.DEFAULT_LOCATION.lat, lon: CONFIG.DEFAULT_LOCATION.lon };
+let userLocationName = '';
 
 async function checkAPIStatus() {
-    // Check by key presence instead of hitting /api/health (which doesn't exist on localhost)
     isAPIOnline = typeof OPENROUTER_API_KEY !== 'undefined' && OPENROUTER_API_KEY.length > 10;
 }
 
@@ -46,6 +49,7 @@ function updateWeatherUI(location) {
     document.getElementById('rainProbability').textContent = currentWeather.rainProbability;
     document.getElementById('weatherCondition').textContent = currentWeather.condition;
     document.getElementById('weatherLocation').textContent = location;
+    
     document.getElementById('weatherIcon').className = 'fas ' + currentWeather.icon;
 
     const alertDiv = document.getElementById('weatherAlert');
@@ -57,10 +61,71 @@ function updateWeatherUI(location) {
         alertDiv.innerHTML = `<i class="fas fa-check-circle"></i><div><h3>SAFE for Farming Activities</h3><p>Weather conditions are suitable for farming.</p></div>`;
     }
 
-    updateDashboard();
+    if (typeof updateDashboard === 'function') {
+        updateDashboard();
+    }
+
+    updateFarmingTips();
 
     // Trigger AI advice (non-blocking)
     getAIWeatherAdvice(location);
+}
+
+// ── Farming Tips Logic ───────────────────────
+function updateFarmingTips() {
+    let dos = [];
+    let donts = [];
+
+    // Rain logic
+    if (currentWeather.rainProbability >= 70) {
+        dos.push('Ensure proper drainage in fields to prevent waterlogging.');
+        dos.push('Protect harvested crops or sensitive seedlings with covers.');
+        donts.push('Do not apply fertilizers or pesticides, as they will wash away.');
+        donts.push('Avoid sowing seeds until the heavy rain stops.');
+    } else if (currentWeather.rainProbability > 30) {
+        dos.push('Light rain expected; plan your irrigation accordingly.');
+        donts.push('Delay spraying chemicals if possible.');
+    } else {
+        dos.push('Good time to apply standard fertilizers or pesticides.');
+    }
+
+    // Temperature logic
+    if (currentWeather.temp > 38) {
+        dos.push('Irrigate early in the morning or late in the evening.');
+        dos.push('Provide shade for young, sensitive plants if possible.');
+        donts.push('Do not perform heavy field work during peak afternoon hours.');
+    } else if (currentWeather.temp < 10) {
+        dos.push('Protect crops from frost using covers or light evening irrigation.');
+        donts.push('Avoid late evening irrigation which might freeze overnight.');
+    }
+
+    // Wind logic
+    if (currentWeather.windSpeed > 25) {
+        dos.push('Secure tall plants and small temporary structures.');
+        donts.push('Do not spray chemicals; the wind will cause drift and waste.');
+    }
+    
+    // Humidity logic
+    if (currentWeather.humidity > 80 && currentWeather.temp > 25 && currentWeather.rainProbability < 70) {
+         dos.push('Monitor closely for fungal diseases and pests which thrive in low rain, high humidity.');
+         donts.push('Avoid dense planting to allow air circulation.');
+    }
+
+    // Defaults if conditions are perfect
+    if (dos.length === 0) {
+        dos.push('Weather is optimal. Proceed with regular farming activities.');
+    }
+    if (donts.length === 0) {
+        donts.push('No severe weather restrictions today. Keep regular monitoring.');
+    }
+
+    const doHTML = dos.map(item => `<li>${item}</li>`).join('');
+    const dontHTML = donts.map(item => `<li>${item}</li>`).join('');
+
+    const elDo = document.getElementById('whatToDoList');
+    const elDont = document.getElementById('whatNotToDoList');
+    if (elDo) elDo.innerHTML = doHTML;
+    if (elDont) elDont.innerHTML = dontHTML;
 }
 
 // ── Auto-detect location ─────────────────────
@@ -83,27 +148,23 @@ function autoDetectLocation() {
                 document.getElementById('locationInput').value = '';
                 document.getElementById('weatherLoading').classList.add('hidden');
                 document.getElementById('weatherContent').style.display = 'block';
-                alert('Please enable location access to get accurate weather data for your area.');
+                fetchWeatherByCoords(CONFIG.DEFAULT_LOCATION.lat, CONFIG.DEFAULT_LOCATION.lon, CONFIG.DEFAULT_LOCATION.name);
             }
         );
     } else {
-        alert('Geolocation is not supported by your browser. Please enter your location manually.');
-        document.getElementById('weatherLoading').classList.add('hidden');
-        document.getElementById('weatherContent').style.display = 'block';
+        fetchWeatherByCoords(CONFIG.DEFAULT_LOCATION.lat, CONFIG.DEFAULT_LOCATION.lon, CONFIG.DEFAULT_LOCATION.name);
     }
 }
 
 // ── Precise Reverse geocode (Villages/Towns) ──
 async function reverseGeocode(lat, lon) {
     try {
-        // BigDataCloud is very fast and precise for Indian villages and local areas (free, no key needed for client-side)
         const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`;
         const response = await fetch(url);
         
         if (response.ok) {
             const data = await response.json();
             
-            // Try to get the most specific locality available (village -> suburb -> city)
             const locality = data.locality || data.city || data.principalSubdivision;
             const state = data.principalSubdivision;
             
@@ -128,32 +189,31 @@ async function fetchWeatherByLocation(locationName) {
     document.getElementById('weatherContent').style.display = 'none';
 
     try {
-        // Geocode name -> coordinates using Nominatim (better for villages than standard OpenMeteo)
-        const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationName)}&format=json&limit=1`;
-        const geoRes = await fetch(geoUrl, { headers: { 'Accept-Language': 'en' } });
+        const geoUrl = `${CONFIG.GEOCODING_API_BASE}?name=${encodeURIComponent(locationName)}&count=1&language=en&format=json`;
+        const geoRes = await fetch(geoUrl);
 
         if (!geoRes.ok) throw new Error('Geocoding failed');
         const geoData = await geoRes.json();
 
-        if (!geoData || geoData.length === 0) {
+        if (!geoData || !geoData.results || geoData.results.length === 0) {
             document.getElementById('weatherLoading').classList.add('hidden');
             document.getElementById('weatherContent').style.display = 'block';
-            alert('Location not found. Please try adding your district or state name (e.g., "Malandighi, West Bengal").');
+            alert('Location not found in database. Please try a different name.');
             return;
         }
 
-        const place = geoData[0];
-        const lat = parseFloat(place.lat);
-        const lon = parseFloat(place.lon);
+        const place = geoData.results[0];
+        const lat = parseFloat(place.latitude);
+        const lon = parseFloat(place.longitude);
         
-        // Clean up the display name (e.g. "Malandighi, Kanksa CD Block, Paschim Bardhaman...")
-        let resolvedName = place.display_name.split(',').slice(0, 2).join(',').trim();
+        let resolvedName = place.name;
+        if (place.admin1) resolvedName += `, ${place.admin1}`;
+        if (place.country && !place.admin1) resolvedName += `, ${place.country}`;
 
         userLocation = { lat, lon };
         userLocationName = resolvedName;
         document.getElementById('locationInput').value = resolvedName;
 
-        // Fetch weather using resolved coordinates
         await fetchWeatherByCoords(lat, lon, resolvedName);
 
     } catch (error) {
@@ -170,17 +230,25 @@ async function fetchWeatherByCoords(lat, lon, locationName) {
     document.getElementById('weatherContent').style.display = 'none';
 
     try {
-        const url = `https://api.open-meteo.com/v1/forecast` +
-            `?latitude=${lat}&longitude=${lon}` +
-            `&current=temperature_2m,relative_humidity_2m,wind_speed_10m,` +
-            `precipitation_probability,weather_code,visibility` +
-            `&wind_speed_unit=kmh&timezone=auto`;
+        const url = `${CONFIG.WEATHER_API_BASE}?latitude=${lat}&longitude=${lon}&current=rain,temperature_2m,is_day,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,rain,soil_moisture_27_to_81cm,soil_moisture_3_to_9cm,precipitation_probability,apparent_temperature,weather_code&timezone=auto`;
 
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Open-Meteo error ${res.status}`);
 
         const data = await res.json();
-        processOpenMeteoData(data, locationName || userLocationName || `${lat.toFixed(2)}, ${lon.toFixed(2)}`);
+        
+        // Update marketplace location map link
+        const mapInput = document.getElementById('locationMapInput');
+        if (mapInput) {
+            mapInput.value = `https://www.google.com/maps?q=${lat},${lon}`;
+        }
+        
+        let finalDecidedName = locationName || userLocationName;
+        if (!finalDecidedName || finalDecidedName === 'Loading...') {
+            finalDecidedName = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+        }
+        
+        processOpenMeteoData(data, finalDecidedName);
 
     } catch (error) {
         console.log('Open-Meteo error:', error);
@@ -193,15 +261,21 @@ async function fetchWeatherByCoords(lat, lon, locationName) {
 // ── Parse Open-Meteo response ────────────────
 function processOpenMeteoData(data, locationName) {
     const c = data.current;
+    
+    let rainProb = 0;
+    if (data.hourly && data.hourly.precipitation_probability && data.hourly.precipitation_probability.length > 0) {
+        const next24h = data.hourly.precipitation_probability.slice(0, 24);
+        rainProb = Math.max(...next24h);
+    }
 
     currentWeather = {
         temp: Math.round(c.temperature_2m),
         humidity: Math.round(c.relative_humidity_2m),
         windSpeed: Math.round(c.wind_speed_10m),
-        visibility: c.visibility != null ? Math.round(c.visibility / 1000) : 10, // m → km
-        rainProbability: Math.round(c.precipitation_probability || 0),
+        visibility: 10,
+        rainProbability: Math.round(rainProb),
         condition: weatherCodeToCondition(c.weather_code),
-        icon: weatherCodeToIcon(c.weather_code)
+        icon: weatherCodeToIcon(c.weather_code, c.is_day)
     };
 
     updateWeatherUI(locationName);
@@ -212,28 +286,33 @@ function processOpenMeteoData(data, locationName) {
 // ── WMO weather code → readable condition ────
 function weatherCodeToCondition(code) {
     if (code === 0) return 'Clear Sky';
-    if (code <= 2) return 'Partly Cloudy';
-    if (code === 3) return 'Overcast';
-    if (code <= 49) return 'Foggy / Hazy';
-    if (code <= 59) return 'Drizzle';
-    if (code <= 69) return 'Rain';
-    if (code <= 79) return 'Snow / Sleet';
-    if (code <= 84) return 'Rain Showers';
-    if (code <= 94) return 'Thunderstorm';
-    return 'Severe Thunderstorm';
+    if (code >= 1 && code <= 3) return 'Partly Cloudy';
+    if (code >= 45 && code <= 48) return 'Foggy / Hazy';
+    if (code >= 51 && code <= 55) return 'Drizzle';
+    if (code >= 56 && code <= 57) return 'Freezing Drizzle';
+    if (code >= 61 && code <= 65) return 'Rain';
+    if (code >= 66 && code <= 67) return 'Freezing Rain';
+    if (code >= 71 && code <= 77) return 'SnowFall';
+    if (code >= 80 && code <= 82) return 'Rain Showers';
+    if (code >= 85 && code <= 86) return 'Snow Showers';
+    if (code >= 95 && code <= 99) return 'Thunderstorm';
+    return 'Unknown Weather';
 }
 
 // ── WMO weather code → Font Awesome icon ─────
-function weatherCodeToIcon(code) {
-    if (code === 0) return 'fa-sun';
-    if (code <= 2) return 'fa-cloud-sun';
-    if (code === 3) return 'fa-cloud';
-    if (code <= 49) return 'fa-smog';
-    if (code <= 67) return 'fa-cloud-showers-heavy';
-    if (code <= 77) return 'fa-snowflake';
-    if (code <= 82) return 'fa-cloud-rain';
-    if (code <= 99) return 'fa-bolt';
-    return 'fa-cloud-sun';
+function weatherCodeToIcon(code, isDay = 1) {
+    const timeSuffix = isDay ? 'sun' : 'moon';
+    
+    if (code === 0) return isDay ? 'fa-sun' : 'fa-moon';
+    if (code >= 1 && code <= 3) return `fa-cloud-${timeSuffix}`;
+    if (code >= 45 && code <= 48) return 'fa-smog';
+    if (code >= 51 && code <= 57) return 'fa-cloud-rain';
+    if (code >= 61 && code <= 67) return 'fa-cloud-showers-heavy';
+    if (code >= 71 && code <= 77) return 'fa-snowflake';
+    if (code >= 80 && code <= 82) return 'fa-cloud-meatball';
+    if (code >= 85 && code <= 86) return 'fa-snowflake';
+    if (code >= 95 && code <= 99) return 'fa-bolt';
+    return 'fa-cloud';
 }
 
 // ── OpenRouter AI advice for farmers ─────────

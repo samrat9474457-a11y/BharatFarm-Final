@@ -1,178 +1,124 @@
 # BharatFarm - Smart Agriculture Platform
 
-A comprehensive web application designed to help farmers make smarter decisions through technology. BharatFarm provides weather monitoring, crop planning, disease detection, cost calculation, and activity scheduling tools tailored for Indian farming contexts.
+A comprehensive web application designed to help farmers make smarter decisions through technology. BharatFarm provides a premium, mobile-first experience offering weather monitoring, an AI-powered real-time Voice Assistant, crop planning, disease detection, cost calculation, and activity scheduling tools tailored for Indian farming contexts.
 
-## Features
+## 🌟 Key Features
 
-- **🌤️ Weather Monitoring**: Real-time weather data with farming safety alerts
-- **🍃 Leaf Disease Scanner**: Upload or capture leaf images to detect diseases and get treatment recommendations
-- **🌾 Crop Planning**: Detailed information for multiple crops including rice, wheat, potato, mustard, vegetables, and maize
-- **💰 Cost Calculator**: Calculate seed and fertilizer costs with support for multiple land units (Acre, Bigha, Katha)
-- **📊 Revenue Prediction**: Estimate expected yields and revenue based on crop and land size
-- **🗺️ Activity Roadmap**: Day-by-day farming activity schedules for each crop
-- **🔔 Smart Notifications**: Personalized alerts for watering, fertilizing, and weather conditions
-- **👤 User Profile**: Manage personal information, preferences, and farming history
-- **📚 User Guide**: Comprehensive guide for using all features of the platform
-- **💳 Subscription Plans**: Premium features and enhanced functionality options
-- **📊 Session Dashboard**: Track farming activities and performance metrics
-- **ℹ️ About Section**: Learn more about the platform and its mission
-- **🌓 Dark/Light Theme**: Toggle between themes for comfortable viewing
+- **📱 Premium Mobile-First UI**: Native app feel with glassmorphism, fluid animations, and a notch-friendly full-screen chatbot experience.
+- **🎙️ Real-time AI Voice Assistant**: A floating, hands-free voice interface for interacting with KrishiBot via Speech-to-Text and Text-to-Speech.
+- **🌤️ Weather & Safety**: Real-time weather data with farming safety alerts based on your location.
+- **🍃 Leaf Disease Scanner**: Interactive AI scanner to detect leaf diseases and get tailored treatment recommendations.
+- **🌾 Comprehensive Crop Database**: Highly detailed information for 33 major Indian crops spanning Vegetables, Fruits, Cereals, Pulses, and Oilseeds. Includes Unsplash/Pexels API integration for real imagery.
+- **💰 Cost & Revenue Calculator**: Project costs for seeds and fertilizers using multiple land units (Acre, Bigha, Katha) and estimate expected yields.
+- **🗺️ Activity Roadmap**: Day-by-day farming activity schedules tailored precisely for each crop lifecycle.
+- **🔔 Smart Notifications**: Alerts for watering, fertilizing, and severe weather conditions.
+- **💳 Premium Subscriptions**: Backend-enforced payment mockup system via `/submit-payment` handling.
 
-## Project Structure
+## 🏗️ Architecture & Project Structure
 
-```
+The project has evolved from a static page into a full-stack **Node.js** architecture relying on external AI proxying to bypass CORS and secure API keys.
+
+```text
 BharatFarm/
-├── index.html              # Main HTML file
-├── README.md               # Project documentation
-├── assets/                 # Assets folder
-├── css/                    # Stylesheets
-│   ├── variables.css       # CSS custom properties & themes
-│   ├── base.css            # Reset & base styles
-│   ├── components.css      # Reusable components
-│   ├── loading.css         # Loading page styles
-│   ├── auth.css            # Login/register styles
-│   ├── header.css          # Header & navigation
-│   ├── dashboard.css       # Dashboard section
-│   ├── scanner.css         # Leaf scanner section
-│   ├── weather.css         # Weather section
-│   ├── crops.css           # Crops section
-│   ├── calculator.css      # Calculator & revenue
-│   ├── roadmap.css         # Roadmap timeline
-│   ├── notifications.css   # Notifications & alerts
-│   ├── profile.css         # User profile
-│   ├── about.css           # About section
-│   ├── user-guide.css      # User guide
-│   ├── session-dashboard.css # Session tracking dashboard
-│   ├── subscription.css    # Subscription plans
-│   └── responsive.css      # Media queries & responsive design
-└── js/                     # JavaScript modules
-    ├── config.js           # Configuration & constants
-    ├── data.js             # Crop & disease data
-    ├── auth.js             # Authentication
-    ├── theme.js            # Theme management
-    ├── navigation.js       # Section navigation
-    ├── scanner.js          # Leaf scanner
-    ├── weather.js          # Weather functionality
-    ├── crops.js            # Crop selection
-    ├── calculator.js       # Cost calculations
-    ├── roadmap.js          # Roadmap generation
-    ├── notifications.js    # Notification system
-    ├── dashboard.js        # Dashboard updates
-    ├── profile.js          # User profile management
-    ├── user-guide.js       # User guide functionality
-    ├── subscription.js     # Subscription management
-    └── app.js              # Main initialization
+├── server.js               # Node.js Backend Server (Proxy, API, Subscriptions)
+├── .env                    # Environment variables (OpenRouter, Unsplash keys)
+├── package.json            # Node.js dependencies
+├── index.html              # Main HTML SPA Application
+├── css/                    
+│   ├── mobile-ui.css       # Dedicated mobile overrides & UI enhancements
+│   ├── chatbot.css         # Styling for KrishiBot and Realtime Voice
+│   └── ...                 # Component-specific styles
+└── js/                     
+    ├── config.js           # Frontend config, toggles, keys
+    ├── realtimeVoice.js    # STT/TTS Voice Assistant
+    ├── cropsData.js        # Offline database of 33 crops
+    ├── crops.js            # Unsplash/Pexels image fetching & filtering
+    └── ...                 # Core logic modules
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional software required for basic usage
+- **Node.js** (v16.x or higher recommended)
+- **NPM** (Node Package Manager)
 
-### Installation
+### Installation & Setup
 
-1. Clone or download this repository:
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/bharatchfarm.git
+   git clone https://github.com/Souvik-Dey-2029/BharatFarm.git
    cd BharatFarm
    ```
 
-2. Open `index.html` in your web browser, or
-3. Use a local server for better experience:
-
+2. **Install Dependencies:**
+   Install backend requirements like `dotenv`.
+   
    ```bash
-   # Using Python
-   python -m http.server 8000
-
-   # Or using Node.js with http-server
-   npx http-server
+   npm install
    ```
 
-4. Navigate to `http://localhost:8000` (or the port shown in your terminal)
+3. **Configure Environment Variables:**
+   Create a `.env` file in the root directory (you can copy `sample.env` if available) and add your API credentials:
 
-### Usage
+   ```env
+   # Required for Chatbot and Voice Assistant
+   OPENROUTER_API_KEY=your_openrouter_or_gemini_key_here
+   
+   # Optional: For high-quality Crop images (configure in js/config.js as well)
+   UNSPLASH_API_KEY=your_unsplash_key_here
+   PEXELS_API_KEY=your_pexels_key_here
+   ```
 
-1. **Register/Login**: Create an account or login with existing credentials
-2. **Explore Dashboard**: View quick stats and get started with various features
-3. **Select a Crop**: Choose from available crops to get personalized recommendations
-4. **Check Weather**: Enter your location to get farming-relevant weather data
-5. **Scan Leaves**: Upload or capture leaf images to detect diseases
-6. **Calculate Costs**: Enter your land size and crop to estimate costs and revenue
-7. **View Roadmap**: See day-by-day farming activities for your selected crop
-8. **Manage Profile**: Update personal information and farming preferences
-9. **Explore Subscription**: View premium features and upgrade your experience
-10. **Review Session Dashboard**: Track your farming activities and performance metrics
-11. **Read User Guide**: Get detailed instructions on using all platform features
+4. **Run the Server:**
+   Start the Node.js backend which serves the application on Port 5000 and proxies AI requests securely.
 
-## Technologies Used
+   ```bash
+   node server.js
+   ```
 
-- **Frontend**: HTML5, CSS3, JavaScript (Vanilla JS)
-- **Styling**: Custom CSS with CSS Variables for theming
-- **Icons**: Font Awesome 6.4.0
-- **Fonts**: Google Fonts (Poppins)
-- **Storage**: Browser LocalStorage for user data and preferences
-- **Image Processing**: Client-side image handling for leaf scanning
+5. **Access the Application:**
+   Navigate to `http://localhost:5000` in your browser. (Note: Ensure you view the site on a mobile device or responsive emulator for the optimal experience).
 
-## Features in Detail
+## 🧠 AI Backend Integration
 
-### Land Unit Support
+BharatFarm implements a custom `/api/chat` route in `server.js`. This dual-purpose proxy achieves two things:
+1. **Security**: Hides your `OPENROUTER_API_KEY` from the client.
+2. **Compatibility**: Unifies requests from both the legacy KrishiBot text-chat and the new generic AI configurations (like the plant disease scanner).
 
-The calculator supports three common Indian land measurement units:
+## 🌾 The Crop Database
 
-- **Acre**: International standard
-- **Bigha**: Common in North India
-- **Katha**: Common in Bihar, West Bengal, and Assam
+The platform includes a zero-config, pre-populated database (`cropsData.js`) containing 33 crops properly categorized into:
+- 🍅 **Vegetables** (Tomato, Potato, Cabbage, etc.)
+- 🍎 **Fruits** (Mango, Banana, Papaya, etc.)
+- 🌾 **Cereals** (Rice, Wheat, Maize, etc.)
+- 🫘 **Pulses** (Chickpea, Lentil, etc.)
+- 🌻 **Oilseeds** (Mustard, Soybean, etc.)
 
-Automatic conversion between units is provided.
+With a 5-minute configuration (adding an Unsplash API key), the application seamlessly replaces local generic images with stunning, real-world photography of these crops dynamically.
 
-### Crop Database
+## 📱 Mobile-First Paradigm
 
-Includes detailed information for:
+The UI has undergone a substantial mobile overhaul incorporating:
+- Fluid, native tap animations with no visual delay.
+- Bottom navigation menus that respect device safe-areas (notches).
+- A Voice Assistant button gracefully suspended above the `KrishiBot` widget.
+- A fully immersive, bezel-less full-screen layout constraint when the AI assistant is activated.
 
-- Rice (120-150 days)
-- Wheat (100-120 days)
-- Potato (90-120 days)
-- Mustard (110-140 days)
-- Vegetables (60-90 days)
-- Maize (90-120 days)
+## 📜 Documentation
 
-Each crop includes seed rates, fertilizer requirements, watering schedules, and market prices.
+For more detailed technical insights, review the included markdown files:
+- `QUICK_START.md`
+- `CROPS_SETUP.md`
+- `CROPS_VERIFICATION.md`
+- `IMPLEMENTATION_SUMMARY.md`
 
-### Disease Detection
+## 🤝 Contributing & License
 
-The leaf scanner can identify:
+This project is a demonstration of progressive web application principles mixed with AI utility in agriculture. Feel free to fork, modify, and elevate the standard of smart farming software.
 
-- Healthy plants
-- Leaf Blight
-- Powdery Mildew
-- Bacterial Spot
-- Nutrient Deficiency
-- Rust Disease
-
-Each diagnosis includes fertilizer recommendations and treatment tips.
-
-## Browser Support
-
-- Chrome (recommended)
-- Firefox
-- Safari
-- Edge
-- Mobile browsers (responsive design)
-
-## Contributing
-
-This is a demonstration project. Feel free to fork and modify for your needs.
-
-## License
-
-This project is provided as-is for educational and demonstration purposes.
-
-## Contact
-
-For questions or support, please refer to the contact information in the application footer.
+Provided as-is for educational and demonstration purposes.
 
 ---
 
