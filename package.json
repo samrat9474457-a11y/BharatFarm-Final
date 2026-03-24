@@ -1,5 +1,13 @@
 {
+  "name": "bharatfarm",
+  "version": "1.0.0",
+  "description": "BharatFarm Local & Cloud Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
   "dependencies": {
-    "dotenv": "^17.3.1"
+    "dotenv": "^16.0.0"
   }
 }
