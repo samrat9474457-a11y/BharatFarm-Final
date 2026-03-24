@@ -12,37 +12,35 @@ const PORT = process.env.PORT || 5000;
 
 // ── API Key (move to a .env file for production) ──────────────────────────────
 // To use .env: npm install dotenv  →  add require('dotenv').config(); at top
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_API_KEY = (process.env.OPENROUTER_API_KEY || "").trim();
 if (OPENROUTER_API_KEY) {
-    console.log('Using API Key starting with:', OPENROUTER_API_KEY.substring(0, 5));
+    console.log('[Auth] API Key detected (starts with: ' + OPENROUTER_API_KEY.substring(0, 7) + '...)');
+} else {
+    console.warn('[Auth] WARNING: OPENROUTER_API_KEY is missing from environment variables!');
 }
 
+const fetch = require('node-fetch');
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const OPENROUTER_MODEL = "google/gemini-2.0-flash-001";
+const OPENROUTER_MODEL = "google/gemini-2.0-flash-lite-001"; // Highly compatible fast model
 
 // Helper: call OpenRouter
 async function callOpenAI(messages) {
     let lastErrorRaw = "";
-    console.log(`[OpenRouter] Trying model: ${OPENROUTER_MODEL}`);
+    console.log(`[OpenRouter] Trying model: ${OPENROUTER_MODEL} with key: ${OPENROUTER_API_KEY.substring(0, 7)}...`);
     try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 30000);
-
         const r = await fetch(OPENROUTER_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                'HTTP-Referer': 'http://localhost:5000',
                 'X-Title': 'BharatFarm'
             },
             body: JSON.stringify({
                 model: OPENROUTER_MODEL,
                 messages: messages
             }),
-            signal: controller.signal
+            timeout: 30000
         });
-        clearTimeout(timeoutId);
 
         const raw = await r.text();
         console.log(`[OpenRouter] Status ${r.status}`);
