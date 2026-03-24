@@ -1,0 +1,105 @@
+/* ============================================
+   DASHBOARD — Mobile & Tablet Responsive
+============================================ */
+
+@media (max-width: 900px) {
+    .dash-hero { min-height: 340px; border-radius: 20px; }
+    .dash-hero-title { font-size: 2.2rem; }
+    .dash-hero-content { padding: 30px 24px 35px; }
+    .dash-section-title { font-size: 1.9rem; }
+
+    .dash-feature-grid { grid-template-columns: 1fr; gap: 14px; }
+    .dash-card-krishibot, .dash-card-scanner,
+    .dash-card-market, .dash-card-analytics,
+    .dash-card-schemes { grid-column: 1; grid-row: auto; min-height: auto; }
+
+    .dash-card-krishibot { flex-direction: column; }
+    .dash-card-krishibot .dash-feature-visual { width: auto; margin: 0; height: 160px; border-radius: 0; }
+    .dash-card-krishibot .dash-feature-visual img { border-radius: 0; }
+    .dash-card-analytics { flex-direction: column; }
+    .dash-visual-analytics { width: 100%; height: 50px; padding: 0 16px 12px; }
+    .dash-card-schemes { flex-direction: column; padding: 0; }
+
+    .dash-impact-section { flex-direction: column; padding: 32px 24px; gap: 24px; }
+    .dash-impact-image { width: 100%; }
+    .dash-impact-title { font-size: 2rem; }
+}
+
+/* ── Phone (≤ 480px) ──────────────────────── */
+@media (max-width: 480px) {
+    .dash-hero {
+        min-height: auto;
+        border-radius: 18px;
+    }
+    .dash-hero-bg img { min-height: 300px; }
+    .dash-hero-title {
+        font-size: 1.6rem;
+        letter-spacing: -0.5px;
+        text-align: left;
+    }
+    .dash-hero-sub {
+        font-size: 0.84rem;
+        text-align: left;
+        line-height: 1.5;
+    }
+    .dash-hero-content {
+        padding: 20px 18px 28px;
+        text-align: left;
+        max-width: 100%;
+    }
+    .dash-hero-cta { justify-content: flex-start; gap: 8px; }
+    .dash-btn { padding: 10px 16px; font-size: 0.82rem; border-radius: 10px; }
+
+    /* ── INFO ROW: side-by-side bento cards below hero ── */
+    .dash-info-row {
+        margin-top: 12px;
+        margin-bottom: 24px;
+        padding: 0;
+        gap: 10px;
+        flex-direction: row;
+        pointer-events: auto;
+    }
+    .dash-float-card {
+        flex: 1;
+        padding: 14px 14px;
+        border-radius: 14px;
+        gap: 10px;
+        min-width: unset;
+    }
+    .dash-float-icon { width: 36px; height: 36px; font-size: 1rem; border-radius: 10px; }
+    .dash-float-label { font-size: 0.62rem; letter-spacing: 0.8px; }
+    .dash-float-value { font-size: 0.95rem; }
+    .dash-float-status { font-size: 0.65rem; padding: 1px 8px; }
+
+    /* Section header */
+    .dash-section-header { margin-bottom: 18px; }
+    .dash-section-title { font-size: 1.45rem; }
+    .dash-section-tag { font-size: 0.62rem; letter-spacing: 1.5px; }
+
+    /* Cards compact */
+    .dash-feature-grid { gap: 12px; margin-bottom: 28px; }
+    .dash-feature-text { padding: 16px; }
+    .dash-feature-text h3 { font-size: 1.08rem; }
+    .dash-feature-text p { font-size: 0.8rem; margin-bottom: 10px; }
+    .dash-feature-cta { padding: 8px 14px; font-size: 0.8rem; }
+    .dash-card-krishibot .dash-feature-cta { width: 44px; height: 44px; font-size: 1.1rem; }
+    .dash-card-scanner .dash-feature-visual { height: 110px; margin: 8px 8px 0; }
+    .dash-card-scanner .dash-feature-text { padding: 12px 14px 14px; }
+    .dash-waveform { height: 24px; gap: 2px; margin-bottom: 10px; }
+    .dash-waveform span { width: 3px; }
+    .dash-avatar { width: 26px; height: 26px; font-size: 1rem; }
+    .dash-avatar-count { font-size: 0.68rem; }
+    .dash-stat-pill { padding: 6px 10px; }
+    .dash-stat-label { font-size: 0.6rem; }
+    .dash-stat-value { font-size: 0.88rem; }
+
+    /* Impact compact */
+    .dash-impact-section { padding: 22px 16px; border-radius: 16px; margin-bottom: 20px; }
+    .dash-impact-title { font-size: 1.5rem; }
+    .dash-impact-desc { font-size: 0.82rem; margin-bottom: 14px; }
+    .dash-impact-stat-icon { width: 32px; height: 32px; font-size: 0.82rem; }
+    .dash-impact-stat strong { font-size: 0.82rem; }
+    .dash-impact-stat p { font-size: 0.72rem; }
+    .dash-impact-image img { min-height: 170px; border-radius: 12px; }
+    .dash-tips-card { margin-bottom: 14px; }
+}

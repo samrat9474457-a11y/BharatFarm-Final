@@ -4,14 +4,17 @@
 
 // Initialize user profile data structure
 function initUserProfile() {
-    const currentUser = localStorage.getItem('bharatfarm_current_user');
-    if (!currentUser) return;
+    const currentUserRaw = localStorage.getItem('bharatfarm_current_user');
+    if (!currentUserRaw) return;
+
+    let current;
+    try { current = JSON.parse(currentUserRaw); } catch(e) { return; }
 
     const users = JSON.parse(localStorage.getItem('bharatfarm_users') || '[]');
-    const user = users.find(u => u.username === currentUser);
+    const userIndex = users.findIndex(u => u.phone === current.phone || u.id === current.id);
 
-    if (user && !user.profile) {
-        user.profile = {
+    if (userIndex !== -1 && !users[userIndex].profile) {
+        users[userIndex].profile = {
             memberSince: new Date().toISOString().split('T')[0],
             location: '',
             preferences: {
@@ -26,13 +29,16 @@ function initUserProfile() {
             }
         };
         localStorage.setItem('bharatfarm_users', JSON.stringify(users));
+        
+        current.profile = users[userIndex].profile;
+        localStorage.setItem('bharatfarm_current_user', JSON.stringify(current));
     }
 }
 
 // Get user profile
 function getUserProfile() {
     const currentUserData = localStorage.getItem('bharatfarm_current_user');
-    console.log('Current user data from localStorage:', currentUserData);
+
 
     if (!currentUserData) return null;
 
@@ -40,14 +46,14 @@ function getUserProfile() {
     let currentUser;
     try {
         currentUser = JSON.parse(currentUserData);
-        console.log('Parsed current user:', currentUser);
+
     } catch (e) {
         console.error('Error parsing current user:', e);
         return null;
     }
 
-    // If currentUser is already the full user object (from auth.js), use it directly
-    if (currentUser && currentUser.username) {
+    // If currentUser object exists (from auth.js), use it directly
+    if (currentUser && (currentUser.username || currentUser.phone || currentUser.id)) {
         console.log('Using current user object directly');
 
         // Initialize profile if it doesn't exist
@@ -69,6 +75,14 @@ function getUserProfile() {
             };
             // Save back to localStorage
             localStorage.setItem('bharatfarm_current_user', JSON.stringify(currentUser));
+            
+            // Sync to global users array
+            const users = JSON.parse(localStorage.getItem('bharatfarm_users') || '[]');
+            const userIndex = users.findIndex(u => u.phone === currentUser.phone || u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex].profile = currentUser.profile;
+                localStorage.setItem('bharatfarm_users', JSON.stringify(users));
+            }
         }
 
         return currentUser;
@@ -143,19 +157,30 @@ function updateUserStatistic(statKey) {
 
     try {
         const currentUser = JSON.parse(currentUserData);
-        if (!currentUser || !currentUser.username) return;
+        if (!currentUser || (!currentUser.username && !currentUser.phone)) return;
 
         // Initialize profile if needed
         if (!currentUser.profile) {
             initUserProfile();
-            return updateUserStatistic(statKey);
+            return updateUserStatistic(statKey); // Need to wait for init before updating, this is synchronous so it's fine.
         }
 
         // Update statistic
+        if (currentUser.profile.statistics[statKey] === undefined) {
+            currentUser.profile.statistics[statKey] = 0;
+        }
         currentUser.profile.statistics[statKey]++;
 
         // Save back to localStorage
         localStorage.setItem('bharatfarm_current_user', JSON.stringify(currentUser));
+        
+        // Sync to global users array
+        const users = JSON.parse(localStorage.getItem('bharatfarm_users') || '[]');
+        const userIndex = users.findIndex(u => u.phone === currentUser.phone || u.id === currentUser.id);
+        if (userIndex !== -1) {
+            users[userIndex].profile = currentUser.profile;
+            localStorage.setItem('bharatfarm_users', JSON.stringify(users));
+        }
     } catch (e) {
         console.error('Error updating user statistic:', e);
     }
@@ -197,10 +222,10 @@ function getActivities(filterType = 'all', limit = 50) {
 
 // Display profile page
 function showProfilePage() {
-    console.log('showProfilePage called');
+
 
     const user = getUserProfile();
-    console.log('User profile:', user);
+
 
     if (!user) {
         console.error('No user found - this should not happen if logged in');
@@ -222,7 +247,37 @@ function showProfilePage() {
         profilePhone.textContent = user.phone || user.username || 'Not provided';
 
         const profile = user.profile || {};
-        document.getElementById('profileLocation').textContent = profile.location || 'Not set';
+        
+        const locElem = document.getElementById('profileLocation');
+        locElem.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Locating...';
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    locElem.textContent = `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+                    
+                    // Attempt reverse geocoding for a readable name
+                    fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data && data.address) {
+                                const place = data.address.city || data.address.town || data.address.village || data.address.county;
+                                const state = data.address.state;
+                                if (place) locElem.textContent = `${place}, ${state}`;
+                            }
+                        }).catch(e => console.warn('Geocoding failed in profile:', e));
+                },
+                (error) => {
+                    console.warn("Geolocation failed in profile:", error);
+                    locElem.textContent = profile.location || 'Haldia, West Bengal'; // Fallback
+                },
+                { enableHighAccuracy: true }
+            );
+        } else {
+            locElem.textContent = profile.location || 'Not Supported';
+        }
 
         // Update statistics
         const stats = profile.statistics || { totalScans: 0, weatherChecks: 0, calculations: 0, cropsTracked: 0 };
@@ -240,10 +295,10 @@ function showProfilePage() {
         displayActivities('all');
 
         // Show profile section
-        console.log('Calling showSection with profile');
+
         if (typeof showSection === 'function') {
             showSection('profile');
-            console.log('Profile section should now be visible');
+
         } else {
             console.error('showSection function not found');
         }
@@ -463,4 +518,4 @@ function exportActivityPDF() {
     });
 }
 
-console.log('Profile.js loaded - showProfilePage is available:', typeof showProfilePage);
+

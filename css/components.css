@@ -157,6 +157,19 @@
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+}
+
+.dashboard-grid > .stat-card {
+    flex: 0 0 calc(25% - var(--spacing-md));
+    min-width: 170px;
+}
+
+
 /* Section Back Button */
 .section-back-btn {
     position: fixed;

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Information Portal - BharatFarm</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/variables.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a0a;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+        }
+
+        .info-page-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 100px 5% 60px;
+        }
+
+        .back-nav {
+            position: fixed;
+            top: 30px;
+            left: 5%;
+            z-index: 100;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #4caf50;
+            border-color: #4caf50;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 60px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .info-header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 30px;
+        }
+
+        .info-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-header p {
+            color: #4caf50;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .content-body {
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .content-body h2 {
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            margin-top: 40px;
+        }
+
+        .content-body p {
+            margin-bottom: 20px;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .faq-item h3 {
+            margin-top: 0;
+            color: #4caf50;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .info-card {
+                padding: 30px;
+                border-radius: 20px;
+            }
+            .info-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="back-nav">
+        <a href="index.html" id="backLink" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to BharatFarm</span>
+        </a>
+    </div>
+
+    <div class="info-page-container">
+        <div class="info-card" id="infoCard">
+            <div class="info-header">
+                <p id="infoLabel">Documentation</p>
+                <h1 id="infoTitle">Loading...</h1>
+            </div>
+            <div class="content-body" id="infoContent">
+                <div style="text-align: center; padding: 40px;">
+                    <i class="fas fa-circle-notch fa-spin" style="font-size: 2rem; color: #4caf50;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/info.js"></script>
+</body>
+</html>
