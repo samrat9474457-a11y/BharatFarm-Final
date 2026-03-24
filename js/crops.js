@@ -38,7 +38,7 @@ async function fetchCropImageFromUnsplash(keywords, cropId) {
 
     // Use fallback image if no API enabled
     if (!USE_UNSPLASH) {
-        const fallbackUrl = `https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80`; // Generic crop image
+        const fallbackUrl = `https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(cropId)}`; // Generic crop image
         cropState.imageCache[cropId] = fallbackUrl;
         return fallbackUrl;
     }
@@ -84,7 +84,7 @@ async function fetchCropImageFromUnsplash(keywords, cropId) {
 
     // Fallback to generic crop image
     console.info(`No image found; using generic fallback for ${cropId}`);
-    const fallbackUrl = 'https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80';
+    const fallbackUrl = `https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(cropId)}`;
     cropState.imageCache[cropId] = fallbackUrl;
     return fallbackUrl;
 }
@@ -102,7 +102,7 @@ async function fetchCropImageFromPexels(keywords, cropId) {
 
     // Use fallback image if no API enabled
     if (!USE_PEXELS) {
-        const fallbackUrl = `https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80`;
+        const fallbackUrl = `https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(cropId)}`;
         cropState.imageCache[cropId] = fallbackUrl;
         return fallbackUrl;
     }
@@ -124,7 +124,7 @@ async function fetchCropImageFromPexels(keywords, cropId) {
     }
 
     // Fallback to generic crop image
-    const fallbackUrl = `https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80`;
+    const fallbackUrl = `https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(cropId)}`;
     cropState.imageCache[cropId] = fallbackUrl;
     return fallbackUrl;
 }
@@ -195,8 +195,18 @@ async function fetchCrops() {
         loading.classList.add('hidden');
 
         if (results.length === 0) {
-            empty.classList.remove('hidden');
-            return;
+            if (cropState.query) {
+                // Not found locally. Try AI!
+                const loadingText = document.querySelector('#cropLoading p');
+                if (loadingText) loadingText.textContent = "Searching using OpenRouter Gemini API...";
+                
+                // Call AI logic
+                fetchAICropMetadata(cropState.query);
+                return;
+            } else {
+                empty.classList.remove('hidden');
+                return;
+            }
         }
 
         // Pagination
@@ -228,6 +238,132 @@ async function fetchCrops() {
         console.error('Fetch error:', error);
         loading.classList.add('hidden');
         empty.classList.remove('hidden');
+    }
+}
+
+/**
+ * Fetch a real image from Wikimedia Commons
+ */
+async function fetchRealCropImage(cropName, scientificName) {
+    try {
+        const getImageFromWikiData = (data) => {
+            if (data && data.query && data.query.pages) {
+                const pages = data.query.pages;
+                const pageId = Object.keys(pages)[0];
+                if (pageId && pageId !== "-1" && pages[pageId].original) {
+                    return pages[pageId].original.source;
+                }
+            }
+            return null;
+        };
+
+        let searchTerm = scientificName ? scientificName : cropName;
+        let url = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(searchTerm)}&gsrlimit=1&prop=pageimages&format=json&piprop=original&origin=*`;
+        let response = await fetch(url);
+        let data = await response.json();
+        
+        let source = getImageFromWikiData(data);
+        if (source && !source.toLowerCase().endsWith('.svg')) {
+            return source;
+        }
+
+        // Fallback: search by common name + plant
+        url = `https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch=${encodeURIComponent(cropName + " plant")}&gsrlimit=1&prop=pageimages&format=json&piprop=original&origin=*`;
+        response = await fetch(url);
+        data = await response.json();
+        
+        source = getImageFromWikiData(data);
+        if (source && !source.toLowerCase().endsWith('.svg')) {
+            return source;
+        }
+
+        return null;
+    } catch (e) {
+        console.warn("Wikimedia image fetch failed:", e);
+        return null;
+    }
+}
+
+/**
+ * Fetch missing crop from OpenRouter AI Database dynamically
+ */
+async function fetchAICropMetadata(cropName) {
+    try {
+        const prompt = `
+Analyze the search term: "${cropName}".
+Is this term (including local/regional names in any language, slang, or alternative spellings like "Alu", "Bhindi", etc.) a real farming crop, vegetable, fruit, seed, or spice? 
+If it is a local or regional name, identify the standard English common name for it.
+It MUST be an authentic plant-based agricultural product that farmers grow. 
+If it is NOT a crop, fruit, vegetable, seed, or spice (e.g., if it is an animal, machinery, car, phone, tool, person, or any non-plant item), you MUST reply STRICTLY and ONLY with {"error": "not_a_crop"}.
+If it IS a valid crop, seed, vegetable, fruit, or spice, act as an expert agricultural AI. Provide data for this crop in JSON format matching this exact structure:
+{
+    "commonName": "Standard English common name (e.g., Potato if search was Alu)",
+    "scientificName": "Scientific name",
+    "category": "vegetable" or "fruit" or "cereal" or "oilseed" or "spice/seed",
+    "climate": "Short climate requirement description",
+    "soil": "Short soil requirement description",
+    "duration": "Total duration (e.g. 60-80 days)",
+    "wateringFrequency": "Watering frequency description",
+    "harvesting": "Harvesting period description",
+    "imageKeywords": "2 or 3 keywords to find its image using standard english name"
+}
+Reply ONLY with the raw JSON object. Do not include markdown formatting or backticks.
+`;
+        const messages = [{ role: "user", content: prompt }];
+        const responseText = await aiCall({ messages, model: "google/gemini-2.0-flash-001" }); // aiCall is in config.js
+        const cleanJson = responseText.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
+        const data = JSON.parse(cleanJson);
+
+        if (data.error) {
+            const loadingEl = document.getElementById('cropLoading');
+            const emptyEl = document.getElementById('cropEmptyState');
+            if (loadingEl) loadingEl.classList.add('hidden');
+            if (emptyEl) emptyEl.classList.remove('hidden');
+            return null;
+        }
+
+        // Fetch clear real image
+        const imageUrl = await fetchRealCropImage(data.commonName, data.scientificName);
+        if (imageUrl) {
+            data.imageUrl = imageUrl;
+        } else {
+            // Delete it so it falls back to Unsplash/Pexels or Placeholder in loadCropImage
+            delete data.imageUrl;
+        }
+
+        // Ensure category is lowercase and a fallback exists
+        data.category = (data.category || 'vegetable').toLowerCase();
+        if (!['vegetable', 'fruit', 'cereal', 'oilseed', 'spice/seed', 'spice', 'seed'].includes(data.category)) {
+            data.category = 'vegetable';
+        }
+
+        // Add to our runtime databases
+        const newId = data.commonName.toLowerCase().replace(/\s+/g, '_');
+        
+        data.searchAlias = cropName.toLowerCase();
+
+        // Ensure local datasets are loaded/updated globally
+        if (typeof CROPS_DATABASE !== 'undefined') {
+            // Keep existing data if present to avoid losing hardcoded image URLs, but merge new data
+            if (CROPS_DATABASE[newId]) {
+                CROPS_DATABASE[newId].searchAlias = cropName.toLowerCase();
+            } else {
+                CROPS_DATABASE[newId] = data;
+            }
+        }
+
+        // Trigger the search again to show it
+        fetchCrops();
+        
+        return data;
+
+    } catch (error) {
+        console.error("AI crop fetch failed:", error);
+        const loadingEl = document.getElementById('cropLoading');
+        const emptyEl = document.getElementById('cropEmptyState');
+        if (loadingEl) loadingEl.classList.add('hidden');
+        if (emptyEl) emptyEl.classList.remove('hidden');
+        return null;
     }
 }
 
@@ -278,7 +414,7 @@ async function loadCropImage(crop, cardElement) {
         } else if (USE_PEXELS) {
             imageUrl = await fetchCropImageFromPexels(crop.imageKeywords, crop.id);
         } else {
-            imageUrl = 'https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80';
+            imageUrl = `https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(crop.commonName || crop.id)}`;
         }
 
         const testImg = new Image();
@@ -288,7 +424,7 @@ async function loadCropImage(crop, cardElement) {
         };
         testImg.onerror = () => {
             imageElem.classList.remove('loading');
-            imageElem.style.backgroundImage = `url('https://images.unsplash.com/photo-1500298967881-5e0f9c4ab89f?w=300&q=80')`;
+            imageElem.style.backgroundImage = `url('https://placehold.co/400x300/e0f2f1/004d40?text=${encodeURIComponent(crop.commonName || crop.id)}')`;
         };
         testImg.src = imageUrl;
     } catch (error) {
@@ -368,11 +504,21 @@ async function selectCrop(crop) {
         if (aiInsightsPanel && aiTextEl && fullData.roadmap) {
             aiTextEl.innerHTML = buildRoadmapInsightsHTML(fullData);
         }
+
+        if (typeof logActivity === 'function') {
+            logActivity('crop', 'Researched crop: ' + crop.commonName);
+            updateUserStatistic('cropsTracked');
+        }
     } catch (err) {
         console.warn('Unified crop data fetch failed:', err);
         if (aiInsightsPanel) aiInsightsPanel.style.display = 'none';
         // Fallback: generate roadmap with old method
         if (window.generateRoadmap) generateRoadmap(crop.id);
+        
+        if (typeof logActivity === 'function') {
+            logActivity('crop', 'Researched crop: ' + crop.commonName);
+            updateUserStatistic('cropsTracked');
+        }
     }
 
     // Update calculator

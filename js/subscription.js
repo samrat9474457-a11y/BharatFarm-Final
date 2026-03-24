@@ -109,7 +109,7 @@ function unlockPremiumFeaturesUI() {
         }
     });
 
-    console.log("Premium features unlocked in UI.");
+
 }
 
 // Close modal when clicking outside

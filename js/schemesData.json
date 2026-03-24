@@ -1,0 +1,116 @@
+[
+    {
+        "id": "pm-kisan",
+        "name": "PM Kisan Samman Nidhi",
+        "type": "Central",
+        "description": "Financial benefit of ₹6,000 per year in three equal installments to eligible farmer families.",
+        "eligibility": {
+            "maxLandSize": 9999,
+            "minLandSize": 0.1,
+            "states": ["All"],
+            "crops": ["All"]
+        },
+        "benefits": ["₹6,000/year", "Direct Bank Transfer"],
+        "link": "https://pmkisan.gov.in/"
+    },
+    {
+        "id": "pmfby",
+        "name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
+        "type": "Central",
+        "description": "Comprehensive crop insurance coverage against unforeseen crop losses or damage.",
+        "eligibility": {
+            "maxLandSize": 9999,
+            "minLandSize": 0.1,
+            "states": ["All"],
+            "crops": ["All"]
+        },
+        "benefits": ["Crop Insurance", "Low Premium (1.5-2%)"],
+        "link": "https://pmfby.gov.in/"
+    },
+    {
+        "id": "bhumihin-krishak-bandhu",
+        "name": "Bhumihin Krishak Bandhu (Landless Farmer Scheme)",
+        "type": "State",
+        "description": "Main scheme for landless farmers in West Bengal. Provides financial help to those with no agricultural land who work on others' land.",
+        "eligibility": {
+            "maxLandSize": 0,
+            "minLandSize": 0,
+            "states": ["West Bengal"],
+            "crops": ["All"]
+        },
+        "benefits": ["₹4,000/year (₹2000 Rabi, ₹2000 Kharif)"],
+        "link": "https://krishakbandhu.wb.gov.in/agricultural-labour/farmer_search",
+        "applySteps": ["Through Duare Sarkar camps, BDO office, or Agriculture portal", "Submit Aadhaar, Bank account, Address proof, and Self-declaration (no land)"]
+    },
+    {
+        "id": "krishak-bandhu",
+        "name": "Krishak Bandhu (for sharecroppers also)",
+        "type": "State",
+        "description": "Financial assistance for registered sharecroppers (Bhagchasi) and farmers, providing social security and death benefit insurance.",
+        "eligibility": {
+            "maxLandSize": 9999,
+            "minLandSize": 0,
+            "states": ["West Bengal"],
+            "crops": ["All"]
+        },
+        "benefits": ["₹1,000 - ₹5,000/year", "₹2,00,000 Death Benefit"],
+        "link": "https://krishakbandhu.wb.gov.in/",
+        "applySteps": ["Apply via Duare Sarkar camps, BDO or ADA office", "Ensure registration as a sharecropper or farmer"]
+    },
+    {
+        "id": "fssm-wb",
+        "name": "Farm Mechanization Scheme (FSSM)",
+        "type": "State",
+        "description": "Financial support to small and marginal farmers for purchasing power-operated farm equipment in WB.",
+        "eligibility": {
+            "maxLandSize": 5,
+            "minLandSize": 0.1,
+            "states": ["West Bengal"],
+            "crops": ["All"]
+        },
+        "benefits": ["50-60% Subsidy on Machinery", "Up to ₹3,00,000"],
+        "link": "https://matirkatha.net/"
+    },
+    {
+        "id": "amar-fasal",
+        "name": "Amar Fasal Amar Gola/Gari",
+        "type": "State",
+        "description": "Subsidies for constructing storehouses and purchasing vending carts to reduce post-harvest losses.",
+        "eligibility": {
+            "maxLandSize": 5,
+            "minLandSize": 0.1,
+            "states": ["West Bengal"],
+            "crops": ["Vegetables", "Fruits", "Grains", "All"]
+        },
+        "benefits": ["₹10,000 for Carts", "Up to ₹25,000 for Warehouses"],
+        "link": "https://matirkatha.net/"
+    },
+    {
+        "id": "bangla-shasya",
+        "name": "Bangla Shasya Bima",
+        "type": "State",
+        "description": "Free crop insurance for West Bengal farmers. The state bears the entire premium.",
+        "eligibility": {
+            "maxLandSize": 9999,
+            "minLandSize": 0.1,
+            "states": ["West Bengal"],
+            "crops": ["Rice", "Wheat", "Jute", "Potato", "All"]
+        },
+        "benefits": ["100% Premium Subsidy", "Comprehensive Risk Cover"],
+        "link": "https://banglashasyabima.net/"
+    },
+    {
+        "id": "rkvy",
+        "name": "Rashtriya Krishi Vikas Yojana (RKVY)",
+        "type": "Central/State",
+        "description": "Supports minor irrigation and agricultural infrastructure development, prioritising small/marginal farmers.",
+        "eligibility": {
+            "maxLandSize": 5,
+            "minLandSize": 0.1,
+            "states": ["All"],
+            "crops": ["All"]
+        },
+        "benefits": ["Irrigation Subsidies", "Infrastructure Support"],
+        "link": "https://rkvy.nic.in/"
+    }
+]
