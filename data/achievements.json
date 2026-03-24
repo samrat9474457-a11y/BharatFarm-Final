@@ -1,0 +1,50 @@
+[
+  {
+    "id": "first_scan",
+    "title": "Plant Doctor",
+    "description": "Diagnosed a plant using the AI Leaf Scanner.",
+    "icon": "fa-camera-retro",
+    "xp_reward": 100,
+    "tier": "bronze"
+  },
+  {
+    "id": "quiz_beginner",
+    "title": "Knowledge Seeker",
+    "description": "Completed your first agricultural quiz.",
+    "icon": "fa-book-open",
+    "xp_reward": 50,
+    "tier": "bronze"
+  },
+  {
+    "id": "quiz_master",
+    "title": "Agri-Scholar",
+    "description": "Successfully completed all available quizzes with a perfect score.",
+    "icon": "fa-graduation-cap",
+    "xp_reward": 500,
+    "tier": "gold"
+  },
+  {
+    "id": "streak_3",
+    "title": "Consistent Cultivator",
+    "description": "Logged into BharatFarm for 3 consecutive days.",
+    "icon": "fa-fire",
+    "xp_reward": 150,
+    "tier": "silver"
+  },
+  {
+    "id": "streak_7",
+    "title": "Dedicated Farmer",
+    "description": "Logged into BharatFarm for 7 consecutive days.",
+    "icon": "fa-sun",
+    "xp_reward": 400,
+    "tier": "gold"
+  },
+  {
+    "id": "chatbot_first",
+    "title": "Digital Converser",
+    "description": "Asked a question to the KrishiBot Voice Assistant.",
+    "icon": "fa-microphone-alt",
+    "xp_reward": 50,
+    "tier": "bronze"
+  }
+]

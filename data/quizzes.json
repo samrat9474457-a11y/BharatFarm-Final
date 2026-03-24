@@ -1,0 +1,130 @@
+[
+  {
+    "id": "q_soil_01",
+    "topic": "Soil Health",
+    "question": "Which of these practices naturally improves soil fertility without the use of synthetic chemicals?",
+    "options": [
+      "Burning old crop residues",
+      "Applying Urea daily",
+      "Crop rotation with legumes",
+      "Continuous deep ploughing"
+    ],
+    "correct_index": 2,
+    "xp_reward": 50,
+    "coin_reward": 10,
+    "explanation": "Legumes (like peas, beans, and lentils) have root nodules that house bacteria capable of fixing atmospheric nitrogen into the soil, acting as a natural and free fertilizer.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "q_water_01",
+    "topic": "Water Management",
+    "question": "What is the most water-efficient irrigation method for row crops like tomatoes and cotton?",
+    "options": [
+      "Flood irrigation",
+      "Drip irrigation",
+      "Sprinkler system",
+      "Manual bucket watering"
+    ],
+    "correct_index": 1,
+    "xp_reward": 50,
+    "coin_reward": 15,
+    "explanation": "Drip irrigation delivers water directly to the plant's root zone, minimizing evaporation and runoff, leading to up to 50% water savings compared to flood irrigation.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "q_pest_01",
+    "topic": "Pest Control",
+    "question": "You notice small, fuzzy white patches with a black border on your rice leaves. Which disease is this most likely to be?",
+    "options": [
+      "Rice Blast",
+      "Bacterial Blight",
+      "Yellow Rust",
+      "Stem Borer"
+    ],
+    "correct_index": 0,
+    "xp_reward": 75,
+    "coin_reward": 20,
+    "explanation": "Rice Blast is a severe fungal disease characterized by diamond-shaped white or gray lesions with dark borders on the leaves. Immediate treatment with fungicides like Tricyclazole is required.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "q_weather_01",
+    "topic": "Weather & Farming",
+    "question": "When is generally the best time of day to apply foliar fertilizers or pesticides?",
+    "options": [
+      "Noon, when the sun is hottest",
+      "During heavy rain",
+      "Early morning or late afternoon",
+      "Midnight"
+    ],
+    "correct_index": 2,
+    "xp_reward": 50,
+    "coin_reward": 10,
+    "explanation": "Spraying in the early morning or late afternoon avoids the extreme midday heat, which can cause chemicals to evaporate too quickly or burn the leaves due to magnification of sunlight.",
+    "difficulty": "easy"
+  },
+  {
+    "id": "q_market_01",
+    "topic": "Market Strategy",
+    "question": "What is the primary benefit of selling produce directly to consumers or urban clusters rather than traditional mandis?",
+    "options": [
+      "You do not have to wash the vegetables",
+      "Bypassing intermediaries increases your profit margin",
+      "Consumers pay less, meaning you earn less",
+      "The government gives a special subsidy for it"
+    ],
+    "correct_index": 1,
+    "xp_reward": 60,
+    "coin_reward": 15,
+    "explanation": "Direct-to-consumer sales eliminate the middlemen (commission agents), meaning the farmer retains a much higher percentage (often up to 85%) of the final retail price.",
+    "difficulty": "medium"
+  },
+  {
+    "id": "q_pest_02",
+    "topic": "Pest Control",
+    "question": "Which of the following is a biological method to control the Fall Armyworm in Maize?",
+    "options": [
+      "Spraying heavy doses of Urea",
+      "Lighting a fire near the field",
+      "Releasing Trichogramma wasps",
+      "Covering the field in plastic"
+    ],
+    "correct_index": 2,
+    "xp_reward": 100,
+    "coin_reward": 25,
+    "explanation": "Trichogramma wasps are tiny beneficial insects that lay their eggs inside the eggs of the Fall Armyworm, destroying the pest naturally before it even hatches into a caterpillar.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "q_soil_02",
+    "topic": "Soil Health",
+    "question": "If a soil test indicates a very low pH (highly acidic soil), what should be applied to neutralize it?",
+    "options": [
+      "Agricultural Lime",
+      "Sulphur",
+      "Urea",
+      "Cow Dung only"
+    ],
+    "correct_index": 0,
+    "xp_reward": 80,
+    "coin_reward": 20,
+    "explanation": "Agricultural lime (crushed limestone) is highly alkaline and is the standard treatment used to raise the pH of overly acidic soils, making nutrients available to the plants again.",
+    "difficulty": "hard"
+  },
+  {
+    "id": "q_finance_01",
+    "topic": "Farm Finance",
+    "question": "Which Government scheme provides a direct income support of ₹6,000 per year to small and marginal farmer families?",
+    "options": [
+      "PM-FBY (Pradhan Mantri Fasal Bima Yojana)",
+      "PM-KISAN (Pradhan Mantri Kisan Samman Nidhi)",
+      "Kisan Credit Card",
+      "Soil Health Card Scheme"
+    ],
+    "correct_index": 1,
+    "xp_reward": 50,
+    "coin_reward": 10,
+    "explanation": "PM-KISAN provides direct bank transfers of ₹6,000 annually in three equal installments of ₹2,000 to eligible landholding farmer families across India.",
+    "difficulty": "easy"
+  }
+]

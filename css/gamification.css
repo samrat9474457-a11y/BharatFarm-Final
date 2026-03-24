@@ -1,0 +1,436 @@
+/* css/gamification.css */
+/* Premium Farmer Gamification System */
+
+/* ── Dashboard Gamification Card ────────────────────────────── */
+.gamification-card {
+    background: linear-gradient(135deg, var(--bg-card), rgba(46, 204, 113, 0.05));
+    border-left: 4px solid var(--success);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+    grid-column: 1 / -1; /* Make it span full width at the top */
+    margin-bottom: 8px; /* Extra breathing room */
+}
+
+.g-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.level-badge {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 10px rgba(30, 58, 95, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.coin-balance {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.coin-icon {
+    color: #f1c40f;
+    text-shadow: 0 0 5px rgba(241, 196, 15, 0.4);
+    animation: pulseCoin 2s infinite ease-in-out;
+}
+
+.xp-container {
+    margin-bottom: 1.5rem;
+}
+
+.xp-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+}
+
+.xp-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.xp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4CAF50, #81C784);
+    width: 0%; /* Set via JS */
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy fill */
+    position: relative;
+}
+
+/* Shine effect on XP bar */
+.xp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+    animation: shimmerXP 2s infinite;
+}
+
+.btn-gami {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-gami:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-gami:active {
+    transform: translateY(1px);
+}
+
+.btn-gami.btn-daily {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.btn-gami.btn-daily i {
+    color: #fff8e1;
+}
+
+/* ── Quiz Modal ────────────────────────────────────────── */
+.quiz-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10, 22, 40, 0.85); /* Deep cinematic background */
+    backdrop-filter: blur(8px);
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Handled by GSAP */
+}
+
+.quiz-modal-content {
+    background: var(--bg-card);
+    width: 90%;
+    max-width: 600px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color);
+    transform: translateY(30px); /* Handled by GSAP */
+}
+
+.quiz-header {
+    background: var(--bg-tertiary);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.quiz-header-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.quiz-topic {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.quiz-difficulty {
+    font-size: 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+    display: inline-block;
+    color: var(--text-muted);
+}
+
+.quiz-header-right {
+    display: flex;
+    gap: 15px;
+}
+
+.reward-tag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.reward-tag i {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+.reward-tag i.fa-star { color: #3498db; }
+.reward-tag i.fa-coins { color: #f1c40f; }
+
+.quiz-body {
+    padding: 2rem;
+}
+
+.quiz-question {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-option {
+    background: var(--bg-primary);
+    border: 2px solid var(--border-color);
+    padding: 1rem 1.2rem;
+    border-radius: var(--border-radius-sm);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-option:hover {
+    border-color: var(--primary);
+    background: var(--bg-hover);
+    transform: translateX(5px);
+}
+
+.quiz-option .opt-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--bg-tertiary);
+    border-radius: 50%;
+    margin-right: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.quiz-option:hover .opt-letter {
+    background: var(--primary);
+    color: white;
+}
+
+/* State Classes for Options */
+.quiz-option.selected-correct {
+    background: rgba(46, 204, 113, 0.1);
+    border-color: var(--success);
+    color: var(--success);
+}
+.quiz-option.selected-correct .opt-letter {
+    background: var(--success);
+    color: white;
+}
+
+.quiz-option.selected-wrong {
+    background: rgba(231, 76, 60, 0.1);
+    border-color: var(--danger);
+    color: var(--danger);
+}
+.quiz-option.selected-wrong .opt-letter {
+    background: var(--danger);
+    color: white;
+}
+
+.quiz-option.correct-reveal {
+    border-color: var(--success);
+    color: var(--success);
+}
+
+.quiz-footer {
+    padding: 1.5rem;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+    display: none; /* Shown after answer */
+    flex-direction: column;
+    gap: 15px;
+}
+
+.quiz-explanation {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: var(--border-radius-sm);
+    border-left: 3px solid var(--primary);
+}
+
+.quiz-btn-close {
+    width: 100%;
+}
+
+/* ── Gamification Toasts (Coin/XP Popups) ──────────────── */
+.gamification-toast-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.g-toast {
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    position: absolute;
+    white-space: nowrap;
+    opacity: 0;
+    transform: scale(0.5) translateY(50px);
+}
+
+.g-toast-icon {
+    font-size: 2rem;
+}
+.g-toast-icon.xp { color: #3498db; }
+.g-toast-icon.coin { color: #f1c40f; }
+.g-toast-icon.badge { color: #e74c3c; }
+
+.g-toast-content h4 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-weight: 800;
+}
+.g-toast-content p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Animations */
+@keyframes pulseCoin {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); filter: brightness(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes shimmerXP {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+/* ── Mobile Responsiveness ──────────────────────────────── */
+@media (max-width: 768px) {
+    .gamification-card {
+        padding: 16px;
+    }
+    
+    .g-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .level-badge {
+        font-size: 0.8rem;
+    }
+
+    .coin-balance {
+        align-self: flex-start;
+    }
+
+    .quiz-modal-content {
+        width: 95%;
+        margin: 10px;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .quiz-header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+    
+    .quiz-header-right {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 20px;
+    }
+
+    .quiz-question {
+        font-size: 1.15rem;
+    }
+    
+    .quiz-option {
+        padding: 0.8rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .g-toast {
+        padding: 0.8rem 1.2rem;
+        border-radius: 20px;
+        gap: 10px;
+    }
+    
+    .g-toast-icon {
+        font-size: 1.5rem;
+    }
+    
+    .g-toast-content h4 {
+        font-size: 1rem;
+    }
+}

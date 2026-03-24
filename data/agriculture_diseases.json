@@ -1,0 +1,1501 @@
+[
+  {
+    "id": "rice_blast",
+    "category": "plant",
+    "crop": "Rice",
+    "name_en": "Rice Blast",
+    "name_bn": "ধানের ব্লাস্ট রোগ",
+    "scientific_name": "Magnaporthe oryzae",
+    "severity": "high",
+    "description": "One of the most destructive diseases of rice causing lesions on leaves and panicles.",
+    "symptoms": [
+      "Check leaves for diamond-shaped white to gray lesions with dark borders.",
+      "Check stem nodes: they turn black and break easily.",
+      "Inspect panicle branches: they may rot and grains remain empty."
+    ],
+    "causes": [
+      "Fungus (Magnaporthe oryzae)"
+    ],
+    "spread_conditions": [
+      "High humidity (>90%)",
+      "Temperature between 25-28°C",
+      "Excessive nitrogen"
+    ],
+    "solutions": {
+      "biological": [
+        "Spray Pseudomonas fluorescens formulation @ 5g/L"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Tricyclazole 75% WP",
+          "usage": "Foliar spray",
+          "dosage": "0.6g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Spray cow urine (10%) mixed with water"
+      ]
+    },
+    "prevention": [
+      "Plant blast-resistant varieties like Swarna",
+      "Avoid excessive nitrogen application",
+      "Burn infected stubble after harvest to break lifecycle"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Potassium",
+        "type": "chemical",
+        "purpose": "Increases disease resistance"
+      }
+    ]
+  },
+  {
+    "id": "wheat_rust",
+    "category": "plant",
+    "crop": "Wheat",
+    "name_en": "Yellow Rust",
+    "name_bn": "গমের হলুদ মরিচা",
+    "scientific_name": "Puccinia striiformis",
+    "severity": "high",
+    "description": "A major wheat disease causing yellow stripes on leaves, stunting growth.",
+    "symptoms": [
+      "Check leaves for yellow, powdery blisters arranged in distinct parallel stripes.",
+      "Run fingers over leaves; a yellow-orange powder (spores) will rub off.",
+      "Check for premature drying of leaves starting from the tips."
+    ],
+    "causes": [
+      "Fungus (Puccinia striiformis)"
+    ],
+    "spread_conditions": [
+      "Cool temperatures (10-20°C) and high humidity or morning dew"
+    ],
+    "solutions": {
+      "biological": [
+        "Use rust-resistant wheat varieties (e.g., PBW 343)"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Propiconazole 25% EC",
+          "usage": "Foliar spray at first sign",
+          "dosage": "1ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Early sowing to allow crop to mature before rust peaks"
+      ]
+    },
+    "prevention": [
+      "Plant resistant varieties is the only reliable prevention",
+      "Eradicate volunteer wheat hosting the fungus in off-seasons"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Balanced NPK",
+        "type": "chemical",
+        "purpose": "Avoid excessive Nitrogen which promotes rust"
+      }
+    ]
+  },
+  {
+    "id": "maize_fall_armyworm",
+    "category": "pest",
+    "crop": "Maize",
+    "name_en": "Fall Armyworm",
+    "name_bn": "ফল আর্মিওয়ার্ম",
+    "scientific_name": "Spodoptera frugiperda",
+    "severity": "high",
+    "description": "A highly invasive caterpillar pest that rapidly destroys maize whorls and cobs.",
+    "symptoms": [
+      "Inspect the central leaf whorl: look for ragged, elongated holes.",
+      "Check for large amounts of granular yellowish-brown frass (excrement) in the whorl.",
+      "Look for the caterpillar: it has an inverted 'Y' mark on its head and 4 dark spots in a square on the second-to-last segment."
+    ],
+    "causes": [
+      "Pest (Spodoptera frugiperda moth caterpillar)"
+    ],
+    "spread_conditions": [
+      "Warm weather, spreads rapidly via wind-borne moths"
+    ],
+    "solutions": {
+      "biological": [
+        "Release Trichogramma egg parasitoids",
+        "Apply Neem Seed Kernel Extract (NSKE 5%)"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Emamectin Benzoate 5% SG",
+          "usage": "Spray directly into the whorl",
+          "dosage": "0.4g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Apply a mixture of sand and lime/ash directly into the whorls to suffocate larvae"
+      ]
+    },
+    "prevention": [
+      "Deep summer ploughing to expose pupae",
+      "Intercrop maize with legumes like pigeon pea or beans",
+      "Erect bird perches to encourage predatory birds"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Organic Compost",
+        "type": "organic",
+        "purpose": "Improve plant vigor"
+      }
+    ]
+  },
+  {
+    "id": "cotton_bollworm",
+    "category": "pest",
+    "crop": "Cotton",
+    "name_en": "Pink Bollworm",
+    "name_bn": "গোলাপী বোলওয়ার্ম",
+    "scientific_name": "Pectinophora gossypiella",
+    "severity": "high",
+    "description": "A destructive pest of cotton that eats the seeds and damages the cotton fibers.",
+    "symptoms": [
+      "Check the flowers: they fail to open properly and form a 'rosette' shape.",
+      "Inspect developing bolls: look for small entrance holes.",
+      "Slice a boll open: presence of pinkish caterpillars inside eating the seeds."
+    ],
+    "causes": [
+      "Pest (Moth caterpillar)"
+    ],
+    "spread_conditions": [
+      "Continuous cotton cultivation, leftover debris"
+    ],
+    "solutions": {
+      "biological": [
+        "Install Pheromone traps (Gossyplure) @ 5/acre",
+        "Release Trichogramma bactrae"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Spinosad 45% SC",
+          "usage": "Foliar spray",
+          "dosage": "0.3ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Handpick and bury rosette flowers/damaged bolls"
+      ]
+    },
+    "prevention": [
+      "Strictly terminate the crop after 180 days; do not leave stalks in field",
+      "Deep ploughing to destroy hibernating larvae",
+      "Grow Bt Cotton varieties"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Potash",
+        "type": "chemical",
+        "purpose": "Promotes boll maturity"
+      }
+    ]
+  },
+  {
+    "id": "tomato_leaf_curl",
+    "category": "plant",
+    "crop": "Tomato",
+    "name_en": "Tomato Leaf Curl Virus",
+    "name_bn": "টমেটোর পাতা কোঁকড়ানো রোগ",
+    "scientific_name": "Tomato leaf curl virus (ToLCV)",
+    "severity": "high",
+    "description": "Viral disease spread by whiteflies causing severe stunting and leaf curling, stopping fruit yield.",
+    "symptoms": [
+      "Check new upper leaves: they curl upwards, become small, crinkled, and leathery.",
+      "Check plant size: severe stunting with bushy appearance due to shortened internodes.",
+      "Look under the leaves: presence of tiny white flying insects (whiteflies) when disturbed.",
+      "Check flowering: flowers drop off and no new fruits form."
+    ],
+    "causes": [
+      "Virus transmitted by Whitefly (Bemisia tabaci)"
+    ],
+    "spread_conditions": [
+      "High whitefly populations in warm, dry weather"
+    ],
+    "solutions": {
+      "biological": [
+        "Spray Neem oil (5ml/L) to deter whiteflies",
+        "Install yellow sticky traps (15-20 per acre)"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Imidacloprid 17.8% SL",
+          "usage": "Systemic spray to kill vectors",
+          "dosage": "0.5ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Uproot and completely burn infected plants to stop virus spread (No cure once infected)"
+      ]
+    },
+    "prevention": [
+      "Use virus-resistant hybrid varieties",
+      "Raise seedlings inside a 40-mesh nylon net",
+      "Cultivate a barrier crop of tall maize/sorghum around the field"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Micronutrient mix",
+        "type": "chemical",
+        "purpose": "Help healthy plants resist vector attacks"
+      }
+    ]
+  },
+  {
+    "id": "potato_late_blight",
+    "category": "plant",
+    "crop": "Potato",
+    "name_en": "Late Blight",
+    "name_bn": "নাবি ধসা (লেট ব্লাইট)",
+    "scientific_name": "Phytophthora infestans",
+    "severity": "high",
+    "description": "Highly destructive fungal-like disease that causes rapid rotting of potato leaves and tubers.",
+    "symptoms": [
+      "Inspect leaf edges: look for water-soaked, irregular pale green/brown spots.",
+      "Check under the leaf in early morning: look for a white, fuzzy fungal growth ring around the spots.",
+      "Check the tubers (potatoes): they show brownish-purple sunken lesions and a dry, granular rot inside."
+    ],
+    "causes": [
+      "Oomycete (Phytophthora infestans)"
+    ],
+    "spread_conditions": [
+      "Cool, cloudy, and moist weather (15-20°C with >90% RH)"
+    ],
+    "solutions": {
+      "biological": [
+        "Foliar spray of Trichoderma viride or Bacillus subtilis"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Mancozeb 75% WP",
+          "usage": "Prophylactic Spray",
+          "dosage": "2.5g per liter of water"
+        },
+        {
+          "fertilizer_or_pesticide": "Cymoxanil 8% + Mancozeb 64% WP",
+          "usage": "Curative spray if disease is observed",
+          "dosage": "2g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Cut and remove the haulms (stems/leaves) immediately if the field gets heavily infected to save the underground tubers"
+      ]
+    },
+    "prevention": [
+      "Use only certified disease-free seed tubers",
+      "Ensure good field drainage so water doesn't stagnate",
+      "High earthing up to cover tubers completely with soil"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Muriate of Potash",
+        "type": "chemical",
+        "purpose": "Improves tuber skin thickness and disease resistance"
+      }
+    ]
+  },
+  {
+    "id": "brinjal_shoot_borer",
+    "category": "pest",
+    "crop": "Brinjal",
+    "name_en": "Shoot and Fruit Borer",
+    "name_bn": "বেগুনের ডগা ও ফল ছিদ্রকারী পোকা",
+    "scientific_name": "Leucinodes orbonalis",
+    "severity": "high",
+    "description": "Caterpillar that bores into the tender shoots causing them to droop, and later bores into fruits making them unfit for sale.",
+    "symptoms": [
+      "Check the top growing shoots: they suddenly wilt, droop, and dry up ('dead hearts').",
+      "Inspect the fruits: look for round bore holes.",
+      "Check around the holes: presence of insect excreta (frass) plugging the holes."
+    ],
+    "causes": [
+      "Pest (Moth larva)"
+    ],
+    "spread_conditions": [
+      "Warm and humid climates, continuous brinjal farming"
+    ],
+    "solutions": {
+      "biological": [
+        "Install sex pheromone traps (Lucilure) @ 10-15 per acre to trap male moths",
+        "Release Trichogramma chilonis wasps"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Chlorantraniliprole 18.5% SC",
+          "usage": "Foliar spray",
+          "dosage": "0.3ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Manually pluck and destroy drooping shoots and infested fruits every week"
+      ]
+    },
+    "prevention": [
+      "Avoid continuous brinjal cultivation in the same field",
+      "Plant coriander or marigold as intercrops to attract beneficial insects"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Neem Cake",
+        "type": "organic",
+        "purpose": "Soil application acts as a systemic deterrent"
+      }
+    ]
+  },
+  {
+    "id": "chilli_anthracnose",
+    "category": "plant",
+    "crop": "Chilli",
+    "name_en": "Anthracnose / Fruit Rot",
+    "name_bn": "মরিচের অ্যানথ্রাকনোজ (ফল পচা)",
+    "scientific_name": "Colletotrichum capsici",
+    "severity": "high",
+    "description": "Fungal disease causing ripe chilli fruits to rot and drop, drastically reducing spice quality.",
+    "symptoms": [
+      "Inspect ripe/red fruits: look for circular, sunken lesions with black margins.",
+      "Look closely at the spots: they often have concentric rings of black dots (fungal fruiting bodies).",
+      "Check the branches: severe infection causes 'die-back', where branches die from the tip downwards."
+    ],
+    "causes": [
+      "Fungus (Colletotrichum capsici)"
+    ],
+    "spread_conditions": [
+      "Heavy rainfall, high humidity, excessive overhead irrigation"
+    ],
+    "solutions": {
+      "biological": [
+        "Seed treatment with Pseudomonas fluorescens"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Azoxystrobin 11% + Tebuconazole 18.3% SC",
+          "usage": "Foliar spray",
+          "dosage": "1ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Collect and burn diseased fruits and twigs"
+      ]
+    },
+    "prevention": [
+      "Treat seeds with hot water (50°C for 30 mins) before sowing",
+      "Use wider plant spacing for air circulation",
+      "Harvest fruits immediately upon ripening"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Calcium Nitrate",
+        "type": "chemical",
+        "purpose": "Prevents blossom end rot and strengthens fruit walls"
+      }
+    ]
+  },
+  {
+    "id": "cabbage_diamondback_moth",
+    "category": "pest",
+    "crop": "Cabbage",
+    "name_en": "Diamondback Moth",
+    "name_bn": "ডায়মন্ডব্যাক মথ",
+    "scientific_name": "Plutella xylostella",
+    "severity": "high",
+    "description": "The most notorious pest of cabbage and cauliflower worldwide, causing severe defoliation.",
+    "symptoms": [
+      "Check the leaves: small pale green caterpillars eating the lower surface.",
+      "Look for 'window-pane' damage: caterpillars leave the upper transparent epidermis intact, creating a window effect.",
+      "Inspect the cabbage head: severe feeding causes the head to be stunted and unmarketable."
+    ],
+    "causes": [
+      "Pest (Moth caterpillar)"
+    ],
+    "spread_conditions": [
+      "Dry and hot weather, overuse of chemical pesticides causing resistance"
+    ],
+    "solutions": {
+      "biological": [
+        "Spray Bacillus thuringiensis (Bt) kurstaki formulation",
+        "Pheromone traps"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Spinosad 45% SC",
+          "usage": "Spray",
+          "dosage": "0.3ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Spray garlic-chilli extract to deter moths from laying eggs"
+      ]
+    },
+    "prevention": [
+      "Plant Indian mustard as a trap crop around the cabbage field",
+      "Practice crop rotation with non-cruciferous crops (like beans or tomatoes)"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Sulphur",
+        "type": "chemical",
+        "purpose": "Cruciferous crops require sulfur for strong flavor and growth"
+      }
+    ]
+  },
+  {
+    "id": "mango_anthracnose",
+    "category": "plant",
+    "crop": "Mango",
+    "name_en": "Mango Anthracnose",
+    "name_bn": "আমের অ্যানথ্রাকনোজ",
+    "scientific_name": "Colletotrichum gloeosporioides",
+    "severity": "high",
+    "description": "The most common disease of mango causing black spots on leaves, blossom blight, and severe fruit set loss.",
+    "symptoms": [
+      "Check new leaves: oval, irregular dark brown to black spots that coalesce.",
+      "Inspect flowers/panicles: they develop black spots, dry up, and fall off (Blossom Blight).",
+      "Check ripening fruits: dark sunken lesions that cause the fruit to rapidly rot post-harvest."
+    ],
+    "causes": [
+      "Fungus (Colletotrichum gloeosporioides)"
+    ],
+    "spread_conditions": [
+      "High humidity, frequent rains, and heavy dew during flowering and fruit setting"
+    ],
+    "solutions": {
+      "biological": [
+        "Pre-harvest spray of Pseudomonas fluorescens"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Hexaconazole 5% EC",
+          "usage": "Foliar spray at panicle emergence",
+          "dosage": "1ml per liter of water"
+        },
+        {
+          "fertilizer_or_pesticide": "Carbendazim 50% WP",
+          "usage": "Pre-harvest spray",
+          "dosage": "1g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "After harvest, dip mangoes in hot water (52°C for 10 minutes) before storing"
+      ]
+    },
+    "prevention": [
+      "Prune tree canopy to allow sunlight penetration and drying of leaves",
+      "Collect and burn fallen infected leaves and twigs in the orchard"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Zinc Sulphate",
+        "type": "chemical",
+        "purpose": "Foliar spray to prevent little leaf and boost immunity"
+      }
+    ]
+  },
+  {
+    "id": "banana_panama_wilt",
+    "category": "plant",
+    "crop": "Banana",
+    "name_en": "Panama Wilt",
+    "name_bn": "কলার পানামা রোগ",
+    "scientific_name": "Fusarium oxysporum f. sp. cubense",
+    "severity": "high",
+    "description": "A devastating soil-borne fungal disease that enters through roots and blocks the vascular system of the banana plant.",
+    "symptoms": [
+      "Check the oldest (lower) leaves: they turn yellow at the margins and dry up.",
+      "Observe the leaf collapsing: leaves wilt and collapse at the petiole, hanging down like a skirt around the trunk.",
+      "Cut the pseudostem (trunk): look for reddish-brown or black distinct vascular discoloration rings inside."
+    ],
+    "causes": [
+      "Fungus (Fusarium oxysporum - TR4 is highly destructive)"
+    ],
+    "spread_conditions": [
+      "Infected planting material (suckers), contaminated soil/water, poor drainage"
+    ],
+    "solutions": {
+      "biological": [
+        "Apply Trichoderma viride enriched farmyard manure in the planting pit"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Carbendazim 50% WP",
+          "usage": "Pseudostem injection or soil drenching",
+          "dosage": "2g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Uproot and completely burn the infected plant, including the underground corm"
+      ]
+    },
+    "prevention": [
+      "Plant disease-free tissue-cultured plantlets",
+      "Do not reuse fields that had Panama disease for at least 3-4 years",
+      "Ensure proper drainage"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Lime",
+        "type": "chemical",
+        "purpose": "Apply to soil to raise pH, which somewhat suppresses the fungus"
+      }
+    ]
+  },
+  {
+    "id": "citrus_canker",
+    "category": "plant",
+    "crop": "Citrus/Lemon",
+    "name_en": "Citrus Canker",
+    "name_bn": "লেবুর ক্যাংকার রোগ",
+    "scientific_name": "Xanthomonas axonopodis pv. citri",
+    "severity": "medium",
+    "description": "A highly contagious bacterial disease affecting lemon, orange, and lime trees, causing lesions on fruits and leaves.",
+    "symptoms": [
+      "Check the leaves and fruits: look for raised, corky, brownish blister-like lesions.",
+      "Hold leaves against the light: lesions have a distinct yellow halo around them.",
+      "Check twigs: rough scabby lesions causing dieback in severe cases."
+    ],
+    "causes": [
+      "Bacteria (Xanthomonas)"
+    ],
+    "spread_conditions": [
+      "Wind-driven rain, overhead irrigation, leaf miner insect damage"
+    ],
+    "solutions": {
+      "biological": [
+        "Control the Citrus Leaf Miner pest (which spreads the bacteria) using Neem oil"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Copper Oxychloride 50% WP + Streptomycin",
+          "usage": "Foliar spray",
+          "dosage": "3g + 0.1g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Prune and burn infected twigs and fallen leaves before monsoon starts"
+      ]
+    },
+    "prevention": [
+      "Prune trees before the rainy season",
+      "Spray copper fungicides prophylactically",
+      "Use disease-free nursery stock"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Magnesium Sulphate",
+        "type": "chemical",
+        "purpose": "Prevent yellowing of leaves, keeping the plant robust"
+      }
+    ]
+  },
+  {
+    "id": "papaya_ringspot",
+    "category": "plant",
+    "crop": "Papaya",
+    "name_en": "Papaya Ringspot Virus (PRSV)",
+    "name_bn": "পেঁপের রিং স্পট রোগ",
+    "scientific_name": "Papaya ringspot virus",
+    "severity": "high",
+    "description": "A fatal viral disease spread by aphids that causes mottled leaves and rings on fruits, halting production.",
+    "symptoms": [
+      "Inspect the young leaves: prominent yellow mottling, mosaic patterns, and distortion (shoestring effect).",
+      "Check the fruit surface: distinct dark green 'rings' or 'C'-shaped spots.",
+      "Check the stem/petioles: water-soaked green streaks."
+    ],
+    "causes": [
+      "Virus transmitted by Aphids"
+    ],
+    "spread_conditions": [
+      "Presence of aphids, growing papaya continuously near infected orchards"
+    ],
+    "solutions": {
+      "biological": [
+        "Spray Neem Oil (5ml/L) to deter aphids from feeding"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Imidacloprid 17.8% SL",
+          "usage": "Spray to control aphid vectors",
+          "dosage": "0.5ml per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Rogue (uproot) infected plants immediately upon spotting symptoms to save the rest of the orchard"
+      ]
+    },
+    "prevention": [
+      "Grow papaya under net houses during seedling stage",
+      "Grow a border crop of maize or tall sorghum to block flying aphids",
+      "Grow PRSV tolerant varieties"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Organic Manure + Boron",
+        "type": "organic",
+        "purpose": "Boron prevents lumpy fruit deformation often mistaken for PRSV"
+      }
+    ]
+  },
+  {
+    "id": "apple_scab",
+    "category": "plant",
+    "crop": "Apple",
+    "name_en": "Apple Scab",
+    "name_bn": "আপেলের স্ক্যাব",
+    "scientific_name": "Venturia inaequalis",
+    "severity": "high",
+    "description": "A serious fungal disease that causes black, scabby spots on apple leaves and fruits, making them unsellable.",
+    "symptoms": [
+      "Check the leaves in spring: olive-green, somewhat velvety spots appear.",
+      "Check the fruits: dark brown to black, corky scabs form on the skin.",
+      "Inspect fruit shape: heavily infected fruits become cracked and deformed."
+    ],
+    "causes": [
+      "Fungus (Venturia inaequalis)"
+    ],
+    "spread_conditions": [
+      "Fungus overwinters in dead leaves; spores release during spring rains"
+    ],
+    "solutions": {
+      "biological": [
+        "Application of Trichoderma to fallen leaves in autumn to speed up decomposition"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Difenoconazole 25% EC",
+          "usage": "Foliar spray before and after blossom",
+          "dosage": "0.3ml per liter of water"
+        },
+        {
+          "fertilizer_or_pesticide": "Captan 50% WP",
+          "usage": "Protective spray",
+          "dosage": "2g per liter of water"
+        }
+      ],
+      "home_remedies": [
+        "Rake up and remove all fallen leaves in autumn; burn or compost them away from the orchard to destroy overwintering fungus"
+      ]
+    },
+    "prevention": [
+      "Plant scab-resistant varieties",
+      "Prune trees well to open the canopy for rapid leaf drying after rain",
+      "Apply a urea spray to fallen leaves in autumn to accelerate rotting"
+    ],
+    "fertilizers_recommended": [
+      {
+        "name": "Calcium spray",
+        "type": "chemical",
+        "purpose": "Enhances fruit skin integrity"
+      }
+    ]
+  },
+  {
+    "id": "soil_acidity",
+    "category": "soil",
+    "crop": "Various",
+    "name_en": "Soil Acidity",
+    "name_bn": "মাটির অম্লতা",
+    "scientific_name": "Low Soil pH",
+    "severity": "medium",
+    "description": "Soil with pH less than 6.0 restricts root growth and makes nutrients like phosphorus unavailable.",
+    "symptoms": [
+      "Stunted crop growth and pale green to yellow leaves.",
+      "Poor root development, especially in legumes.",
+      "Manganese and aluminum toxicity symptoms like burnt leaf tips."
+    ],
+    "causes": [
+      "Heavy rainfall leaching base cations",
+      "Continuous use of acid-forming fertilizers (like Urea)"
+    ],
+    "spread_conditions": [
+      "High rainfall areas, poor soil management"
+    ],
+    "solutions": {
+      "biological": [
+        "Include deep-rooted cover crops to cycle nutrients"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Agricultural Lime",
+          "usage": "Broadcasting before sowing",
+          "dosage": "1 to 2 tons per acre"
+        }
+      ],
+      "home_remedies": [
+        "Incorporate wood ash or crushed eggshells into small farm beds"
+      ]
+    },
+    "prevention": [
+      "Regular soil testing",
+      "Use balanced fertilizers instead of relying only on Urea"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "soil_zinc_deficiency",
+    "category": "soil",
+    "crop": "Corn, Rice",
+    "name_en": "Zinc Deficiency",
+    "name_bn": "দস্তার ঘাটতি",
+    "scientific_name": "Zn Deficiency",
+    "severity": "high",
+    "description": "A critical micronutrient deficiency causing stunted growth and poor yields.",
+    "symptoms": [
+      "Interveinal chlorosis (yellowing between veins) on new leaves.",
+      "In rice, leaves develop brown blotches and streaks (Khaira disease).",
+      "Shortened internodes leading to rosetting."
+    ],
+    "causes": [
+      "Alkaline or calcareous soils",
+      "Waterlogged conditions"
+    ],
+    "spread_conditions": [
+      "Intensive cropping without micronutrient replenishment"
+    ],
+    "solutions": {
+      "biological": [
+        "Use Zinc-solubilizing bacteria (ZSB) biofertilizers"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Zinc Sulphate",
+          "usage": "Soil application",
+          "dosage": "10 kg/acre"
+        }
+      ],
+      "home_remedies": [
+        "Apply well-decomposed Farm Yard Manure (FYM)"
+      ]
+    },
+    "prevention": [
+      "Apply Zinc Sulphate as a basal dose"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "soil_salinity",
+    "category": "soil",
+    "crop": "Various",
+    "name_en": "Soil Salinity",
+    "name_bn": "মাটির লবণাক্ততা",
+    "scientific_name": "High Soluble Salts",
+    "severity": "high",
+    "description": "Accumulation of water-soluble salts in the soil root zone, severely limiting water uptake.",
+    "symptoms": [
+      "White crust on the soil surface when dry.",
+      "Plants appear wilted even when soil is moist.",
+      "Marginal leaf burn."
+    ],
+    "causes": [
+      "Irrigation with saline water",
+      "Poor drainage"
+    ],
+    "spread_conditions": [
+      "Arid and semi-arid regions, coastal areas"
+    ],
+    "solutions": {
+      "biological": [
+        "Grow salt-tolerant crops like barley or cotton initially"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Gypsum",
+          "usage": "Soil amendment",
+          "dosage": "As per soil test"
+        }
+      ],
+      "home_remedies": [
+        "Heavy irrigation to leach salts below the root zone"
+      ]
+    },
+    "prevention": [
+      "Improve field drainage infrastructure"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "onion_neck_rot",
+    "category": "food",
+    "crop": "Onion",
+    "name_en": "Onion Neck Rot",
+    "name_bn": "পেঁয়াজের ঘাড় পচা রোগ",
+    "scientific_name": "Botrytis allii",
+    "severity": "high",
+    "description": "A destructive post-harvest fungal disease that rots onion bulbs during storage.",
+    "symptoms": [
+      "Softening and browning of the neck tissues of the bulb.",
+      "A gray, fuzzy fungal growth develops on the affected scales."
+    ],
+    "causes": [
+      "Fungus infecting through the cut neck during harvest"
+    ],
+    "spread_conditions": [
+      "High humidity in storage",
+      "Improper curing"
+    ],
+    "solutions": {
+      "biological": [
+        "Ensure thorough drying (curing) of onions before storage"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "None",
+          "usage": "Prevention only",
+          "dosage": "N/A"
+        }
+      ],
+      "home_remedies": [
+        "Store in well-ventilated, cool, and dry areas"
+      ]
+    },
+    "prevention": [
+      "Allow onion tops to dry naturally and fall over before harvesting"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "potato_dry_rot",
+    "category": "food",
+    "crop": "Potato",
+    "name_en": "Potato Dry Rot",
+    "name_bn": "আলুর শুকনো পচা রোগ",
+    "scientific_name": "Fusarium sambucinum",
+    "severity": "medium",
+    "description": "Fungal infection that enters through harvest wounds, causing potatoes to shrivel and rot.",
+    "symptoms": [
+      "Sunken, wrinkled, brown-to-black lesions on the potato surface.",
+      "Internal tissue turns brown, dry, and powdery."
+    ],
+    "causes": [
+      "Fungus entering through bruises during harvest"
+    ],
+    "spread_conditions": [
+      "Wounds on tubers, warm and dry storage initially"
+    ],
+    "solutions": {
+      "biological": [
+        "Maintain strict hygiene in storage facilities"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Thiabendazole",
+          "usage": "Post-harvest dip",
+          "dosage": "As per regulations"
+        }
+      ],
+      "home_remedies": [
+        "Cure potatoes at 10-15°C with high humidity for 1-2 weeks before cold storage"
+      ]
+    },
+    "prevention": [
+      "Handle tubers gently to minimize bruising"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "grain_weevils",
+    "category": "food",
+    "crop": "Cereals",
+    "name_en": "Grain Weevils",
+    "name_bn": "শস্যের উইভিল পোকা",
+    "scientific_name": "Sitophilus spp.",
+    "severity": "high",
+    "description": "Tiny beetles that bore into stored grains, eating them from the inside out.",
+    "symptoms": [
+      "Presence of small, dark beetles walking among grains.",
+      "Grains have small, perfectly round exit holes.",
+      "Accumulation of fine, powdery dust."
+    ],
+    "causes": [
+      "Insect infestation in storage facilities"
+    ],
+    "spread_conditions": [
+      "Warm temperatures and high grain moisture"
+    ],
+    "solutions": {
+      "biological": [
+        "Store grains in hermetically sealed bags"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Aluminum Phosphide tablets",
+          "usage": "Fumigation",
+          "dosage": "1-2 tablets per ton"
+        }
+      ],
+      "home_remedies": [
+        "Mix dried neem leaves or ash with grains before storing",
+        "Sun-dry grains thoroughly"
+      ]
+    },
+    "prevention": [
+      "Thoroughly clean storage bins before putting in new grain"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "groundnut_tikka",
+    "category": "plant",
+    "crop": "Groundnut",
+    "name_en": "Tikka Disease",
+    "name_bn": "বাদামের টিক্কা রোগ",
+    "scientific_name": "Cercospora arachidicola",
+    "severity": "high",
+    "description": "Common fungal disease causing severe defoliation and yield loss.",
+    "symptoms": [
+      "Small, dark circular spots appear on leaves.",
+      "Severe infection causes complete defoliation before harvest."
+    ],
+    "causes": [
+      "Fungus (Cercospora)"
+    ],
+    "spread_conditions": [
+      "High humidity, prolonged leaf wetness"
+    ],
+    "solutions": {
+      "biological": [
+        "Seed treatment with Trichoderma viride"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Chlorothalonil 75% WP",
+          "usage": "Foliar spray",
+          "dosage": "2g per liter"
+        }
+      ],
+      "home_remedies": [
+        "Spray Neem Seed Kernel Extract (NSKE 5%)"
+      ]
+    },
+    "prevention": [
+      "Crop rotation with non-legume crops"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "sugarcane_red_rot",
+    "category": "plant",
+    "crop": "Sugarcane",
+    "name_en": "Red Rot",
+    "name_bn": "আখের লাল পচা রোগ",
+    "scientific_name": "Colletotrichum falcatum",
+    "severity": "high",
+    "description": "Considered the 'cancer of sugarcane', this fungal disease rots the cane from the inside.",
+    "symptoms": [
+      "The third or fourth leaf from the top starts yellowing.",
+      "When cane is split, internal tissue is reddened with white patches.",
+      "A sour, alcoholic odor is emitted."
+    ],
+    "causes": [
+      "Fungus"
+    ],
+    "spread_conditions": [
+      "Infected setts, waterlogging, monsoon season"
+    ],
+    "solutions": {
+      "biological": [
+        "Sett treatment with Pseudomonas fluorescens"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Carbendazim 50% WP",
+          "usage": "Sett dipping",
+          "dosage": "1g per liter for 15 mins"
+        }
+      ],
+      "home_remedies": [
+        "Uproot and burn infected clumps immediately"
+      ]
+    },
+    "prevention": [
+      "Use rigorously selected, disease-free setts"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "coffee_rust",
+    "category": "plant",
+    "crop": "Coffee",
+    "name_en": "Coffee Leaf Rust",
+    "name_bn": "কফির পাতার মরিচা রোগ",
+    "scientific_name": "Hemileia vastatrix",
+    "severity": "high",
+    "description": "Devastating disease globally causing severe defoliation and yield loss.",
+    "symptoms": [
+      "Orange powdery lesions on the underside of leaves.",
+      "Yellow spots on the upper leaf surface.",
+      "Premature leaf drop."
+    ],
+    "causes": [
+      "Fungus"
+    ],
+    "spread_conditions": [
+      "Rain splash, high humidity, temperatures between 15-25°C"
+    ],
+    "solutions": {
+      "biological": [
+        "Use highly resistant coffee varieties"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Copper Oxychloride",
+          "usage": "Foliar spray",
+          "dosage": "2g per liter"
+        }
+      ],
+      "home_remedies": [
+        "Adequate spacing to improve air circulation"
+      ]
+    },
+    "prevention": [
+      "Proper pruning and shade management"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "whitefly",
+    "category": "pest",
+    "crop": "Multiple Crops",
+    "name_en": "Whitefly",
+    "name_bn": "সাদা মাছি",
+    "scientific_name": "Bemisia tabaci",
+    "severity": "high",
+    "description": "Tiny, sap-sucking insects that weaken plants and transmit viral diseases like Leaf Curl.",
+    "symptoms": [
+      "Clouds of tiny white insects fly up when shaken.",
+      "Leaves become heavily coated with sticky honeydew.",
+      "Black sooty mold grows on the honeydew."
+    ],
+    "causes": [
+      "Pest (Insect)"
+    ],
+    "spread_conditions": [
+      "Warm and dry weather"
+    ],
+    "solutions": {
+      "biological": [
+        "Install yellow sticky traps (15-20 per acre)"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Diafenthiuron 50% WP",
+          "usage": "Foliar spray",
+          "dosage": "1.2g per liter"
+        }
+      ],
+      "home_remedies": [
+        "Spray Neem Oil (5ml/L + 1ml liquid soap)"
+      ]
+    },
+    "prevention": [
+      "Eradicate weed hosts around the field"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "rice_stem_borer",
+    "category": "pest",
+    "crop": "Rice",
+    "name_en": "Yellow Stem Borer",
+    "name_bn": "মাজরা পোকা",
+    "scientific_name": "Scirpophaga incertulas",
+    "severity": "high",
+    "description": "Caterpillars bore into the rice stem, cutting off nutrient flow.",
+    "symptoms": [
+      "Vegetative stage: Central shoot dries up ('Dead Heart').",
+      "Reproductive stage: Emerging panicles are white and empty ('Whitehead')."
+    ],
+    "causes": [
+      "Pest (Moth caterpillar)"
+    ],
+    "spread_conditions": [
+      "Continuous flooded conditions"
+    ],
+    "solutions": {
+      "biological": [
+        "Install pheromone traps",
+        "Release Trichogramma japonicum"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Cartap Hydrochloride 4G",
+          "usage": "Broadcasting in standing water",
+          "dosage": "7.5 kg per acre"
+        }
+      ],
+      "home_remedies": [
+        "Clip seedling tips before transplanting"
+      ]
+    },
+    "prevention": [
+      "Plough under rice stubble after harvest"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "aphids",
+    "category": "pest",
+    "crop": "Vegetables",
+    "name_en": "Aphids",
+    "name_bn": "জাব পোকা",
+    "scientific_name": "Aphidoidea",
+    "severity": "medium",
+    "description": "Small insects clustering on tender shoots, sucking sap and transmitting viruses.",
+    "symptoms": [
+      "Clusters of tiny insects on new shoots.",
+      "Leaves curl, pucker, and turn yellow."
+    ],
+    "causes": [
+      "Pest (Sap-sucking insect)"
+    ],
+    "spread_conditions": [
+      "Cool to warm weather, high nitrogen"
+    ],
+    "solutions": {
+      "biological": [
+        "Encourage Ladybird beetles and Lacewings"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Acetamiprid 20% SP",
+          "usage": "Foliar spray",
+          "dosage": "0.4g per liter"
+        }
+      ],
+      "home_remedies": [
+        "Garlic and soap water spray"
+      ]
+    },
+    "prevention": [
+      "Avoid excessive nitrogen fertilizers"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "locust_swarms",
+    "category": "pest",
+    "crop": "All Crops",
+    "name_en": "Desert Locust",
+    "name_bn": "মরুভূমির পঙ্গপাল",
+    "scientific_name": "Schistocerca gregaria",
+    "severity": "high",
+    "description": "Voracious, swarming grasshoppers capable of destroying entire fields in hours.",
+    "symptoms": [
+      "Massive clouds of flying insects darkening the sky.",
+      "Rapid and complete defoliation of plants down to the bare stems."
+    ],
+    "causes": [
+      "Pest (Swarming Orthoptera)"
+    ],
+    "spread_conditions": [
+      "Wind currents, arid weather conditions following heavy rains"
+    ],
+    "solutions": {
+      "biological": [
+        "Use entomopathogenic fungi like Metarhizium acridum"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Malathion 96% ULV",
+          "usage": "Aerial spraying",
+          "dosage": "As per Gov intervention guidelines"
+        }
+      ],
+      "home_remedies": [
+        "Create loud noises using drums or utensils to prevent swarms from settling"
+      ]
+    },
+    "prevention": [
+      "Monitor swarm movements via FAO bulletins and coordinate early with local agriculture departments"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "soil_nitrogen_deficiency",
+    "category": "soil",
+    "crop": "Most Crops",
+    "name_en": "Nitrogen Deficiency",
+    "name_bn": "নাইট্রোজেনের ঘাটতি",
+    "scientific_name": "N Deficiency",
+    "severity": "high",
+    "description": "The most common nutrient deficiency, causing poor growth and pale yellow crops globally.",
+    "symptoms": [
+      "Yellowing (chlorosis) starts from the older, lower leaves.",
+      "Stunted growth and thin, spindly stems.",
+      "Reduced tillering in cereals and small fruit sizes."
+    ],
+    "causes": [
+      "Insufficient nitrogen fertilization",
+      "Heavy rains leaching nitrate from soil"
+    ],
+    "spread_conditions": [
+      "Sandy soils, high rainfall, continuous cropping without legumes"
+    ],
+    "solutions": {
+      "biological": [
+        "Inoculate legumes with Rhizobium bacteria",
+        "Azotobacter biofertilizer"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Urea (46% N)",
+          "usage": "Top dressing",
+          "dosage": "As per crop requirement"
+        }
+      ],
+      "home_remedies": [
+        "Apply a thick layer of nitrogen-rich compost or compost tea"
+      ]
+    },
+    "prevention": [
+      "Incorporate green manure (like Dhaincha) before planting main crop"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "soil_iron_chlorosis",
+    "category": "soil",
+    "crop": "Citrus, Sugarcane",
+    "name_en": "Iron Chlorosis",
+    "name_bn": "লৌহের ঘাটতি",
+    "scientific_name": "Fe Deficiency",
+    "severity": "medium",
+    "description": "Lack of iron causes new leaves to turn yellow while veins remain green.",
+    "symptoms": [
+      "Distinct interveinal yellowing completely restricted to the youngest upper leaves.",
+      "In severe cases, the entire leaf turns white or papery.",
+      "Shoot dieback if uncorrected."
+    ],
+    "causes": [
+      "High soil pH (calcareous soils) making iron unavailable"
+    ],
+    "spread_conditions": [
+      "Alkaline soils and poor aeration due to waterlogging"
+    ],
+    "solutions": {
+      "biological": [
+        "Apply heavy organic compost to naturally chelate iron"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Iron Chelate (Fe-EDDHA)",
+          "usage": "Soil drench or foliar spray",
+          "dosage": "1-2g per liter for foliar"
+        }
+      ],
+      "home_remedies": [
+        "Burying rusty iron nails (slow and inefficient, but traditionally used)"
+      ]
+    },
+    "prevention": [
+      "Avoid excessive liming",
+      "Manage soil moisture efficiently"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "apple_bitter_rot",
+    "category": "food",
+    "crop": "Apple",
+    "name_en": "Apple Bitter Rot",
+    "name_bn": "আপেলের তেতো পচা রোগ",
+    "scientific_name": "Colletotrichum fioriniae",
+    "severity": "high",
+    "description": "Rapid post-harvest rotting where lesions appear as sunken V-shaped cone of decay.",
+    "symptoms": [
+      "Light brown to dark brown sunken circular spots on the fruit.",
+      "Pink or salmon-colored spore masses form in the center of the spots in humid storage.",
+      "Internal flesh rot is V-shaped, pointing toward the core."
+    ],
+    "causes": [
+      "Fungal infection taking hold during warm storage"
+    ],
+    "spread_conditions": [
+      "Warm (<30C) and highly humid storage"
+    ],
+    "solutions": {
+      "biological": [
+        "Store fruits at near-freezing temperatures immediately after harvest"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Captan",
+          "usage": "Pre-harvest orchard spray",
+          "dosage": "2g/L"
+        }
+      ],
+      "home_remedies": [
+        "Remove and discard infected fruits immediately as they spread spores rapidly in storage bins"
+      ]
+    },
+    "prevention": [
+      "Rapid cooling of fruits post-harvest",
+      "Remove mummified fruits from orchard"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "grain_moth",
+    "category": "food",
+    "crop": "Stored Cereals",
+    "name_en": "Sitotroga Grain Moth",
+    "name_bn": "দানা শস্যের মথ",
+    "scientific_name": "Sitotroga cerealella",
+    "severity": "medium",
+    "description": "Moth whose larvae bore entirely inside the grain kernel during storage.",
+    "symptoms": [
+      "Small yellowish-brown moths flying around grain bins.",
+      "Round exit holes covered by a thin translucent 'window' cap before the adult emerges.",
+      "Kernels feel light and hollow."
+    ],
+    "causes": [
+      "Storage pest"
+    ],
+    "spread_conditions": [
+      "Warm grain storages, storing uncovered crops"
+    ],
+    "solutions": {
+      "biological": [
+        "Store grains in PICS hermetic bags"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Deltamethrin",
+          "usage": "Empty bin spray treatment",
+          "dosage": "Used only on storage walls, not directly on food grain"
+        }
+      ],
+      "home_remedies": [
+        "Sun-dry crops to bring grain moisture below 10% before binning"
+      ]
+    },
+    "prevention": [
+      "Use insect-proof grain silos"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "pigeonpea_wilt",
+    "category": "plant",
+    "crop": "Pigeonpea",
+    "name_en": "Fusarium Wilt",
+    "name_bn": "অড়হরের উইল্ট রোগ",
+    "scientific_name": "Fusarium udum",
+    "severity": "high",
+    "description": "Severe soil-borne disease causing complete drying of the pigeon pea plant at flowering/podding stage.",
+    "symptoms": [
+      "Gradual yellowing and drying of leaves starting from the bottom.",
+      "Wilted leaves remain attached to the plant.",
+      "Splitting the main stem base reveals a dark black/purple band in the wood."
+    ],
+    "causes": [
+      "Soil-borne fungus"
+    ],
+    "spread_conditions": [
+      "Consecutive pigeonpea cropping, surviving years in soil"
+    ],
+    "solutions": {
+      "biological": [
+        "Soil application of Trichoderma viride enriched farmyard manure"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Carbendazim 50% WP",
+          "usage": "Seed treatment",
+          "dosage": "2g per kg of seed"
+        }
+      ],
+      "home_remedies": [
+        "Remove and burn wilted plants immediately"
+      ]
+    },
+    "prevention": [
+      "Grow wilt-resistant varieties like Asha or Maruti",
+      "Crop rotation with sorghum or maize for 3-4 years"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "chickpea_pod_borer",
+    "category": "pest",
+    "crop": "Chickpea",
+    "name_en": "Gram Pod Borer",
+    "name_bn": "ছোলার শুঁটি ছিদ্রকারী পোকা",
+    "scientific_name": "Helicoverpa armigera",
+    "severity": "high",
+    "description": "Highly destructive caterpillar that bores its head into pods leaving half its body outside.",
+    "symptoms": [
+      "Round holes in the chickpea pods.",
+      "Green to brown caterpillars actively feeding on the seeds inside.",
+      "Significant flower and square drop."
+    ],
+    "causes": [
+      "Pest (Moth larva)"
+    ],
+    "spread_conditions": [
+      "Warm weather, multiple generations per year"
+    ],
+    "solutions": {
+      "biological": [
+        "Install Heli-lure pheromone traps",
+        "Spray HaNPV virus at evening time"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Chlorantraniliprole 18.5% SC",
+          "usage": "Foliar spray",
+          "dosage": "0.3ml per liter"
+        }
+      ],
+      "home_remedies": [
+        "Erect bird perches (T-shaped sticks) in the field to invite predatory birds"
+      ]
+    },
+    "prevention": [
+      "Intercrop with coriander to attract natural parasitoids"
+    ],
+    "fertilizers_recommended": []
+  },
+  {
+    "id": "soybean_rust",
+    "category": "plant",
+    "crop": "Soybean",
+    "name_en": "Asian Soybean Rust",
+    "name_bn": "সয়াবিনের মরিচা রোগ",
+    "scientific_name": "Phakopsora pachyrhizi",
+    "severity": "high",
+    "description": "Agreesive foliar disease causing rapid premature defoliation and massive yield losses.",
+    "symptoms": [
+      "Tiny brown or brick-red spots on the upper leaf surface.",
+      "Underside of leaves shows raised, volcano-like pustules leaking yellowish spores.",
+      "Severe yellowing followed by rapid leaf drop."
+    ],
+    "causes": [
+      "Fungus (Phakopsora pachyrhizi)"
+    ],
+    "spread_conditions": [
+      "Prolonged leaf wetness, canopy closure shading the lower leaves"
+    ],
+    "solutions": {
+      "biological": [
+        "No highly effective natural controls once widespread; use early warning systems"
+      ],
+      "chemical": [
+        {
+          "fertilizer_or_pesticide": "Propiconazole + Difenoconazole",
+          "usage": "Foliar spray",
+          "dosage": "1ml per liter"
+        }
+      ],
+      "home_remedies": [
+        "Increase row spacing to allow better airflow and leaf drying"
+      ]
+    },
+    "prevention": [
+      "Follow local rust forecasting networks",
+      "Plant early to avoid peak rust season"
+    ],
+    "fertilizers_recommended": []
+  }
+]
