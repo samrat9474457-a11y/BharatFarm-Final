@@ -162,6 +162,8 @@
 
         // Bind Events
         talkBtn.addEventListener("click", () => overlay.style.display = "flex");
+        // Expose globally so the dashboard mic button can open it
+        window.openVoiceOverlay = function() { overlay.style.display = "flex"; };
         document.getElementById("voiceCloseBtn").addEventListener("click", stopAndClose);
         startStopBtn.addEventListener("click", () => {
             if (state === 'idle' || state === 'error') {
@@ -262,8 +264,7 @@
             history: conversationHistory.slice(-6)
         };
 
-        console.log('[KrishiBot] → Calling proxy:', PROXY_URL);
-        console.log('[KrishiBot] → Payload:', JSON.stringify(payload));
+
 
         try {
             const response = await fetch(PROXY_URL, {
@@ -272,7 +273,7 @@
                 body: JSON.stringify(payload)
             });
 
-            console.log('[KrishiBot] ← Proxy status:', response.status);
+
 
             conversationHistory.push({ role: 'user', text: text });
 
@@ -285,7 +286,7 @@
             const data = await response.json();
             const aiResponseText = data.response || "I'm sorry, I couldn't process that.";
 
-            console.log('[KrishiBot] ← AI said:', aiResponseText.substring(0, 80));
+
             logDebug(`AI Response received.`);
             conversationHistory.push({ role: 'ai', text: aiResponseText });
             speakResponse(aiResponseText);

@@ -1,0 +1,479 @@
+/* css/wiki.css */
+
+#wiki {
+    padding: 2rem;
+    position: relative;
+    min-height: 100vh;
+}
+
+.wiki-hero {
+    position: relative;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    padding: 2rem;
+}
+
+.wiki-hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('https://images.unsplash.com/photo-1592982537447-6f2cc0bed696?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+.wiki-hero-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, rgba(63, 81, 181, 0.9), rgba(48, 63, 159, 0.7));
+    z-index: 2;
+}
+
+.wiki-hero-content {
+    position: relative;
+    z-index: 3;
+    color: white;
+}
+
+.wiki-hero-content h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.wiki-hero-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.ai-branding-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.ai-branding-badge i {
+    color: #ffeb3b;
+}
+
+.wiki-sticky-bar {
+    position: relative;
+    z-index: 100;
+    background: var(--bg-primary); /* Fixed: bg-color was an invalid variable */
+    padding: 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.wiki-controls-refined {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.search-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 280px;
+    max-width: 450px;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-wrapper input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 1rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.search-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.category-chips-container {
+    display: flex;
+    gap: 0.8rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+}
+
+.category-chips-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.chip {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.chip:hover {
+    background: var(--bg-hover);
+}
+
+.chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* API Loading state */
+.wiki-loading {
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+/* Grid */
+.wiki-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.disease-card {
+    background: var(--bg-card);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.disease-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary);
+}
+
+.dc-image {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    background: #f0f4f8;
+    display: block;
+}
+
+.dc-image-placeholder {
+    width: 100%;
+    height: 160px;
+    background: #e8eaf6;
+    color: #3f51b5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.dc-content {
+    padding: 1.2rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.dc-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.dc-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 600;
+    background: #f1f3f4;
+    color: #5f6368;
+}
+
+.dc-badge.severity-high { background: #ffebee; color: #d32f2f; }
+.dc-badge.severity-medium { background: #fff8e1; color: #f57c00; }
+.dc-badge.severity-low { background: #e8f5e9; color: #388e3c; }
+
+.dc-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+    color: var(--text-color);
+}
+
+.dc-title-bn {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+    font-family: "Noto Sans Bengali", sans-serif;
+}
+
+.dc-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+/* Modal */
+.wiki-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.wiki-modal {
+    background: var(--bg-secondary);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: var(--border-radius-lg);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.3s ease-out forwards;
+}
+
+.wm-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: sticky;
+    top: 0;
+    background: var(--bg-secondary);
+    z-index: 10;
+}
+
+.wm-title-group h2 {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.2rem;
+}
+.wm-title-group h3 {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-family: "Noto Sans Bengali", sans-serif;
+    margin-bottom: 0.5rem;
+}
+
+.wm-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.wm-close:hover {
+    background: var(--bg-hover);
+    color: var(--text-color);
+}
+
+.wm-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+}
+
+.wm-section {
+    margin-bottom: 1.8rem;
+}
+
+.wm-section h4 {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.wm-section h4 i {
+    color: var(--primary);
+}
+
+.wm-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.wm-list li {
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+.wm-list li::before {
+    content: "•";
+    color: var(--primary);
+    position: absolute;
+    left: 0.5rem;
+    font-weight: bold;
+}
+
+.wm-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.wm-table th, .wm-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.8rem;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+.wm-table th {
+    background: var(--bg-hover);
+    font-weight: 600;
+}
+
+/* Ask AI Section */
+.wm-ai-box {
+    background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid #ce93d8;
+}
+
+.wm-ai-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.wm-ai-header i {
+    font-size: 1.5rem;
+    color: #8e24aa;
+}
+.wm-ai-header h4 {
+    margin: 0;
+    color: #4a148c;
+    font-size: 1.1rem;
+}
+
+.wm-ai-response {
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    display: none;
+    white-space: pre-wrap;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.ai-typing {
+    display: none;
+    color: #8e24aa;
+    font-size: 0.9rem;
+    font-weight: 500;
+    align-items: center;
+    gap: 8px;
+}
+.ai-typing .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(142, 36, 170, 0.3);
+    border-top-color: #8e24aa;
+}
+
+/* Animations */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Dark mode tweaks */
+[data-theme="dark"] .ai-branding-badge {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+[data-theme="dark"] .wm-close { color: #aaa; }
+[data-theme="dark"] .wm-ai-box {
+    background: linear-gradient(135deg, #311b33, #4a148c);
+    border-color: #6a1b9a;
+}
+[data-theme="dark"] .wm-ai-header h4 { color: #e1bee7; }
+[data-theme="dark"] .wm-ai-header i { color: #ce93d8; }
+[data-theme="dark"] .wm-ai-response {
+    background: rgba(0,0,0,0.3);
+    color: #f3e5f5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #wiki { padding: 1rem; }
+    .wiki-hero { padding: 1.5rem; height: auto; }
+    .wm-header { padding: 1rem; }
+    .wm-body { padding: 1rem; }
+    .wiki-controls-refined {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .search-wrapper {
+        min-width: 100%;
+        max-width: 100%;
+    }
+}
