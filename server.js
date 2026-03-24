@@ -134,7 +134,89 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
+    // ── POST /api/schemes ──────────────────────────────────────────────────────
+    if (req.url === '/api/schemes' && req.method === 'POST') {
+        let body = '';
+        req.on('data', chunk => body += chunk.toString());
+        req.on('end', async () => {
+            try {
+                const { landSize, state, crop } = JSON.parse(body);
+                console.log(`\n[/api/schemes] State=${state}, Land=${landSize}ac, Crop=${crop}`);
+
+                const prompt = `You are an expert on Indian government agricultural schemes and subsidies.
+A farmer has the following profile:
+- State: ${state}
+- Land Size: ${landSize} acres
+- Primary Crop: ${crop || 'General (not specified)'}
+
+Return a JSON array of ALL government schemes (both Central and ${state} State-specific) this farmer is ELIGIBLE for.
+Include BOTH central schemes available to all farmers AND specific schemes for ${state}.
+
+For EACH scheme provide EXACTLY these fields:
+{
+  "id": "unique-slug",
+  "name": "Full Official Scheme Name",
+  "type": "Central" or "State" or "Central/State",
+  "description": "2-3 sentences explaining what this scheme offers and its purpose.",
+  "eligibility": {
+    "minLandSize": 0,
+    "maxLandSize": 9999,
+    "states": ["All"] or ["${state}"],
+    "crops": ["All"] or ["Rice","Wheat"]
+  },
+  "benefits": ["Benefit 1 with ₹ amount", "Benefit 2", "Benefit 3"],
+  "link": "https://official.gov.in/portal/url",
+  "applySteps": ["Step 1: Visit official portal", "Step 2: Register with Aadhaar", "Step 3: Submit land documents"]
+}
+
+${state === 'West Bengal' && landSize === 0 
+? `CRITICAL WEST BENGAL REQUIREMENT: Since the land size is 0 (landless) or they are a sharecropper in West Bengal, you MUST RETURN EXACTLY AND ONLY the following two specific schemes:
+1. Name: "Bhumihin Krishak Bandhu (Landless Farmer Scheme)", type: "State", Description: "Main scheme for landless farmers in West Bengal who work on others' land but own no agricultural land.", Benefits: ["₹4,000 per year (₹2000 Rabi, ₹2000 Kharif)"], Apply Steps: ["Through Duare Sarkar camps, BDO office, or Agriculture portal", "Need Aadhaar, Bank account, Self-declaration (no land)"].
+2. Name: "Krishak Bandhu (for sharecroppers also)", type: "State", Description: "Financial assistance for registered sharecroppers (Bhagchasi). Useful if farmer doesn't own land but is a registered sharecropper.", Benefits: ["₹1,000 - ₹5,000 yearly", "₹2 lakh death benefit insurance"].
+DO NOT INCLUDE PM-KISAN, PMFBY, OR ANY OTHER SCHEMES.` 
+: `Always include these central schemes if eligible: PM-KISAN (pmkisan.gov.in), PMFBY (pmfby.gov.in), PM Krishi Sinchai Yojana (pmksy.gov.in), Kisan Credit Card (pmkisan.gov.in/KCC), Soil Health Card (soilhealth.dac.gov.in).\nAlso include major ${state}-specific schemes with their REAL official portal URLs.`}
+
+Return ONLY the raw JSON array. No markdown, no code blocks, no explanation text.`;
+
+                const aiResponseText = await callOpenAI([{ role: 'user', content: prompt }]);
+                console.log(`[/api/schemes] AI response length: ${aiResponseText.length} chars`);
+
+                // Strip markdown code fences and extract JSON
+                let cleanText = aiResponseText
+                    .replace(/```json/gi, '')
+                    .replace(/```/g, '')
+                    .trim();
+
+                // Try to find a JSON array in the response
+                const jsonMatch = cleanText.match(/\[[\s\S]*\]/);
+                if (!jsonMatch) {
+                    console.error('[/api/schemes] No JSON array found. Raw (first 500 chars):', cleanText.substring(0, 500));
+                    throw new Error('No JSON array in AI response');
+                }
+
+                let schemes;
+                try {
+                    schemes = JSON.parse(jsonMatch[0]);
+                } catch (parseErr) {
+                    console.error('[/api/schemes] JSON parse failed:', parseErr.message);
+                    console.error('[/api/schemes] Extracted JSON (first 500):', jsonMatch[0].substring(0, 500));
+                    throw new Error('Failed to parse AI JSON: ' + parseErr.message);
+                }
+
+                console.log(`[/api/schemes] ✅ Returning ${schemes.length} schemes`);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, schemes }));
+            } catch (e) {
+                console.error('[/api/schemes] ❌ Error:', e.message);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: e.message }));
+            }
+        });
+        return;
+    }
+
     // ── POST /submit-payment ───────────────────────────────────────────────────
+
     if (req.url === '/submit-payment' && req.method === 'POST') {
         let body = '';
         const limitBytes = 10 * 1024 * 1024; // 10MB limit
@@ -318,6 +400,98 @@ Do not include any markdown formatting like \`\`\`json in your response. Just re
                 res.end(JSON.stringify({ success: false, error: "Internal server error" }));
             }
         });
+        return;
+    }
+
+
+    // ── GET /api/wiki ─────────────────────────────────────────────────────────
+    if (req.url.startsWith('/api/wiki') && req.method === 'GET') {
+        try {
+            const dataPath = path.join(__dirname, 'data', 'agriculture_diseases.json');
+            if (!fs.existsSync(dataPath)) {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: "Dataset not found" }));
+                return;
+            }
+
+            const rawData = fs.readFileSync(dataPath, 'utf-8');
+            let diseases = JSON.parse(rawData);
+
+            const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+            const query = parsedUrl.searchParams.get('q');
+            const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
+
+            // Route: /api/wiki/disease/:id
+            if (pathParts[2] === 'disease' && pathParts[3]) {
+                const diseaseId = pathParts[3];
+                const found = diseases.find(d => d.id === diseaseId);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, data: found || null }));
+                return;
+            }
+
+            // Route: /api/wiki/:crop
+            if (pathParts[2] && pathParts[2] !== 'search') {
+                const cropFilter = decodeURIComponent(pathParts[2]).toLowerCase();
+                diseases = diseases.filter(d => d.crop.toLowerCase() === cropFilter);
+            }
+
+            // Route: /api/wiki/search?q=...
+            if (query) {
+                const searchQ = query.toLowerCase();
+                diseases = diseases.filter(d => 
+                    d.name_en.toLowerCase().includes(searchQ) || 
+                    (d.name_bn && d.name_bn.toLowerCase().includes(searchQ)) ||
+                    d.crop.toLowerCase().includes(searchQ) ||
+                    d.description.toLowerCase().includes(searchQ)
+                );
+            }
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, count: diseases.length, data: diseases }));
+        } catch (e) {
+            console.error('[/api/wiki] Error:', e.message);
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+        }
+        return;
+    }
+
+    // ── GET /api/quizzes ──────────────────────────────────────────────────────
+    if (req.url.startsWith('/api/quizzes') && req.method === 'GET') {
+        try {
+            const dataPath = path.join(__dirname, 'data', 'quizzes.json');
+            if (fs.existsSync(dataPath)) {
+                const rawData = fs.readFileSync(dataPath, 'utf-8');
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: true, count: JSON.parse(rawData).length, data: JSON.parse(rawData) }));
+            } else {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: "Dataset not found" }));
+            }
+        } catch (e) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+        }
+        return;
+    }
+
+    // ── GET /api/achievements ──────────────────────────────────────────────────
+    if (req.url.startsWith('/api/achievements') && req.method === 'GET') {
+        try {
+            const dataPath = path.join(__dirname, 'data', 'achievements.json');
+            if (fs.existsSync(dataPath)) {
+                const rawData = fs.readFileSync(dataPath, 'utf-8');
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(rawData); // already JSON string
+            } else {
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: "Dataset not found" }));
+            }
+        } catch (e) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+        }
         return;
     }
 
