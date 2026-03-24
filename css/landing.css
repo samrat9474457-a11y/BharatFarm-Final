@@ -1,0 +1,380 @@
+/* ==========================================================================
+   LANDING PAGE CSS 
+   Optimized for GSAP ScrollTrigger & Cinematic Rendering
+   ========================================================================== */
+
+:root {
+    --primary: #4caf50;
+    --primary-dark: #2e7d32;
+    --primary-light: #e8f5e9;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --glass-bg: rgba(0, 0, 0, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --blur: blur(16px);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #000; /* Deep black for cinematic feel */
+    color: var(--text-light);
+    overflow-x: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   LOADING SCREEN 
+----------------------------------------------------------------------------- */
+#landing-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease-out;
+}
+
+.loader-content {
+    text-align: center;
+    max-width: 300px;
+    width: 80%;
+}
+
+.loader-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    animation: float 2s ease-in-out infinite;
+}
+
+#landing-loader h2 {
+    font-family: 'Outfit', sans-serif;
+    margin: 0 0 1.5rem 0;
+    font-size: 2rem;
+    background: linear-gradient(135deg, #a8e063, #56ab2f);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--primary);
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--primary);
+    transition: width 0.3s ease;
+}
+
+#loader-text {
+    font-size: 0.85rem;
+    color: #aaa;
+    margin: 0;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* --------------------------------------------------------------------------
+   NAVIGATION 
+----------------------------------------------------------------------------- */
+.landing-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+    transition: background 0.3s ease;
+}
+
+.landing-nav.scrolled {
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 1rem 5%;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
+}
+
+.nav-brand i {
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: #ddd;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+.nav-login-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--primary);
+    color: #fff !important;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+.nav-login-btn:hover {
+    background: #43a047;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* --------------------------------------------------------------------------
+   CANVAS CONTAINER (Video Sequence)
+----------------------------------------------------------------------------- */
+.canvas-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Below content overlays */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #000;
+}
+
+canvas {
+    /* Scale logic is handled in JS depending on screen width/height ratio */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: high-quality;
+    /* HD Enhancement filters */
+    filter: contrast(1.15) brightness(1.08) saturate(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   SCROLL CONTENT & SECTIONS
+----------------------------------------------------------------------------- */
+.scroll-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+
+.step {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 10%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.text-box {
+    background: var(--glass-bg);
+    backdrop-filter: var(--blur);
+    -webkit-backdrop-filter: var(--blur);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    border-radius: 20px;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    opacity: 0; /* GSAP will control this */
+    transform: translateY(50px);
+}
+
+.text-box.right {
+    margin-left: auto;
+}
+
+.badge {
+    display: inline-block;
+    background: rgba(76, 175, 80, 0.2);
+    color: #81c784;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.text-box h1, .text-box h2 {
+    font-family: 'Outfit', sans-serif;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fff, #bbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-box h1 {
+    font-size: 3rem;
+}
+
+.text-box h2 {
+    font-size: 2.5rem;
+}
+
+.text-box p {
+    color: #ccc;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    margin: 0 0 1.5rem 0;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.feat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    background: rgba(255,255,255,0.05);
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.feat i {
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    color: #000;
+    text-decoration: none;
+    padding: 0.8rem 1.8rem;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.3s ease;
+}
+
+.cta-btn:hover {
+    background: #e0e0e0;
+    transform: scale(1.05);
+}
+
+.cta-btn.pulse {
+    animation: ctaPulse 2s infinite;
+}
+
+@keyframes ctaPulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+.scroll-spacer {
+    height: 50vh; /* Extra room at bottom to finish animation gracefully */
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE DESIGN 
+----------------------------------------------------------------------------- */
+
+/* Tablet & Smaller */
+@media (max-width: 900px) {
+    .nav-links {
+        display: none; /* Hide standard links on mobile to save space */
+    }
+    
+    .nav-login-btn {
+        display: flex; /* Keep login button visible always */
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .nav-login-btn span {
+        display: none; /* Hide text, just show icon */
+    }
+
+    .nav-login-btn::after {
+        content: "App"; /* Small text substitute */
+    }
+
+    .step {
+        padding: 0 5%;
+        justify-content: center;
+    }
+
+    .text-box, .text-box.right {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+
+    .feature-grid {
+        justify-content: center;
+    }
+
+    .text-box h1 { font-size: 2.2rem; }
+    .text-box h2 { font-size: 1.8rem; }
+    .text-box p { font-size: 1rem; }
+}
