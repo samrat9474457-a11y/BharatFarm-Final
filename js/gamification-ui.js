@@ -163,8 +163,8 @@ function closeQuizModal() {
 // ── FLOATING TOASTS (XP & COINS) ─────────────────────────
 
 window.showGamificationToast = function(type, amount, reason) {
-    const container = document.getElementById('gami-toast-container');
-    if(!container) return;
+    // XP popup disabled per user request
+    return;
 
     const toast = document.createElement('div');
     toast.className = 'g-toast';
