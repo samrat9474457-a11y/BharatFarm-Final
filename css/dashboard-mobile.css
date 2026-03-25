@@ -10,12 +10,13 @@
 
     .dash-feature-grid { grid-template-columns: 1fr; gap: 14px; }
     .dash-card-krishibot, .dash-card-scanner,
+    .dash-card-activity, .dash-card-weather,
     .dash-card-market, .dash-card-analytics,
     .dash-card-schemes { grid-column: 1; grid-row: auto; min-height: auto; }
 
-    .dash-card-krishibot { flex-direction: column; }
-    .dash-card-krishibot .dash-feature-visual { width: auto; margin: 0; height: 160px; border-radius: 0; }
-    .dash-card-krishibot .dash-feature-visual img { border-radius: 0; }
+    .dash-card-krishibot, .dash-card-activity { flex-direction: column; }
+    .dash-card-krishibot .dash-feature-visual, .dash-card-activity .dash-feature-visual { width: auto; margin: 0; height: 160px; border-radius: 0; }
+    .dash-card-krishibot .dash-feature-visual img, .dash-card-activity .dash-feature-visual img { border-radius: 0; }
     .dash-card-analytics { flex-direction: column; }
     .dash-visual-analytics { width: 100%; height: 50px; padding: 0 16px 12px; }
     .dash-card-schemes { flex-direction: column; padding: 0; }
@@ -49,27 +50,6 @@
     }
     .dash-hero-cta { justify-content: flex-start; gap: 8px; }
     .dash-btn { padding: 10px 16px; font-size: 0.82rem; border-radius: 10px; }
-
-    /* ── INFO ROW: side-by-side bento cards below hero ── */
-    .dash-info-row {
-        margin-top: 12px;
-        margin-bottom: 24px;
-        padding: 0;
-        gap: 10px;
-        flex-direction: row;
-        pointer-events: auto;
-    }
-    .dash-float-card {
-        flex: 1;
-        padding: 14px 14px;
-        border-radius: 14px;
-        gap: 10px;
-        min-width: unset;
-    }
-    .dash-float-icon { width: 36px; height: 36px; font-size: 1rem; border-radius: 10px; }
-    .dash-float-label { font-size: 0.62rem; letter-spacing: 0.8px; }
-    .dash-float-value { font-size: 0.95rem; }
-    .dash-float-status { font-size: 0.65rem; padding: 1px 8px; }
 
     /* Section header */
     .dash-section-header { margin-bottom: 18px; }

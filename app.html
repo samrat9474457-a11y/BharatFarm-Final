@@ -486,26 +486,6 @@
                     </div>
                 </div>
 
-                <!-- Info cards row (positioned over hero on desktop, below on mobile) -->
-                <div class="dash-info-row">
-                    <div class="dash-float-card dash-float-weather" onclick="showSection('weather')">
-                        <div class="dash-float-icon"><i class="fas fa-cloud-sun-rain"></i></div>
-                        <div class="dash-float-body">
-                            <span class="dash-float-label" id="dashFloatWeatherLabel">Weather Alert</span>
-                            <span class="dash-float-value" id="dashWeatherStatus">Loading...</span>
-                            <span class="dash-float-status" id="dashWeatherSafety">Checking...</span>
-                        </div>
-                    </div>
-
-                    <div class="dash-float-card dash-float-soil" onclick="showSection('crops')" style="cursor:pointer">
-                        <div class="dash-float-icon"><i class="fas fa-heartbeat"></i></div>
-                        <div class="dash-float-body">
-                            <span class="dash-float-label" id="dashFloatActivityLabel">Next Activity</span>
-                            <span class="dash-float-value" id="dashNextActivity">Select crop</span>
-                            <span class="dash-float-status safe" id="dashNextActivityStatus">View Roadmap</span>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- ── FEATURE GRID ──────────────────────────── -->
                 <div class="dash-section-header">
@@ -533,6 +513,42 @@
                         <button class="btn-gami btn-daily" onclick="event.stopPropagation(); openDailyQuiz()">
                             <i class="fas fa-brain"></i> <span id="gami-daily-btn">Take Daily Quiz</span>
                         </button>
+                    </div>
+
+                    <!-- Next Activity Card -->
+                    <div class="dash-feature-card dash-card-activity" onclick="showSection('crops')">
+                        <div class="dash-feature-text">
+                            <h3 id="dashFloatActivityLabel">Next Activity</h3>
+                            <div style="margin-bottom: 12px;">
+                                <strong style="font-size: 1.4rem; color: var(--text-primary); display: block; margin-bottom: 4px;" id="dashNextActivity">Select crop</strong>
+                                <span class="dash-float-status safe" id="dashNextActivityStatus">View Roadmap</span>
+                            </div>
+                            <p>Smart task scheduling based on precise crop lifecycles and hyper-local data.</p>
+                            <button class="dash-feature-cta" onclick="event.stopPropagation(); showSection('crops')">
+                                <i class="fas fa-tasks"></i> <span>Open Roadmap</span>
+                            </button>
+                        </div>
+                        <div class="dash-feature-visual dash-visual-activity">
+                            <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=500&q=80" alt="Next Activity" loading="lazy">
+                        </div>
+                    </div>
+
+                    <!-- Weather Card -->
+                    <div class="dash-feature-card dash-card-weather" onclick="showSection('weather')">
+                        <div class="dash-feature-text">
+                            <h3 id="dashFloatWeatherLabel">Weather Alert</h3>
+                            <div style="display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px;">
+                                <span style="font-size: 2.2rem; font-weight: 900; color: var(--text-primary); line-height: 1;" id="dashWeatherStatus">32°C</span>
+                                <span class="dash-float-status" id="dashWeatherSafety">SAFE</span>
+                            </div>
+                            <p>Real-time hyper-local weather tracking to protect your yield.</p>
+                            <button class="dash-feature-cta" onclick="event.stopPropagation(); showSection('weather')">
+                                <i class="fas fa-cloud-sun-rain"></i> <span>View Forecast</span>
+                            </button>
+                        </div>
+                        <div class="dash-feature-visual dash-visual-weather">
+                            <img src="https://images.unsplash.com/photo-1592210454359-9043f067919b?w=500&q=80" alt="Weather" loading="lazy">
+                        </div>
                     </div>
 
                     <!-- KrishiBot -->
@@ -881,10 +897,6 @@
                                         <label>State</label>
                                         <select name="state" id="stateSelect" required onchange="populateDistricts()">
                                             <option value="" disabled selected>Select State</option>
-                                            <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                            <option value="Bihar">Bihar</option>
-                                            <option value="Gujarat">Gujarat</option>
-                                            <option value="">Select State</option>
                                         </select>
                                     </div>
                                     <div class="sell-form-group">
@@ -973,18 +985,6 @@
                                 <label>State</label>
                                 <select id="schemeStateSelect">
                                     <option value="" disabled selected>Select State</option>
-                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                                    <option value="Bihar">Bihar</option>
-                                    <option value="Gujarat">Gujarat</option>
-                                    <option value="Haryana">Haryana</option>
-                                    <option value="Karnataka">Karnataka</option>
-                                    <option value="Madhya Pradesh">Madhya Pradesh</option>
-                                    <option value="Maharashtra">Maharashtra</option>
-                                    <option value="Punjab">Punjab</option>
-                                    <option value="Rajasthan">Rajasthan</option>
-                                    <option value="Tamil Nadu">Tamil Nadu</option>
-                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
-                                    <option value="West Bengal">West Bengal</option>
                                 </select>
                             </div>
                             <div class="wizard-actions">

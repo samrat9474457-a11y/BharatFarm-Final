@@ -76,19 +76,69 @@ function switchMkTab(tab) {
 
 // ─── Location Data & Logic ───────────────────────────────────────────────────
 const INDIAN_STATES = {
+    // States
     "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Krishna", "Kurnool", "Prakasam", "Srikakulam", "Visakhapatnam", "West Godavari"],
+    "Arunachal Pradesh": ["Tawang", "Papum Pare", "East Kameng", "West Kameng"],
+    "Assam": ["Baksa", "Barpeta", "Cachar", "Darrang", "Dhubri", "Dibrugarh", "Guwahati", "Nagaon"],
     "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Purnia", "Darbhanga", "Ara", "Begusarai", "Katihar"],
+    "Chhattisgarh": ["Bastar", "Bijapur", "Bilaspur", "Dantewada", "Durg", "Raipur", "Rajnandgaon", "Surguja"],
+    "Goa": ["North Goa", "South Goa"],
     "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Junagadh", "Gandhinagar", "Kachchh"],
     "Haryana": ["Faridabad", "Gurugram", "Panipat", "Ambala", "Yamunanagar", "Rohtak", "Hisar", "Karnal", "Sonipat"],
+    "Himachal Pradesh": ["Bilaspur", "Chamba", "Hamirpur", "Kangra", "Kinnaur", "Kullu", "Mandi", "Shimla"],
+    "Jharkhand": ["Bokaro", "Deoghar", "Dhanbad", "Dumka", "Hazaribagh", "Jamshedpur", "Ranchi"],
     "Karnataka": ["Bengaluru", "Mysuru", "Hubballi-Dharwad", "Mangaluru", "Belagavi", "Vijayapura", "Ballari", "Tumakuru"],
+    "Kerala": ["Alappuzha", "Ernakulam", "Idukki", "Kannur", "Kochi", "Kozhikode", "Malappuram", "Palakkad", "Thiruvananthapuram"],
     "Madhya Pradesh": ["Indore", "Bhopal", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas", "Satna", "Ratlam", "Rewa"],
     "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Thane", "Nashik", "Aurangabad", "Solapur", "Amravati", "Kolhapur", "Jalgaon"],
+    "Manipur": ["Bishnupur", "Chandel", "Churachandpur", "Imphal East", "Imphal West"],
+    "Meghalaya": ["East Garo Hills", "East Khasi Hills", "Ri Bhoi", "West Garo Hills", "West Khasi Hills"],
+    "Mizoram": ["Aizawl", "Champhai", "Kolasib", "Lawngtlai", "Lunglei", "Mamit", "Saiha", "Serchhip"],
+    "Nagaland": ["Dimapur", "Kiphire", "Kohima", "Longleng", "Mokokchung", "Mon", "Peren", "Phek", "Tuensang", "Wokha", "Zunheboto"],
+    "Odisha": ["Balasore", "Bhubaneswar", "Cuttack", "Ganjam", "Khurda", "Puri", "Sambalpur"],
     "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Hoshiarpur", "Mohali", "Batala", "Pathankot"],
     "Rajasthan": ["Jaipur", "Jodhpur", "Kota", "Bikaner", "Ajmer", "Udaipur", "Bhilwara", "Alwar", "Bharatpur", "Sikar"],
+    "Sikkim": ["East Sikkim", "North Sikkim", "South Sikkim", "West Sikkim"],
     "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Vellore", "Erode", "Thoothukudi"],
+    "Telangana": ["Adilabad", "Hyderabad", "Karimnagar", "Khammam", "Mahbubnagar", "Medak", "Nalgonda", "Nizamabad", "Warangal"],
+    "Tripura": ["Dhalai", "Gomati", "Khowai", "North Tripura", "Sepahijala", "South Tripura", "Unakoti", "West Tripura"],
     "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Varanasi", "Meerut", "Prayagraj", "Bareilly", "Aligarh", "Moradabad"],
-    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Kalimpong", "Jalpaiguri", "Alipurduar", "Cooch Behar", "Dakshin Dinajpur", "Uttar Dinajpur", "Malda", "Murshidabad", "Birbhum", "Nadia", "North 24 Parganas", "South 24 Parganas", "Hooghly", "Purba Bardhaman", "Paschim Bardhaman", "Purba Medinipur", "Paschim Medinipur", "Jhargram", "Purulia", "Bankura"]
+    "Uttarakhand": ["Almora", "Dehradun", "Haridwar", "Nainital", "Pauri Garhwal", "Pithoragarh", "Tehri Garhwal", "Udham Singh Nagar"],
+    "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Kalimpong", "Jalpaiguri", "Alipurduar", "Cooch Behar", "Dakshin Dinajpur", "Uttar Dinajpur", "Malda", "Murshidabad", "Birbhum", "Nadia", "North 24 Parganas", "South 24 Parganas", "Hooghly", "Purba Bardhaman", "Paschim Bardhaman", "Purba Medinipur", "Paschim Medinipur", "Jhargram", "Purulia", "Bankura"],
+    
+    // Union Territories
+    "Andaman and Nicobar Islands": ["Nicobar", "North and Middle Andaman", "South Andaman"],
+    "Chandigarh": ["Chandigarh"],
+    "Dadra and Nagar Haveli and Daman and Diu": ["Dadra and Nagar Haveli", "Daman", "Diu"],
+    "Delhi": ["Central Delhi", "East Delhi", "New Delhi", "North Delhi", "South Delhi", "West Delhi"],
+    "Jammu and Kashmir": ["Anantnag", "Baramulla", "Jammu", "Kathua", "Rajouri", "Srinagar", "Udhampur"],
+    "Ladakh": ["Kargil", "Leh"],
+    "Lakshadweep": ["Lakshadweep"],
+    "Puducherry": ["Karaikal", "Mahe", "Puducherry", "Yanam"]
 };
+
+function populateStatesDropdowns() {
+    const mkStateSelect = document.getElementById('stateSelect');
+    const schemeStateSelect = document.getElementById('schemeStateSelect');
+    
+    const sortedStates = Object.keys(INDIAN_STATES).sort();
+
+    const generateOptions = (selectElement) => {
+        if (!selectElement) return;
+        selectElement.innerHTML = '<option value="" disabled selected>Select State</option>';
+        sortedStates.forEach(state => {
+            const option = document.createElement('option');
+            option.value = state;
+            option.textContent = state;
+            selectElement.appendChild(option);
+        });
+    };
+
+    generateOptions(mkStateSelect);
+    generateOptions(schemeStateSelect);
+}
+
+document.addEventListener('DOMContentLoaded', populateStatesDropdowns);
 
 function populateDistricts() {
     const stateSelect = document.getElementById('stateSelect');
