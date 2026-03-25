@@ -161,8 +161,16 @@ function updateUserStatistic(statKey) {
 
         // Initialize profile if needed
         if (!currentUser.profile) {
+            console.log('Profile missing, initiating initialization...');
             initUserProfile();
-            return updateUserStatistic(statKey); // Need to wait for init before updating, this is synchronous so it's fine.
+            
+            // Re-fetch user to see if profile was created
+            const refreshedUser = JSON.parse(localStorage.getItem('bharatfarm_current_user') || '{}');
+            if (!refreshedUser.profile) {
+                console.warn('Could not initialize profile for statistic update. Using guest-safe path.');
+                return; // Stop recursion if profile still missing
+            }
+            return updateUserStatistic(statKey); 
         }
 
         // Update statistic

@@ -5,7 +5,7 @@
 const CONFIG = {
     WEATHER_API_BASE: 'https://api.open-meteo.com/v1/forecast',
     GEOCODING_API_BASE: 'https://geocoding-api.open-meteo.com/v1/search',
-    DEFAULT_LOCATION: { lat: 22.0667, lon: 88.0698, name: 'Haldia' } // Default map
+    DEFAULT_LOCATION: { lat: 22.0605, lon: 88.1098, name: 'Haldia' } // Updated precision coordinates
     // Future API keys can be added here securely when moving to a paid plan.
 };
 
@@ -42,34 +42,57 @@ function fetchWeather() {
 
 // ── Update weather UI ────────────────────────
 function updateWeatherUI(location) {
-    document.getElementById('temperature').textContent = currentWeather.temp;
-    document.getElementById('humidity').textContent = currentWeather.humidity;
-    document.getElementById('windSpeed').textContent = currentWeather.windSpeed;
-    document.getElementById('visibility').textContent = currentWeather.visibility;
-    document.getElementById('rainProbability').textContent = currentWeather.rainProbability;
-    document.getElementById('weatherCondition').textContent = currentWeather.condition;
-    document.getElementById('weatherLocation').textContent = location;
-    
-    document.getElementById('weatherIcon').className = 'fas ' + currentWeather.icon;
+    try {
+        const tempEl = document.getElementById('temperature');
+        const humidEl = document.getElementById('humidity');
+        const windEl = document.getElementById('windSpeed');
+        const visEl = document.getElementById('visibility');
+        const rainEl = document.getElementById('rainProbability');
+        const condEl = document.getElementById('weatherCondition');
+        const locEl = document.getElementById('weatherLocation');
+        const iconEl = document.getElementById('weatherIcon');
 
-    const alertDiv = document.getElementById('weatherAlert');
-    if (currentWeather.rainProbability >= 70) {
-        alertDiv.className = 'weather-alert unsafe';
-        alertDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i><div><h3>NOT SAFE for Farming</h3><p>High rain chance (${currentWeather.rainProbability}%). Avoid fertilizer/seeds today.</p></div>`;
-    } else {
-        alertDiv.className = 'weather-alert safe';
-        alertDiv.innerHTML = `<i class="fas fa-check-circle"></i><div><h3>SAFE for Farming Activities</h3><p>Weather conditions are suitable for farming.</p></div>`;
-    }
+        if (tempEl) tempEl.textContent = currentWeather.temp;
+        if (humidEl) humidEl.textContent = currentWeather.humidity;
+        if (windEl) windEl.textContent = currentWeather.windSpeed;
+        if (visEl) visEl.textContent = currentWeather.visibility;
+        if (rainEl) rainEl.textContent = currentWeather.rainProbability;
+        if (condEl) condEl.textContent = currentWeather.condition;
+        if (locEl) locEl.textContent = location;
+        
+        if (iconEl) {
+            iconEl.className = 'fas ' + (currentWeather.icon || 'fa-sun');
+        }
 
-    window.lastWeatherLogged = window.lastWeatherLogged || 0;
-    if (typeof logActivity === 'function' && Date.now() - window.lastWeatherLogged > 60000) {
-        logActivity('weather', 'Checked weather for ' + location);
-        updateUserStatistic('weatherChecks');
-        window.lastWeatherLogged = Date.now();
-    }
+        const alertDiv = document.getElementById('weatherAlert');
+        if (alertDiv) { // Added check for alertDiv
+            if (currentWeather.rainProbability >= 70) {
+                alertDiv.className = 'weather-alert unsafe';
+                alertDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i><div><h3>NOT SAFE for Farming</h3><p>High rain chance (${currentWeather.rainProbability}%). Avoid fertilizer/seeds today.</p></div>`;
+            } else {
+                alertDiv.className = 'weather-alert safe';
+                alertDiv.innerHTML = `<i class="fas fa-check-circle"></i><div><h3>SAFE for Farming Activities</h3><p>Weather conditions are suitable for farming.</p></div>`;
+            }
+        }
 
-    if (typeof updateDashboard === 'function') {
-        updateDashboard();
+        window.lastWeatherLogged = window.lastWeatherLogged || 0;
+        if (typeof logActivity === 'function' && (!window.lastWeatherLogged || Date.now() - window.lastWeatherLogged > 60000)) {
+            try {
+                logActivity('weather', 'Checked weather for ' + location);
+                if (typeof updateUserStatistic === 'function') {
+                    updateUserStatistic('weatherChecks');
+                }
+            } catch (e) {
+                console.warn('Logging activity failed:', e);
+            }
+            window.lastWeatherLogged = Date.now();
+        }
+
+        if (typeof updateDashboard === 'function') {
+            updateDashboard();
+        }
+    } catch (err) {
+        console.error('Error updating weather UI:', err);
     }
 
     updateFarmingTips();
@@ -154,12 +177,10 @@ function autoDetectLocation() {
             },
             (error) => {
                 console.error('Geolocation error:', error.message);
-                if (locInput) locInput.value = '';
-                document.getElementById('weatherLoading').classList.add('hidden');
-                document.getElementById('weatherContent').style.display = 'block';
+                // On error or denied, use default
                 fetchWeatherByCoords(CONFIG.DEFAULT_LOCATION.lat, CONFIG.DEFAULT_LOCATION.lon, CONFIG.DEFAULT_LOCATION.name);
             },
-            { enableHighAccuracy: true }
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
         );
     } else {
         fetchWeatherByCoords(CONFIG.DEFAULT_LOCATION.lat, CONFIG.DEFAULT_LOCATION.lon, CONFIG.DEFAULT_LOCATION.name);
@@ -199,16 +220,26 @@ async function fetchWeatherByLocation(locationName) {
     document.getElementById('weatherContent').style.display = 'none';
 
     try {
-        const geoUrl = `${CONFIG.GEOCODING_API_BASE}?name=${encodeURIComponent(locationName)}&count=1&language=en&format=json`;
-        const geoRes = await fetch(geoUrl);
+        let searchQuery = locationName;
+        let geoUrl = `${CONFIG.GEOCODING_API_BASE}?name=${encodeURIComponent(searchQuery)}&count=1&language=en&format=json`;
+        let geoRes = await fetch(geoUrl);
+        let geoData = await geoRes.json();
 
-        if (!geoRes.ok) throw new Error('Geocoding failed');
-        const geoData = await geoRes.json();
+        // If not found and the name contains commas (e.g. "Village, District"), try searching for just the first part
+        if ((!geoData || !geoData.results || geoData.results.length === 0) && locationName.includes(',')) {
+            const firstPart = locationName.split(',')[0].trim();
+            if (firstPart.length > 2) {
+                console.log(`[Weather] Full location not found, retrying with: ${firstPart}`);
+                geoUrl = `${CONFIG.GEOCODING_API_BASE}?name=${encodeURIComponent(firstPart)}&count=1&language=en&format=json`;
+                geoRes = await fetch(geoUrl);
+                geoData = await geoRes.json();
+            }
+        }
 
         if (!geoData || !geoData.results || geoData.results.length === 0) {
             document.getElementById('weatherLoading').classList.add('hidden');
             document.getElementById('weatherContent').style.display = 'block';
-            alert('Location not found in database. Please try a different name.');
+            alert('Location not found in database. Please try a different name (e.g. use just the city name).');
             return;
         }
 
@@ -240,7 +271,8 @@ async function fetchWeatherByCoords(lat, lon, locationName) {
     document.getElementById('weatherContent').style.display = 'none';
 
     try {
-        const url = `${CONFIG.WEATHER_API_BASE}?latitude=${lat}&longitude=${lon}&current=rain,temperature_2m,is_day,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,rain,soil_moisture_27_to_81cm,soil_moisture_3_to_9cm,precipitation_probability,apparent_temperature,weather_code&timezone=auto`;
+        // Optimized query with specific farming metrics (soil moisture, temperature at heights, etc.)
+        const url = `${CONFIG.WEATHER_API_BASE}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,rain,weather_code,wind_speed_10m,is_day,apparent_temperature&hourly=temperature_2m,rain,temperature_80m,weather_code,visibility,relative_humidity_2m,precipitation,precipitation_probability,soil_moisture_9_to_27cm,soil_moisture_0_to_1cm,soil_temperature_18cm,soil_temperature_6cm,wind_speed_10m&timezone=auto`;
 
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Open-Meteo error ${res.status}`);
@@ -273,17 +305,34 @@ function processOpenMeteoData(data, locationName) {
     const c = data.current;
     
     let rainProb = 0;
-    if (data.hourly && data.hourly.precipitation_probability && data.hourly.precipitation_probability.length > 0) {
-        const next24h = data.hourly.precipitation_probability.slice(0, 24);
+    if (data.hourly && data.hourly.precipitation_probability) {
+        const next24h = data.hourly.precipitation_probability.slice(0, 12);
         rainProb = Math.max(...next24h);
+    }
+
+    let avgVisibility = 10;
+    if (data.hourly && data.hourly.visibility) {
+        avgVisibility = (data.hourly.visibility[0] / 1000).toFixed(1); // Convert meters to km
+    }
+
+    let soilMoisture = 'N/A';
+    if (data.hourly && data.hourly.soil_moisture_9_to_27cm) {
+        soilMoisture = (data.hourly.soil_moisture_9_to_27cm[0] * 100).toFixed(1) + '%';
+    }
+
+    let soilTemp = 'N/A';
+    if (data.hourly && data.hourly.soil_temperature_6cm) {
+        soilTemp = Math.round(data.hourly.soil_temperature_6cm[0]) + '°C';
     }
 
     currentWeather = {
         temp: Math.round(c.temperature_2m),
         humidity: Math.round(c.relative_humidity_2m),
         windSpeed: Math.round(c.wind_speed_10m),
-        visibility: 10,
+        visibility: avgVisibility,
         rainProbability: Math.round(rainProb),
+        soilMoisture: soilMoisture,
+        soilTemp: soilTemp,
         condition: weatherCodeToCondition(c.weather_code),
         icon: weatherCodeToIcon(c.weather_code, c.is_day)
     };
@@ -334,16 +383,13 @@ async function getAIWeatherAdvice(location) {
     summaryDiv.style.display = 'block';
     textDiv.innerHTML = '<span style="color:#999"><i class="fas fa-spinner fa-spin"></i> Generating advice...</span>';
 
-    const prompt = `Current weather in ${location}:
-- Temperature: ${currentWeather.temp}°C
-- Humidity: ${currentWeather.humidity}%
-- Wind Speed: ${currentWeather.windSpeed} km/h
-- Rain Probability: ${currentWeather.rainProbability}%
-- Condition: ${currentWeather.condition}
-
-In 2-3 short sentences, give a practical farming advice for today based on this weather. Be specific and helpful for an Indian farmer. Keep it concise.`;
-
     try {
+        const prompt = `You are a crop weather expert. Today's weather in ${location}: 
+        Temperature ${currentWeather.temp}°C, Humidity ${currentWeather.humidity}%, Rain probability ${currentWeather.rainProbability}%, Visibility ${currentWeather.visibility}km.
+        Soil Moisture (9-27cm): ${currentWeather.soilMoisture}, Soil Temp (6cm): ${currentWeather.soilTemp}.
+        Condition: ${currentWeather.condition}. 
+        Provide a 2-sentence farming advice (focus on soil moisture for seed sowing or irrigation, and whether conditions are safe).`;
+
         const advice = await aiCall({
             messages: [{ role: 'user', content: prompt }],
             max_tokens: 200,
