@@ -113,7 +113,7 @@ graph TD
 
 ## 📁 Project Structure
 
-```
+```text
 BharatFarm/
 ├── server.js              # Node.js backend server (port 5000)
 ├── .env                   # Environment variables (API keys)
