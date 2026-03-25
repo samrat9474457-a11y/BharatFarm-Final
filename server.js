@@ -477,6 +477,33 @@ Do not include any markdown formatting like \`\`\`json in your response. Just re
         return;
     }
 
+    // ── GET /api/leaderboard ──────────────────────────────────────────────────
+    // Returns a list of top farmers sorted by XP (simulated data for demo)
+    if (req.url.startsWith('/api/leaderboard') && req.method === 'GET') {
+        try {
+            // Simulated leaderboard data — in production this would come from a database
+            const leaderboard = [
+                { name: "Ramesh Kumar", xp: 1820, rank: 1 },
+                { name: "Sunita Devi", xp: 1540, rank: 2 },
+                { name: "Arjun Patel", xp: 1360, rank: 3 },
+                { name: "Lakshmi Bai", xp: 1100, rank: 4 },
+                { name: "Mahesh Singh", xp: 980, rank: 5 },
+                { name: "Priya Sharma", xp: 840, rank: 6 },
+                { name: "Vikram Yadav", xp: 720, rank: 7 },
+                { name: "Anita Reddy", xp: 650, rank: 8 },
+                { name: "Rajesh Verma", xp: 530, rank: 9 },
+                { name: "Kavita Nair", xp: 410, rank: 10 }
+            ];
+
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: true, data: leaderboard }));
+        } catch (e) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: e.message }));
+        }
+        return;
+    }
+
     // ── GET /api/achievements ──────────────────────────────────────────────────
     if (req.url.startsWith('/api/achievements') && req.method === 'GET') {
         try {

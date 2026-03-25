@@ -1,5 +1,5 @@
 /* css/gamification.css */
-/* Premium Farmer Gamification System */
+/* Premium Farmer Gamification System — XP & Leaderboard */
 
 /* ── Dashboard Gamification Card ────────────────────────────── */
 .gamification-card {
@@ -20,6 +20,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    gap: 10px;
 }
 
 .level-badge {
@@ -36,23 +37,42 @@
     gap: 6px;
 }
 
-.coin-balance {
+/* XP total badge (replaces old coin-balance) */
+.xp-total-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: var(--text-primary);
     background: var(--bg-tertiary);
-    padding: 0.4rem 1rem;
+    padding: 0.35rem 0.9rem;
     border-radius: 20px;
     border: 1px solid var(--border-color);
 }
 
-.coin-icon {
-    color: #f1c40f;
-    text-shadow: 0 0 5px rgba(241, 196, 15, 0.4);
-    animation: pulseCoin 2s infinite ease-in-out;
+.xp-icon {
+    color: #3498db;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+    animation: pulseXP 2s infinite ease-in-out;
+}
+
+/* Rank badge */
+.rank-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #e67e22;
+    background: var(--bg-tertiary);
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+}
+
+.rank-badge i {
+    color: #f39c12;
 }
 
 .xp-container {
@@ -79,7 +99,7 @@
 
 .xp-bar-fill {
     height: 100%;
-    background: linear-gradient(90deg, #4CAF50, #81C784);
+    background: linear-gradient(90deg, #3498db, #2ecc71);
     width: 0%; /* Set via JS */
     border-radius: 4px;
     transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy fill */
@@ -147,6 +167,8 @@
     border-radius: var(--border-radius-lg);
     box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     overflow: hidden;
+    overflow-y: auto;
+    max-height: 90vh;
     position: relative;
     border: 1px solid var(--border-color);
     transform: translateY(30px); /* Handled by GSAP */
@@ -204,7 +226,6 @@
 }
 
 .reward-tag i.fa-star { color: #3498db; }
-.reward-tag i.fa-coins { color: #f1c40f; }
 
 .quiz-body {
     padding: 2rem;
@@ -315,7 +336,120 @@
     width: 100%;
 }
 
-/* ── Gamification Toasts (Coin/XP Popups) ──────────────── */
+/* ── Leaderboard (inside quiz modal) ───────────────────── */
+.quiz-leaderboard {
+    padding: 1.5rem;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border-color);
+}
+
+.lb-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lb-header i {
+    color: #f39c12;
+}
+
+.lb-user-rank {
+    background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(46, 204, 113, 0.1));
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.lb-user-rank strong {
+    color: #3498db;
+    font-size: 1.2rem;
+}
+
+.lb-user-xp {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.lb-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.lb-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    transition: background 0.2s;
+}
+
+.lb-row:hover {
+    background: var(--bg-hover);
+}
+
+/* Highlight the current user's row */
+.lb-row-user {
+    background: rgba(52, 152, 219, 0.08);
+    border: 1px solid rgba(52, 152, 219, 0.2);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.lb-medal {
+    font-size: 1.2rem;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.lb-rank-num {
+    width: 32px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.lb-name {
+    flex: 1;
+    margin-left: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lb-xp {
+    font-weight: 600;
+    color: #3498db;
+    font-size: 0.85rem;
+    margin-left: auto;
+    padding-left: 8px;
+}
+
+.lb-separator {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 6px 0;
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+}
+
+/* ── Gamification Toasts (XP Popups) ──────────────── */
 .gamification-toast-container {
     position: fixed;
     top: 50%;
@@ -344,7 +478,6 @@
     font-size: 2rem;
 }
 .g-toast-icon.xp { color: #3498db; }
-.g-toast-icon.coin { color: #f1c40f; }
 .g-toast-icon.badge { color: #e74c3c; }
 
 .g-toast-content h4 {
@@ -360,7 +493,7 @@
 }
 
 /* Animations */
-@keyframes pulseCoin {
+@keyframes pulseXP {
     0% { transform: scale(1); }
     50% { transform: scale(1.15); filter: brightness(1.2); }
     100% { transform: scale(1); }
@@ -378,9 +511,8 @@
     }
     
     .g-card-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
         margin-bottom: 16px;
     }
 
@@ -388,8 +520,10 @@
         font-size: 0.8rem;
     }
 
-    .coin-balance {
-        align-self: flex-start;
+    .xp-total-badge,
+    .rank-badge {
+        font-size: 0.85rem;
+        padding: 0.3rem 0.7rem;
     }
 
     .quiz-modal-content {
@@ -432,5 +566,16 @@
     
     .g-toast-content h4 {
         font-size: 1rem;
+    }
+
+    .lb-row {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+    }
+
+    .lb-user-rank {
+        font-size: 0.9rem;
+        flex-direction: column;
+        gap: 4px;
     }
 }

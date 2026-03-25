@@ -499,7 +499,8 @@
                     <div class="dash-feature-card gamification-card" onclick="openDailyQuiz()">
                         <div class="g-card-header">
                             <div class="level-badge" id="gami-level"><i class="fas fa-medal"></i> Lvl 1</div>
-                            <div class="coin-balance"><i class="fas fa-coins coin-icon"></i> <span id="gami-coins">0</span></div>
+                            <div class="xp-total-badge"><i class="fas fa-star xp-icon"></i> <span id="gami-total-xp">0</span> XP</div>
+                            <div class="rank-badge"><i class="fas fa-trophy"></i> <span id="gami-rank">#--</span></div>
                         </div>
                         <div class="xp-container">
                             <div class="xp-label">
@@ -510,9 +511,12 @@
                                 <div class="xp-bar-fill" id="gami-xp-fill"></div>
                             </div>
                         </div>
-                        <button class="btn-gami btn-daily" onclick="event.stopPropagation(); openDailyQuiz()">
+                        <button class="btn-gami btn-daily" id="gami-daily-btn-wrapper" onclick="event.stopPropagation(); openDailyQuiz()">
                             <i class="fas fa-brain"></i> <span id="gami-daily-btn">Take Daily Quiz</span>
                         </button>
+                        <div id="quiz-countdown" style="display:none; text-align:center; font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+                            <!-- Countdown timer injected by JS -->
+                        </div>
                     </div>
 
                     <!-- Next Activity Card -->
@@ -2008,7 +2012,6 @@
                 </div>
                 <div class="quiz-header-right">
                     <div class="reward-tag"><i class="fas fa-star"></i><span id="qm-xp">+50 XP</span></div>
-                    <div class="reward-tag"><i class="fas fa-coins"></i><span id="qm-coin">+10 Coins</span></div>
                 </div>
             </div>
             <div class="quiz-body">
@@ -2021,6 +2024,8 @@
                     <div class="quiz-explanation" id="qm-explanation-text"></div>
                     <button class="btn btn-primary quiz-btn-close" onclick="closeQuizModal()">Awesome, Got It!</button>
                 </div>
+                <!-- Leaderboard section (shown after answering) -->
+                <div class="quiz-leaderboard" id="qm-leaderboard" style="display:none;"></div>
             </div>
         </div>
     </div>
